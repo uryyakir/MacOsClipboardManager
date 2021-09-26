@@ -1,0 +1,3 @@
+excluded:
+  - Clipboard-ManagerTests/
+  - Clipboard-ManagerUITests/

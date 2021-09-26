@@ -8,7 +8,6 @@
 import Foundation
 import AppKit
 
-
 class ClipboardMenu: NSMenu {
     override init(title: String) {
         super.init(title: title)
@@ -18,7 +17,7 @@ class ClipboardMenu: NSMenu {
     required init(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
+
     private func setupClipboardMenu() {
         let menuItem1 = MenuItem(title: "Slider:")
         self.addItem(menuItem1)
@@ -31,7 +30,6 @@ class ClipboardMenu: NSMenu {
         self.addItem(NSMenuItem(title: "Quit", action: nil, keyEquivalent: "q"))
     }
 }
-
 
 class MenuItem: NSMenuItem {
     override init(title: String, action: Selector? = nil, keyEquivalent: String = "") {

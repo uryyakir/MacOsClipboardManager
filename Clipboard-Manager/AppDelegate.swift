@@ -10,7 +10,7 @@ import Cocoa
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    let statusItem = NSStatusBar.system.statusItem(withLength:NSStatusItem.squareLength)
+    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     let popover = NSPopover()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -26,4 +26,3 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 }
-
