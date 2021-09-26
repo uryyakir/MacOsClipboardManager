@@ -2,7 +2,7 @@
 //  Clipboard_ManagerUITestsLaunchTests.swift
 //  Clipboard ManagerUITests
 //
-//  Created by Uri Yakir on 23/09/2021 AP.
+//  Created by Uri Yakir on 23/09/2021.
 //
 
 import XCTest

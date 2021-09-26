@@ -13,6 +13,8 @@
 		845CC33A26FD137F00F24D1A /* Clipboard_ManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC33926FD137F00F24D1A /* Clipboard_ManagerTests.swift */; };
 		845CC34426FD137F00F24D1A /* Clipboard_ManagerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC34326FD137F00F24D1A /* Clipboard_ManagerUITests.swift */; };
 		845CC34626FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC34526FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift */; };
+		8487686A26FD31E100BCAB06 /* ClipboardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487686926FD31E100BCAB06 /* ClipboardTableView.swift */; };
+		8487686C27011F4600BCAB06 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487686B27011F4600BCAB06 /* UIUtils.swift */; };
 		8487C61326FD255700448A9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8487C61226FD255700448A9D /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +47,8 @@
 		845CC34326FD137F00F24D1A /* Clipboard_ManagerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clipboard_ManagerUITests.swift; sourceTree = "<group>"; };
 		845CC34526FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clipboard_ManagerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		845CC35226FD14A400F24D1A /* Clipboard-Manager-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Clipboard-Manager-Info.plist"; sourceTree = SOURCE_ROOT; };
+		8487686926FD31E100BCAB06 /* ClipboardTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardTableView.swift; sourceTree = "<group>"; };
+		8487686B27011F4600BCAB06 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		8487C61226FD255700448A9D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../.Trash/Clipboard-Manager/Clipboard-Manager/Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,6 +100,7 @@
 		845CC32626FD137A00F24D1A /* Clipboard-Manager */ = {
 			isa = PBXGroup;
 			children = (
+				8487686726FD2A5D00BCAB06 /* UI */,
 				845CC35226FD14A400F24D1A /* Clipboard-Manager-Info.plist */,
 				845CC32726FD137A00F24D1A /* AppDelegate.swift */,
 				845CC32926FD137A00F24D1A /* ViewController.swift */,
@@ -121,6 +126,15 @@
 				845CC34526FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift */,
 			);
 			path = "Clipboard-ManagerUITests";
+			sourceTree = "<group>";
+		};
+		8487686726FD2A5D00BCAB06 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				8487686926FD31E100BCAB06 /* ClipboardTableView.swift */,
+				8487686B27011F4600BCAB06 /* UIUtils.swift */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,6 +269,8 @@
 			files = (
 				845CC32A26FD137A00F24D1A /* ViewController.swift in Sources */,
 				845CC32826FD137A00F24D1A /* AppDelegate.swift in Sources */,
+				8487686A26FD31E100BCAB06 /* ClipboardTableView.swift in Sources */,
+				8487686C27011F4600BCAB06 /* UIUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

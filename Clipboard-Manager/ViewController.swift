@@ -2,17 +2,15 @@
 //  ViewController.swift
 //  Clipboard Manager
 //
-//  Created by Uri Yakir on 23/09/2021 AP.
+//  Created by Uri Yakir on 23/09/2021.
 //
 
 import Cocoa
 
-class ViewController: NSViewController {
 
+class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
     override var representedObject: Any? {
@@ -21,7 +19,7 @@ class ViewController: NSViewController {
         }
     }
     
-    static func newInsatnce() -> ViewController {
+    static func newInstance() -> ViewController {
         let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
         let identifier = NSStoryboard.SceneIdentifier("ViewController")
           
