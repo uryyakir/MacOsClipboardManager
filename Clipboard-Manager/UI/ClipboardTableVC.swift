@@ -29,6 +29,7 @@ class ClipboardTableCell: NSTableCellView {
         textField.stringValue = stringValue
         textField.drawsBackground = false
         textField.isBordered = false
+        textField.isEditable = false
         textField.translatesAutoresizingMaskIntoConstraints = false
 
         return textField
@@ -63,17 +64,9 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     }
 
     override func viewDidLayout() {
-        constrainView()
+        self.view.translatesAutoresizingMaskIntoConstraints = false
         setupScrollView()
         setupTableView()
-    }
-
-    private func constrainView() {
-        self.view.translatesAutoresizingMaskIntoConstraints = false
-//        self.view.topAnchor.constraint(equalTo: self.view.superview!.topAnchor, constant: 10).isActive = true
-//        self.view.bottomAnchor.constraint(equalTo: self.view.superview!.bottomAnchor, constant: -10).isActive = true
-//        self.view.leadingAnchor.constraint(equalTo: self.view.superview!.leadingAnchor, constant: 10).isActive = true
-//        self.view.trailingAnchor.constraint(equalTo: self.view.superview!.trailingAnchor, constant: -10).isActive = true
     }
 
     private func setupScrollView() {
@@ -104,6 +97,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         tableView.headerView = nil
         tableView.backgroundColor = NSColor.clear
         tableView.appearance = NSAppearance(named: NSAppearance.Name.vibrantDark)
+        tableView.allowsMultipleSelection = true
 
         let col = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "col"))
         col.minWidth = 200
