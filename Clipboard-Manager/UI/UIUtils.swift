@@ -41,7 +41,7 @@ extension AppDelegate {
         }
     }
 
-    private func closePopover(sender: Any?) {
+    func closePopover(sender: Any?) {
         self.popover.performClose(sender)
     }
 
