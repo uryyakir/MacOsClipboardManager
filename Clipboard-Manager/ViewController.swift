@@ -8,16 +8,11 @@
 import Cocoa
 
 class ViewController: NSViewController {
-    weak var appDelegate: AppDelegate?
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        // swiftlint:disable force_cast
-        let appDelegate = NSApplication.shared.delegate as! AppDelegate
-        self.appDelegate = appDelegate
         // register for clicks outside the NSWindow, that are set to close the application popover
         NotificationCenter.default.addObserver(forName: NSWindow.didResignKeyNotification, object: nil, queue: OperationQueue.main) { _ in
-            self.appDelegate?.closePopover(sender: self)
+            Constants.appDelegate.closePopover(sender: self)
         }
     }
 
@@ -40,8 +35,16 @@ class ViewController: NSViewController {
 
     override func keyDown(with event: NSEvent) {
         super.keyDown(with: event)
-        if event.keyCode == 53 {
-            self.appDelegate!.closePopover(sender: self)
+        switch Int(event.keyCode) {
+        case (KeyCodes.ESC):  // ESC key
+            Constants.appDelegate.closePopover(sender: self)
+
+        case KeyCodes.ENTER:  // Enter key
+            let selectedValues = (Constants.appDelegate.clipboardTableVC.getSelectedValues())!
+            ClipboardHandler.copyToClipboard(values: selectedValues)
+
+        default:
+            break
         }
     }
 }
