@@ -14,6 +14,9 @@
 		845CC34426FD137F00F24D1A /* Clipboard_ManagerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC34326FD137F00F24D1A /* Clipboard_ManagerUITests.swift */; };
 		845CC34626FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC34526FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift */; };
 		8472CEE82701FA5200A9D44A /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472CEE72701FA5200A9D44A /* NSView.swift */; };
+		8472CEEB27027D4500A9D44A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472CEEA27027D4500A9D44A /* Constants.swift */; };
+		8472CEED27027F8D00A9D44A /* ClipboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472CEEC27027F8D00A9D44A /* ClipboardHandler.swift */; };
+		8472CEEF2702820B00A9D44A /* ClipboardTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472CEEE2702820B00A9D44A /* ClipboardTableCell.swift */; };
 		8487686A26FD31E100BCAB06 /* ClipboardTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487686926FD31E100BCAB06 /* ClipboardTableVC.swift */; };
 		8487686C27011F4600BCAB06 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487686B27011F4600BCAB06 /* UIUtils.swift */; };
 		8487C61326FD255700448A9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8487C61226FD255700448A9D /* Assets.xcassets */; };
@@ -49,6 +52,9 @@
 		845CC34526FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clipboard_ManagerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		845CC35226FD14A400F24D1A /* Clipboard-Manager-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Clipboard-Manager-Info.plist"; sourceTree = SOURCE_ROOT; };
 		8472CEE72701FA5200A9D44A /* NSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
+		8472CEEA27027D4500A9D44A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		8472CEEC27027F8D00A9D44A /* ClipboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardHandler.swift; sourceTree = "<group>"; };
+		8472CEEE2702820B00A9D44A /* ClipboardTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardTableCell.swift; sourceTree = "<group>"; };
 		8487686926FD31E100BCAB06 /* ClipboardTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardTableVC.swift; sourceTree = "<group>"; };
 		8487686B27011F4600BCAB06 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		8487C61226FD255700448A9D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../.Trash/Clipboard-Manager/Clipboard-Manager/Assets.xcassets"; sourceTree = "<group>"; };
@@ -102,6 +108,7 @@
 		845CC32626FD137A00F24D1A /* Clipboard-Manager */ = {
 			isa = PBXGroup;
 			children = (
+				8472CEE927027D2E00A9D44A /* Clipboard */,
 				8472CEE62701FA4200A9D44A /* Extensions */,
 				8487686726FD2A5D00BCAB06 /* UI */,
 				845CC35226FD14A400F24D1A /* Clipboard-Manager-Info.plist */,
@@ -110,6 +117,7 @@
 				845CC32D26FD137F00F24D1A /* Main.storyboard */,
 				8487C61226FD255700448A9D /* Assets.xcassets */,
 				845CC33026FD137F00F24D1A /* Clipboard_Manager.entitlements */,
+				8472CEEA27027D4500A9D44A /* Constants.swift */,
 			);
 			path = "Clipboard-Manager";
 			sourceTree = "<group>";
@@ -139,11 +147,20 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		8472CEE927027D2E00A9D44A /* Clipboard */ = {
+			isa = PBXGroup;
+			children = (
+				8472CEEC27027F8D00A9D44A /* ClipboardHandler.swift */,
+			);
+			path = Clipboard;
+			sourceTree = "<group>";
+		};
 		8487686726FD2A5D00BCAB06 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				8487686926FD31E100BCAB06 /* ClipboardTableVC.swift */,
 				8487686B27011F4600BCAB06 /* UIUtils.swift */,
+				8472CEEE2702820B00A9D44A /* ClipboardTableCell.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -302,8 +319,11 @@
 				845CC32A26FD137A00F24D1A /* ViewController.swift in Sources */,
 				845CC32826FD137A00F24D1A /* AppDelegate.swift in Sources */,
 				8487686A26FD31E100BCAB06 /* ClipboardTableVC.swift in Sources */,
+				8472CEEF2702820B00A9D44A /* ClipboardTableCell.swift in Sources */,
 				8472CEE82701FA5200A9D44A /* NSView.swift in Sources */,
 				8487686C27011F4600BCAB06 /* UIUtils.swift in Sources */,
+				8472CEED27027F8D00A9D44A /* ClipboardHandler.swift in Sources */,
+				8472CEEB27027D4500A9D44A /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

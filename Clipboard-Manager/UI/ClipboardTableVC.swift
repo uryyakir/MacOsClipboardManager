@@ -8,55 +8,12 @@
 import Foundation
 import AppKit
 
-class ClipboardTableCell: NSTableCellView {
-
-    init(frame: NSRect, stringValue: String) {
-        super.init(frame: frame)
-
-        let textField = generateCellTextField(stringValue: stringValue)
-        self.textField = textField
-
-        self.addSubview(self.textField!)
-        constrainTextField()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    private func generateCellTextField(stringValue: String) -> NSTextField {
-        let textField = NSTextField()
-        textField.stringValue = stringValue
-        textField.drawsBackground = false
-        textField.isBordered = false
-        textField.isEditable = false
-        textField.translatesAutoresizingMaskIntoConstraints = false
-
-        return textField
-    }
-
-    private func constrainTextField() {
-        self.addConstraints([
-            NSLayoutConstraint(
-                item: self.textField!, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0
-            ),
-            NSLayoutConstraint(
-                item: self.textField!, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1, constant: 13
-            ),
-            NSLayoutConstraint(
-                item: self.textField!, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: -13
-            )
-        ])
-    }
-}
-
 class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     let scrollView = NSScrollView()
     let tableView = NSTableView()
 
     override func loadView() {
         self.view = NSView()
-//        self.view.backgroundColor = .red
     }
 
     override func viewDidLoad() {
@@ -98,9 +55,9 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         tableView.backgroundColor = NSColor.clear
         tableView.appearance = NSAppearance(named: NSAppearance.Name.vibrantDark)
         tableView.allowsMultipleSelection = true
+        tableView.doubleAction = #selector(onItemClicked)
 
         let col = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "col"))
-        col.minWidth = 200
         tableView.addTableColumn(col)
 
         scrollView.documentView = tableView
@@ -120,5 +77,24 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
         let rowView = NSTableRowView()
         return rowView
+    }
+
+    func getSelectedValues() -> [String]! {
+        // fetching selected rows indices and converting it into an array
+        let selectedRowIndices = (Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes.map({$0}))
+        // translating indices to table rowViews by filtering the table's subviewsL
+        let selectedRows = (selectedRowIndices.map { (int) -> NSTableRowView in
+            (
+                (
+                    Constants.appDelegate.clipboardTableVC.tableView.subviews[int]
+                ) as? NSTableRowView
+            )!
+        })
+        let selectedCells = selectedRows.map { ($0.view(atColumn: 0) as? ClipboardTableCell) }  // translating rows to TableCells
+        return selectedCells.map { ($0?.stringValue)! }  // extracting text from TableCells, returning an array of all selected strings
+    }
+
+    @objc private func onItemClicked() {
+        ClipboardHandler.copyToClipboard(values: self.getSelectedValues()!)
     }
 }
