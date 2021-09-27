@@ -11,7 +11,7 @@ import Cocoa
 extension AppDelegate {
     func setupApplicationUI() {
         setupStatusBarItem()
-        setupApplicationClipboardMenu()
+        setupClipboardTableVC()
     }
 
     private func setupStatusBarItem() {
@@ -22,15 +22,9 @@ extension AppDelegate {
             button.action = #selector(AppDelegate.togglePopover(_:))
 
             self.popover.setValue(true, forKey: "shouldHideAnchor")
-            self.popover.contentViewController = ViewController.newInstance()
+            self.popover.contentViewController = self.viewController
             self.popover.animates = false
         }
-    }
-
-    private func setupApplicationClipboardMenu() {
-        // This function setups the NSMenu that will hold the client's clipboard history
-        let clipboardMenu = ClipboardMenu(title: "test title")
-        statusItem.menu = clipboardMenu
     }
 
     @objc private func togglePopover(_ sender: NSStatusItem) {
@@ -49,5 +43,18 @@ extension AppDelegate {
 
     private func closePopover(sender: Any?) {
         self.popover.performClose(sender)
+    }
+
+    private func setupClipboardTableVC() {
+        self.clipboardTableVC.view.frame = self.viewController.view.frame
+        self.viewController.view.addSubview(self.clipboardTableVC.view)
+        constrainClipboardTableVC()
+    }
+
+    private func constrainClipboardTableVC() {
+        self.clipboardTableVC.view.topAnchor.constraint(equalTo: self.viewController.view.topAnchor, constant: 0).isActive = true
+        self.clipboardTableVC.view.bottomAnchor.constraint(equalTo: self.viewController.view.bottomAnchor, constant: 0).isActive = true
+        self.clipboardTableVC.view.leadingAnchor.constraint(equalTo: self.viewController.view.leadingAnchor, constant: 0).isActive = true
+        self.clipboardTableVC.view.trailingAnchor.constraint(equalTo: self.viewController.view.trailingAnchor, constant: 0).isActive = true
     }
 }
