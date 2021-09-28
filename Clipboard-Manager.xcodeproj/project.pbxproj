@@ -20,6 +20,7 @@
 		8487686A26FD31E100BCAB06 /* ClipboardTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487686926FD31E100BCAB06 /* ClipboardTableVC.swift */; };
 		8487686C27011F4600BCAB06 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487686B27011F4600BCAB06 /* UIUtils.swift */; };
 		8487C61326FD255700448A9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8487C61226FD255700448A9D /* Assets.xcassets */; };
+		84AEF6CB27033A7200751A96 /* ClipboardSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AEF6CA27033A7200751A96 /* ClipboardSearchField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		8487686926FD31E100BCAB06 /* ClipboardTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardTableVC.swift; sourceTree = "<group>"; };
 		8487686B27011F4600BCAB06 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		8487C61226FD255700448A9D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../.Trash/Clipboard-Manager/Clipboard-Manager/Assets.xcassets"; sourceTree = "<group>"; };
+		84AEF6CA27033A7200751A96 /* ClipboardSearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardSearchField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +163,7 @@
 				8487686926FD31E100BCAB06 /* ClipboardTableVC.swift */,
 				8487686B27011F4600BCAB06 /* UIUtils.swift */,
 				8472CEEE2702820B00A9D44A /* ClipboardTableCell.swift */,
+				84AEF6CA27033A7200751A96 /* ClipboardSearchField.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 				8472CEEF2702820B00A9D44A /* ClipboardTableCell.swift in Sources */,
 				8472CEE82701FA5200A9D44A /* NSView.swift in Sources */,
 				8487686C27011F4600BCAB06 /* UIUtils.swift in Sources */,
+				84AEF6CB27033A7200751A96 /* ClipboardSearchField.swift in Sources */,
 				8472CEED27027F8D00A9D44A /* ClipboardHandler.swift in Sources */,
 				8472CEEB27027D4500A9D44A /* Constants.swift in Sources */,
 			);
