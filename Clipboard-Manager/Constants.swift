@@ -16,4 +16,5 @@ enum KeyCodes {
 struct Constants {
     // swiftlint:disable force_cast
     static let appDelegate = NSApplication.shared.delegate as! AppDelegate
+    static let clipboardTestValues = ["hello", "my", "name", "is", "Uri", "Yakir", "help", "Hellman", "hell"]
 }

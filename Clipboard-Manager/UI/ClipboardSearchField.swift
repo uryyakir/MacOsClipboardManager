@@ -21,14 +21,13 @@ class ClipboardSearchField: NSSearchField {
 
 class ClipboardSearchFieldVC: NSViewController, NSSearchFieldDelegate {
     override func loadView() {
-        self.view = ClipboardSearchField()
+        let clipboardSearchField = ClipboardSearchField()
+        clipboardSearchField.delegate = self
+        self.view = clipboardSearchField
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
-    override func viewDidLayout() {
-        super.viewDidLayout()
+    func controlTextDidChange(_ obj: Notification) {
+        guard let searchField = (obj.object! as? NSSearchField) else { return }
+        ClipboardTableVC.filterClipboardCells(textFilter: searchField.stringValue)
     }
 }

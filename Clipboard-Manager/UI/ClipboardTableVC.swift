@@ -11,13 +11,10 @@ import AppKit
 class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     let scrollView = NSScrollView()
     let tableView = NSTableView()
+    static var previousState: [NSView] = []
 
     override func loadView() {
         self.view = NSView()
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
 
     override func viewDidLayout() {
@@ -63,14 +60,18 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         scrollView.documentView = tableView
         scrollView.hasHorizontalScroller = false
         scrollView.hasVerticalScroller = true
+
+        // TODO: make sure to update this array when copying additional data (more efficient than reading entire DB again)
+        ClipboardTableVC.previousState = self.tableView.subviews  // store a semi-static array of all initial subviews
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return 100
+//        return 100
+        return Constants.clipboardTestValues.count
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let clipboardTableCell = ClipboardTableCell(frame: NSRect(), stringValue: "hello world")
+        let clipboardTableCell = ClipboardTableCell(frame: NSRect(), stringValue: Constants.clipboardTestValues[row])
         return clipboardTableCell
     }
 
@@ -92,6 +93,30 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         })
         let selectedCells = selectedRows.map { ($0.view(atColumn: 0) as? ClipboardTableCell) }  // translating rows to TableCells
         return selectedCells.map { ($0?.stringValue)! }  // extracting text from TableCells, returning an array of all selected strings
+    }
+
+    static func filterClipboardCells(textFilter: String) {
+        // filtering all relevant rows from the allSubviews array
+        var filteredIndices: [Int] = []
+        for (index, subview) in Constants.appDelegate.clipboardTableVC.tableView.subviews.enumerated() {
+            if !((
+                (
+                    (subview as? NSTableRowView)?.view(atColumn: 0)
+                ) as? ClipboardTableCell
+            )?.stringValue?.lowercased().contains(textFilter.lowercased()) ?? false) {
+                filteredIndices.append(index)
+            }
+        }
+        print("subviews")
+        print(Constants.appDelegate.clipboardTableVC.tableView.subviews)
+        print("previous state")
+        print(ClipboardTableVC.previousState)
+        print("filtered indices")
+        print(filteredIndices)
+        Constants.appDelegate.clipboardTableVC.tableView.hideRows(at: IndexSet(filteredIndices), withAnimation: .effectFade)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            Constants.appDelegate.clipboardTableVC.tableView.unhideRows(at: Constants.appDelegate.clipboardTableVC.tableView.hiddenRowIndexes, withAnimation: .slideLeft)
+        }
     }
 
     @objc private func onItemClicked() {
