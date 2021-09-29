@@ -11,7 +11,8 @@ import AppKit
 class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     let scrollView = NSScrollView()
     let tableView = NSTableView()
-    static var previousState: [NSView] = []
+    static var filteredIndices: [Int] = []
+    static var unhiddenIndices: [Int] = []
 
     override func loadView() {
         self.view = NSView()
@@ -62,7 +63,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         scrollView.hasVerticalScroller = true
 
         // TODO: make sure to update this array when copying additional data (more efficient than reading entire DB again)
-        ClipboardTableVC.previousState = self.tableView.subviews  // store a semi-static array of all initial subviews
+//        ClipboardTableVC.allClipboardHistory = self.tableView.subviews  // store a semi-static array of all initial subviews
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
@@ -80,42 +81,66 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         return rowView
     }
 
+    static func extractRowsText(tableView: NSTableView, filterIndices: [Int] = []) -> [String] {
+        // swiftlint:disable force_cast
+        let relevantRows: [NSTableRowView]
+        // translating indices to table rowViews by filtering the table's subviews
+        if filterIndices.isEmpty {
+            relevantRows = (tableView.subviews as! [NSTableRowView])
+        } else {
+            relevantRows = filterIndices.map { (int) -> NSTableRowView in
+                (tableView.subviews[int] as! NSTableRowView)
+            }
+        }
+        let relevantCells = (relevantRows.map { ($0.view(atColumn: 0)) as! ClipboardTableCell })  // translating rows to TableCells
+        // swiftlint:enable force_cast
+        return relevantCells.map { $0.stringValue! }  // extracting text from TableCells, returning an array of all selected strings
+    }
+
     func getSelectedValues() -> [String]! {
         // fetching selected rows indices and converting it into an array
         let selectedRowIndices = (Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes.map({$0}))
-        // translating indices to table rowViews by filtering the table's subviewsL
-        let selectedRows = (selectedRowIndices.map { (int) -> NSTableRowView in
-            (
-                (
-                    Constants.appDelegate.clipboardTableVC.tableView.subviews[int]
-                ) as? NSTableRowView
-            )!
-        })
-        let selectedCells = selectedRows.map { ($0.view(atColumn: 0) as? ClipboardTableCell) }  // translating rows to TableCells
-        return selectedCells.map { ($0?.stringValue)! }  // extracting text from TableCells, returning an array of all selected strings
+        return ClipboardTableVC.extractRowsText(tableView: Constants.appDelegate.clipboardTableVC.tableView, filterIndices: selectedRowIndices)
     }
 
     static func filterClipboardCells(textFilter: String) {
+        ClipboardTableVC.filteredIndices = []
+        ClipboardTableVC.unhiddenIndices = []
         // filtering all relevant rows from the allSubviews array
-        var filteredIndices: [Int] = []
-        for (index, subview) in Constants.appDelegate.clipboardTableVC.tableView.subviews.enumerated() {
+        for subview in Constants.appDelegate.clipboardTableVC.tableView.subviews {
+            let actualIndex = Constants.appDelegate.clipboardTableVC.tableView.row(for: subview)
             if !((
                 (
                     (subview as? NSTableRowView)?.view(atColumn: 0)
                 ) as? ClipboardTableCell
             )?.stringValue?.lowercased().contains(textFilter.lowercased()) ?? false) {
-                filteredIndices.append(index)
+                if !subview.isHidden {
+                    ClipboardTableVC.filteredIndices.append(actualIndex)
+                }
             }
         }
-        print("subviews")
-        print(Constants.appDelegate.clipboardTableVC.tableView.subviews)
-        print("previous state")
-        print(ClipboardTableVC.previousState)
-        print("filtered indices")
-        print(filteredIndices)
-        Constants.appDelegate.clipboardTableVC.tableView.hideRows(at: IndexSet(filteredIndices), withAnimation: .effectFade)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            Constants.appDelegate.clipboardTableVC.tableView.unhideRows(at: Constants.appDelegate.clipboardTableVC.tableView.hiddenRowIndexes, withAnimation: .slideLeft)
+//        print("filtered indices: ")
+        print("hiding: ", ClipboardTableVC.filteredIndices)
+        let queue = DispatchQueue(label: "test")
+        queue.sync {
+            Constants.appDelegate.clipboardTableVC.tableView.beginUpdates()
+            Constants.appDelegate.clipboardTableVC.tableView.hideRows(at: IndexSet(ClipboardTableVC.filteredIndices), withAnimation: .effectFade)
+            Constants.appDelegate.clipboardTableVC.tableView.endUpdates()
+            
+            print("hidden: ", Constants.appDelegate.clipboardTableVC.tableView.hiddenRowIndexes)
+            for hiddenSubviewIndex in Constants.appDelegate.clipboardTableVC.tableView.hiddenRowIndexes.map({$0}) {
+                guard let hiddenRow = Constants.appDelegate.clipboardTableVC.tableView.rowView(atRow: hiddenSubviewIndex, makeIfNecessary: true) else {
+                    continue
+                }
+                // swiftlint:disable force_cast
+                let hiddenCell = hiddenRow.view(atColumn: 0) as! ClipboardTableCell
+                if (hiddenCell.stringValue?.lowercased().contains(textFilter.lowercased()) ?? false) || (textFilter == "") {
+                    ClipboardTableVC.unhiddenIndices.append(hiddenSubviewIndex)
+                }
+            }
+            Constants.appDelegate.clipboardTableVC.tableView.beginUpdates()
+            Constants.appDelegate.clipboardTableVC.tableView.unhideRows(at: IndexSet(ClipboardTableVC.unhiddenIndices), withAnimation: .effectFade)
+            Constants.appDelegate.clipboardTableVC.tableView.endUpdates()
         }
     }
 
