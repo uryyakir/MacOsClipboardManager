@@ -11,7 +11,7 @@ import AppKit
 
 class Dummy: NSObject {
     @objc dynamic var col: String
-    
+
     init(_ col: String) {
         self.col = col
     }
@@ -26,8 +26,16 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
 
     override func loadView() {
         self.view = NSView()
+        
         setupScrollView()
         setupTableView()
+        print("a")
+//        self.arrayController.bind(.filterPredicate, to: (Constants.appDelegate.clipboardSearchFieldVC.view as? NSSearchField), withKeyPath: "objectValue", options: nil)
+//        (Constants.appDelegate.clipboardSearchFieldVC.view as? NSSearchField)!.bind(.filterPredicate, to: self.arrayController.filterPredicate, withKeyPath: "objectValue", options: nil)
+
+        print("b")
+//        self.arrayController.filterPredicate = NSPredicate(format: "col contains $value")
+        print("c")
     }
 
     override func viewDidLayout() {
@@ -91,10 +99,8 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
 //        let clipboardTableCell = ClipboardTableCell(frame: NSRect(), stringValue: Constants.clipboardTestValues[row])
-        print((self.arrayController.arrangedObjects as? [Dummy])!.count)
         let clipboardTableCell = ClipboardTableCell(frame: NSRect())
         if tableColumn?.identifier.rawValue == "col" {
-            print("here")
             clipboardTableCell.textField!.bind(.value, to: clipboardTableCell, withKeyPath: "objectValue.col", options: nil)
         }
         return clipboardTableCell
@@ -118,7 +124,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         }
         let relevantCells = (relevantRows.map { ($0.view(atColumn: 0)) as! ClipboardTableCell })  // translating rows to TableCells
         // swiftlint:enable force_cast
-        return relevantCells.map { $0.stringValue! }  // extracting text from TableCells, returning an array of all selected strings
+        return relevantCells.map { $0.textField!.stringValue }  // extracting text from TableCells, returning an array of all selected strings
     }
 
     func getSelectedValues() -> [String]! {
