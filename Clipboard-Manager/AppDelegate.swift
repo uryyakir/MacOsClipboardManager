@@ -14,6 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let popover = NSPopover()
     let viewController = ViewController.newInstance()
     var clipboardTableVC = ClipboardTableVC()
+    let clipboardSearchFieldVC = ClipboardSearchFieldVC()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application

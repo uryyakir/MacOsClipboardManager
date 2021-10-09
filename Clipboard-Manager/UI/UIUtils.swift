@@ -11,6 +11,7 @@ import Cocoa
 extension AppDelegate {
     func setupApplicationUI() {
         setupStatusBarItem()
+        setupClipboardSearchField()
         setupClipboardTableVC()
     }
 
@@ -52,9 +53,20 @@ extension AppDelegate {
     }
 
     private func constrainClipboardTableVC() {
-        self.clipboardTableVC.view.topAnchor.constraint(equalTo: self.viewController.view.topAnchor, constant: 0).isActive = true
+        self.clipboardTableVC.view.topAnchor.constraint(equalTo: self.clipboardSearchFieldVC.view.topAnchor, constant: 10).isActive = true
         self.clipboardTableVC.view.bottomAnchor.constraint(equalTo: self.viewController.view.bottomAnchor, constant: 0).isActive = true
         self.clipboardTableVC.view.leadingAnchor.constraint(equalTo: self.viewController.view.leadingAnchor, constant: 0).isActive = true
         self.clipboardTableVC.view.trailingAnchor.constraint(equalTo: self.viewController.view.trailingAnchor, constant: 0).isActive = true
+    }
+
+    private func setupClipboardSearchField() {
+        self.viewController.view.addSubview(self.clipboardSearchFieldVC.view)
+        constrainClipboardSearchField()
+    }
+
+    private func constrainClipboardSearchField() {
+        self.clipboardSearchFieldVC.view.topAnchor.constraint(equalTo: self.viewController.view.topAnchor, constant: 10).isActive = true
+        self.clipboardSearchFieldVC.view.leadingAnchor.constraint(equalTo: self.viewController.view.leadingAnchor, constant: 10).isActive = true
+        self.clipboardSearchFieldVC.view.trailingAnchor.constraint(equalTo: self.viewController.view.trailingAnchor, constant: -10).isActive = true
     }
 }

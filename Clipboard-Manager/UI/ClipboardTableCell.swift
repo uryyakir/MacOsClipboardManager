@@ -8,15 +8,15 @@
 import Foundation
 import Cocoa
 
+
 class ClipboardTableCell: NSTableCellView {
     var stringValue: String?
 
-    init(frame: NSRect, stringValue: String) {
+    override init(frame: NSRect) {
         super.init(frame: frame)
 
-        let textField = generateCellTextField(stringValue: stringValue)
+        let textField = generateCellTextField()
         self.textField = textField
-        self.stringValue = stringValue
 
         self.addSubview(self.textField!)
         constrainTextField()
@@ -26,9 +26,8 @@ class ClipboardTableCell: NSTableCellView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func generateCellTextField(stringValue: String) -> NSTextField {
+    private func generateCellTextField() -> NSTextField {
         let textField = NSTextField()
-        textField.stringValue = stringValue
         textField.drawsBackground = false
         textField.isBordered = false
         textField.isEditable = false

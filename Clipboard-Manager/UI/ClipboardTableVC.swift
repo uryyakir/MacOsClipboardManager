@@ -8,22 +8,34 @@
 import Foundation
 import AppKit
 
+
+class Dummy: NSObject {
+    @objc dynamic var col: String
+
+    init(_ col: String) {
+        self.col = col
+    }
+}
+
 class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     let scrollView = NSScrollView()
     let tableView = NSTableView()
+    let arrayController: NSArrayController = NSArrayController()
+    var firstRowSelected: Bool = false
 
     override func loadView() {
         self.view = NSView()
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        // setup functions
+        setupScrollView()
+        setupTableView()
+        bindSearchField()
     }
 
     override func viewDidLayout() {
         self.view.translatesAutoresizingMaskIntoConstraints = false
-        setupScrollView()
-        setupTableView()
+        // only bind tableView to arrayController AFTER loadView function is run and tableView was setup
+        // otherwise, the UI changes caused by the bind will re-invoke viewDidLayout causing multiple binds and UI bugs
+        self.tableView.bind(.content, to: self.arrayController, withKeyPath: "arrangedObjects", options: nil)
     }
 
     private func setupScrollView() {
@@ -63,14 +75,33 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         scrollView.documentView = tableView
         scrollView.hasHorizontalScroller = false
         scrollView.hasVerticalScroller = true
+
+        for val in Constants.clipboardTestValues {
+            self.arrayController.addObject(Dummy(val))
+        }
+
+        // TODO: make sure to update this array when copying additional data (more efficient than reading entire DB again)
+    }
+
+    private func bindSearchField() {
+        let searchField = (Constants.appDelegate.clipboardSearchFieldVC.view as? NSSearchField)!
+        searchField.bind(
+            .predicate,
+            to: self.arrayController,
+            withKeyPath: NSBindingName.filterPredicate.rawValue,
+            options: [.predicateFormat: "col CONTAINS[cd] $value"]
+        )
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return 100
+        return Constants.clipboardTestValues.count
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let clipboardTableCell = ClipboardTableCell(frame: NSRect(), stringValue: "hello world")
+        let clipboardTableCell = ClipboardTableCell(frame: NSRect())
+        if tableColumn?.identifier.rawValue == "col" {
+            clipboardTableCell.textField!.bind(.value, to: clipboardTableCell, withKeyPath: "objectValue.col", options: nil)
+        }
         return clipboardTableCell
     }
 
@@ -79,22 +110,51 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         return rowView
     }
 
+    override func keyUp(with event: NSEvent) {
+        let searchField = (Constants.appDelegate.clipboardSearchFieldVC.view as? NSSearchField)
+        let selectedIndices = Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes
+        if event.keyCode == KeyCodes.KEYUP && self.firstRowSelected {
+            if selectedIndices.count == 1 && selectedIndices.first == 0 {
+                self.view.window?.makeFirstResponder(Constants.appDelegate.clipboardSearchFieldVC.view)
+            }
+        } else if event.keyCode <= 50 && event.keyCode != KeyCodes.ENTER {  // all keyboard keys relevant for clipboard history lookup
+            self.view.window?.makeFirstResponder(searchField)
+            searchField?.stringValue.append(event.characters!)
+            searchField?.currentEditor()?.moveToEndOfLine(self)
+            searchField?.sendAction(searchField?.action, to: searchField?.target)
+        }
+        self.firstRowSelected = (selectedIndices == IndexSet([0]))
+    }
+
+    static func extractRowsText(tableView: NSTableView, filterIndices: [Int] = []) -> [String] {
+        // swiftlint:disable force_cast
+        let relevantRows: [NSTableRowView]
+        // translating indices to table rowViews by filtering the table's subviews
+        if filterIndices.isEmpty {
+            relevantRows = (tableView.subviews as! [NSTableRowView])
+        } else {
+            relevantRows = filterIndices.map { (int) -> NSTableRowView in
+                (tableView.subviews[int] as! NSTableRowView)
+            }
+        }
+        let relevantCells = (relevantRows.map { ($0.view(atColumn: 0)) as! ClipboardTableCell })  // translating rows to TableCells
+        // swiftlint:enable force_cast
+        return relevantCells.map { $0.textField!.stringValue }  // extracting text from TableCells, returning an array of all selected strings
+    }
+
     func getSelectedValues() -> [String]! {
         // fetching selected rows indices and converting it into an array
         let selectedRowIndices = (Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes.map({$0}))
-        // translating indices to table rowViews by filtering the table's subviewsL
-        let selectedRows = (selectedRowIndices.map { (int) -> NSTableRowView in
-            (
-                (
-                    Constants.appDelegate.clipboardTableVC.tableView.subviews[int]
-                ) as? NSTableRowView
-            )!
-        })
-        let selectedCells = selectedRows.map { ($0.view(atColumn: 0) as? ClipboardTableCell) }  // translating rows to TableCells
-        return selectedCells.map { ($0?.stringValue)! }  // extracting text from TableCells, returning an array of all selected strings
+        return ClipboardTableVC.extractRowsText(tableView: Constants.appDelegate.clipboardTableVC.tableView, filterIndices: selectedRowIndices)
     }
 
     @objc private func onItemClicked() {
         ClipboardHandler.copyToClipboard(values: self.getSelectedValues()!)
+    }
+
+    func highlightFirstItem(_ sender: Any) {
+        let tableView = Constants.appDelegate.clipboardTableVC.tableView
+        self.view.window?.makeFirstResponder(tableView)
+        tableView.selectRowIndexes(IndexSet([0]), byExtendingSelection: false)
     }
 }
