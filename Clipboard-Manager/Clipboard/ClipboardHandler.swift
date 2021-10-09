@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import AppKit
 
 class ClipboardHandler {
     static func copyToClipboard(values: [String]) {
-        print(values)
+        Constants.pasteboard.declareTypes([.string], owner: nil)
+        Constants.pasteboard.setString(values.joined(separator: "\n"), forType: .string)
     }
 }

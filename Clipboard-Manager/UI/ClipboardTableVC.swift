@@ -20,28 +20,21 @@ class Dummy: NSObject {
 class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     let scrollView = NSScrollView()
     let tableView = NSTableView()
-    static var filteredIndices: [Int] = []
-    static var unhiddenIndices: [Int] = []
     let arrayController: NSArrayController = NSArrayController()
+    var firstRowSelected: Bool = false
 
     override func loadView() {
         self.view = NSView()
-        
+        // setup functions
         setupScrollView()
         setupTableView()
-        print("a")
-//        self.arrayController.bind(.filterPredicate, to: (Constants.appDelegate.clipboardSearchFieldVC.view as? NSSearchField), withKeyPath: "objectValue", options: nil)
-//        (Constants.appDelegate.clipboardSearchFieldVC.view as? NSSearchField)!.bind(.filterPredicate, to: self.arrayController.filterPredicate, withKeyPath: "objectValue", options: nil)
-
-        print("b")
-//        self.arrayController.filterPredicate = NSPredicate(format: "col contains $value")
-        print("c")
+        bindSearchField()
     }
 
     override func viewDidLayout() {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         // only bind tableView to arrayController AFTER loadView function is run and tableView was setup
-        // otherwise, the UI changes caused by the bind will re-envoke viewDidLayout causing multiple binds and UI bugs
+        // otherwise, the UI changes caused by the bind will re-invoke viewDidLayout causing multiple binds and UI bugs
         self.tableView.bind(.content, to: self.arrayController, withKeyPath: "arrangedObjects", options: nil)
     }
 
@@ -83,22 +76,28 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         scrollView.hasHorizontalScroller = false
         scrollView.hasVerticalScroller = true
 
-//      print("total objects \(Constants.clipboardTestValues.count)")
         for val in Constants.clipboardTestValues {
             self.arrayController.addObject(Dummy(val))
         }
 
         // TODO: make sure to update this array when copying additional data (more efficient than reading entire DB again)
-//        ClipboardTableVC.allClipboardHistory = self.tableView.subviews  // store a semi-static array of all initial subviews
+    }
+
+    private func bindSearchField() {
+        let searchField = (Constants.appDelegate.clipboardSearchFieldVC.view as? NSSearchField)!
+        searchField.bind(
+            .predicate,
+            to: self.arrayController,
+            withKeyPath: NSBindingName.filterPredicate.rawValue,
+            options: [.predicateFormat: "col CONTAINS[cd] $value"]
+        )
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-//        return 100
         return Constants.clipboardTestValues.count
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-//        let clipboardTableCell = ClipboardTableCell(frame: NSRect(), stringValue: Constants.clipboardTestValues[row])
         let clipboardTableCell = ClipboardTableCell(frame: NSRect())
         if tableColumn?.identifier.rawValue == "col" {
             clipboardTableCell.textField!.bind(.value, to: clipboardTableCell, withKeyPath: "objectValue.col", options: nil)
@@ -109,6 +108,22 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
         let rowView = NSTableRowView()
         return rowView
+    }
+
+    override func keyUp(with event: NSEvent) {
+        let searchField = (Constants.appDelegate.clipboardSearchFieldVC.view as? NSSearchField)
+        let selectedIndices = Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes
+        if event.keyCode == KeyCodes.KEYUP && self.firstRowSelected {
+            if selectedIndices.count == 1 && selectedIndices.first == 0 {
+                self.view.window?.makeFirstResponder(Constants.appDelegate.clipboardSearchFieldVC.view)
+            }
+        } else if event.keyCode <= 50 && event.keyCode != KeyCodes.ENTER {  // all keyboard keys relevant for clipboard history lookup
+            self.view.window?.makeFirstResponder(searchField)
+            searchField?.stringValue.append(event.characters!)
+            searchField?.currentEditor()?.moveToEndOfLine(self)
+            searchField?.sendAction(searchField?.action, to: searchField?.target)
+        }
+        self.firstRowSelected = (selectedIndices == IndexSet([0]))
     }
 
     static func extractRowsText(tableView: NSTableView, filterIndices: [Int] = []) -> [String] {
@@ -133,47 +148,13 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         return ClipboardTableVC.extractRowsText(tableView: Constants.appDelegate.clipboardTableVC.tableView, filterIndices: selectedRowIndices)
     }
 
-    static func filterClipboardCells(textFilter: String) {
-
-//        ClipboardTableVC.filteredIndices = []
-//        ClipboardTableVC.unhiddenIndices = []
-//        // filtering all relevant rows from the allSubviews array
-//        for subview in Constants.appDelegate.clipboardTableVC.tableView.subviews {
-//            let actualIndex = Constants.appDelegate.clipboardTableVC.tableView.row(for: subview)
-//            if !(
-//                (
-//                    (
-//                        (subview as? NSTableRowView)?.view(atColumn: 0)
-//                    ) as? ClipboardTableCell
-//            )?.stringValue?.lowercased().contains(textFilter.lowercased()) ?? false) {
-//                if !subview.isHidden {
-//                    ClipboardTableVC.filteredIndices.append(actualIndex)
-//                }
-//            }
-//        }
-//        print("hiding: ", ClipboardTableVC.filteredIndices)
-//        Constants.appDelegate.clipboardTableVC.tableView.hideRows(at: IndexSet(ClipboardTableVC.filteredIndices), withAnimation: .effectFade)
-//
-//        print("hidden: ", Constants.appDelegate.clipboardTableVC.tableView.hiddenRowIndexes)
-//        for hiddenSubviewIndex in Constants.appDelegate.clipboardTableVC.tableView.hiddenRowIndexes.map({$0}) {
-//            guard let hiddenRow = Constants.appDelegate.clipboardTableVC.tableView.rowView(
-//                atRow: hiddenSubviewIndex,
-//                makeIfNecessary: true
-//            ) else {
-//                continue
-//            }
-//            // swiftlint:disable force_cast
-//            let hiddenCell = hiddenRow.view(atColumn: 0) as! ClipboardTableCell
-//            if (hiddenCell.stringValue?.lowercased().contains(textFilter.lowercased()) ?? false) || (textFilter == "") {
-//                ClipboardTableVC.unhiddenIndices.append(hiddenSubviewIndex)
-//            }
-//        }
-//        Constants.appDelegate.clipboardTableVC.tableView.beginUpdates()
-//        Constants.appDelegate.clipboardTableVC.tableView.unhideRows(at: IndexSet(ClipboardTableVC.unhiddenIndices), withAnimation: .effectFade)
-//        Constants.appDelegate.clipboardTableVC.tableView.endUpdates()
-    }
-
     @objc private func onItemClicked() {
         ClipboardHandler.copyToClipboard(values: self.getSelectedValues()!)
+    }
+
+    func highlightFirstItem(_ sender: Any) {
+        let tableView = Constants.appDelegate.clipboardTableVC.tableView
+        self.view.window?.makeFirstResponder(tableView)
+        tableView.selectRowIndexes(IndexSet([0]), byExtendingSelection: false)
     }
 }

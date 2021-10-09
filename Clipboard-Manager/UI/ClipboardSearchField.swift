@@ -26,8 +26,13 @@ class ClipboardSearchFieldVC: NSViewController, NSSearchFieldDelegate {
         self.view = clipboardSearchField
     }
 
-    func controlTextDidChange(_ obj: Notification) {
-        guard let searchField = (obj.object! as? NSSearchField) else { return }
-        ClipboardTableVC.filterClipboardCells(textFilter: searchField.stringValue)
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        if commandSelector == #selector(moveDown(_:)) {
+            Constants.appDelegate.clipboardTableVC.highlightFirstItem(self.view)
+            return true
+        } else if commandSelector == #selector(cancelOperation(_:)) && (self.view as? ClipboardSearchField)?.stringValue == "" {
+            Constants.appDelegate.closePopover(sender: self)
+        }
+        return false
     }
 }
