@@ -79,8 +79,6 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         for val in Constants.clipboardTestValues {
             self.arrayController.addObject(Dummy(val))
         }
-
-        // TODO: make sure to update this array when copying additional data (more efficient than reading entire DB again)
     }
 
     private func bindSearchField() {
@@ -113,15 +111,15 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     override func keyUp(with event: NSEvent) {
         let searchField = (Constants.appDelegate.clipboardSearchFieldVC.view as? NSSearchField)
         let selectedIndices = Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes
-        if event.keyCode == KeyCodes.KEYUP && self.firstRowSelected {
-            if selectedIndices.count == 1 && selectedIndices.first == 0 {
+        if event.keyCode == KeyCodes.KEYUP && self.firstRowSelected {  // if user pressed the "UP" key while the first row is selected
+            if selectedIndices.count == 1 && selectedIndices.first == 0 {  // move to search field only if the first row is the only row selected
                 self.view.window?.makeFirstResponder(Constants.appDelegate.clipboardSearchFieldVC.view)
             }
         } else if event.keyCode <= 50 && event.keyCode != KeyCodes.ENTER {  // all keyboard keys relevant for clipboard history lookup
             self.view.window?.makeFirstResponder(searchField)
             searchField?.stringValue.append(event.characters!)
             searchField?.currentEditor()?.moveToEndOfLine(self)
-            searchField?.sendAction(searchField?.action, to: searchField?.target)
+            searchField?.sendAction(searchField?.action, to: searchField?.target)  // update table record filtering
         }
         self.firstRowSelected = (selectedIndices == IndexSet([0]))
     }
