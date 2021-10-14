@@ -20,7 +20,13 @@ class ClipboardHandler {
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
             if let copiedString = Constants.pasteboard.string(forType: .string) {
                 if Constants.pasteboard.changeCount != changeCount {
-                    Constants.dbHandler.insertCopiedValueToDB(copiedValue: copiedString)
+                    Constants.dbHandler.insertCopiedValueToDB(copiedValue: copiedString, withCompletion: { response in
+                        if response {
+                            Constants.appDelegate.clipboardTableVC.arrayController.insert(
+                                Dummy(copiedString), atArrangedObjectIndex: 0
+                            )  // updating tableView to include copied string
+                        }
+                    })
                     changeCount = Constants.pasteboard.changeCount
                 }
             }

@@ -47,10 +47,12 @@ class DatabaseHandler {
         }
     }
 
-    func insertCopiedValueToDB(copiedValue: String) {
+    func insertCopiedValueToDB(copiedValue: String, withCompletion completion: @escaping (_ success: Bool) -> Void) {
         do {
             let insertRecord = self.clipboardTable.insert(self.clipboardContent <- copiedValue, self.insertionTime <- NSDate().timeIntervalSince1970)
             _ = try self.dbConn?.run(insertRecord)
+            completion(true)
+            return
         } catch {
             fatalError("failed to insert record to db file")
         }
