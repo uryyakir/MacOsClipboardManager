@@ -76,7 +76,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         scrollView.hasHorizontalScroller = false
         scrollView.hasVerticalScroller = true
 
-        for val in Constants.clipboardTestValues {
+        for val in Constants.dbHandler.grabAllClipboardHistory() {
             self.arrayController.addObject(Dummy(val))
         }
     }
