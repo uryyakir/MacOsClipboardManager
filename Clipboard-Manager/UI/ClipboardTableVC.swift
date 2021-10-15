@@ -22,6 +22,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     let arrayController: NSArrayController = NSArrayController()
     var firstRowSelected: Bool = false
     let clipboardHistory: [String] = Constants.dbHandler.grabAllClipboardHistory()
+    var hoveredRow: NSTableRowView?
 
     override func loadView() {
         self.view = NSView()
@@ -41,8 +42,8 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     private func setupScrollView() {
         self.view.addSubview(scrollView)
         self.scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = NSColor.clear
-        scrollView.drawsBackground = false
+        self.scrollView.backgroundColor = NSColor.clear
+        self.scrollView.drawsBackground = false
         self.view.addConstraints([
             NSLayoutConstraint(
                 item: self.scrollView, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 0
@@ -98,6 +99,15 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let clipboardTableCell = ClipboardTableCell(frame: NSRect())
+        clipboardTableCell.addTrackingArea(
+            // add tracking inside the scrollView (to later support hover-detection)
+            NSTrackingArea(
+                rect: clipboardTableCell.frame,
+                options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
+                owner: self,
+                userInfo: nil
+            )
+        )
         if tableColumn?.identifier.rawValue == "col" {
             clipboardTableCell.textField!.bind(
                 .value,
@@ -167,5 +177,17 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         let tableView = Constants.appDelegate.clipboardTableVC.tableView
         self.view.window?.makeFirstResponder(tableView)
         tableView.selectRowIndexes(IndexSet([0]), byExtendingSelection: false)
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        let pointInTableView = self.tableView.convert(event.locationInWindow, to: nil)
+        let row = tableView.row(at: pointInTableView)
+        self.hoveredRow = tableView.rowView(atRow: row, makeIfNecessary: false)
+        self.hoveredRow?.backgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        self.hoveredRow?.backgroundColor = .clear
+
     }
 }
