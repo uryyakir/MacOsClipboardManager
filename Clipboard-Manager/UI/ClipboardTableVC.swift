@@ -8,7 +8,6 @@
 import Foundation
 import AppKit
 
-
 class Dummy: NSObject {
     @objc dynamic var col: String
 
@@ -22,6 +21,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     let tableView = NSTableView()
     let arrayController: NSArrayController = NSArrayController()
     var firstRowSelected: Bool = false
+    let clipboardHistory: [String] = Constants.dbHandler.grabAllClipboardHistory()
 
     override func loadView() {
         self.view = NSView()
@@ -68,6 +68,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         tableView.appearance = NSAppearance(named: NSAppearance.Name.vibrantDark)
         tableView.allowsMultipleSelection = true
         tableView.doubleAction = #selector(onItemClicked)
+        tableView.intercellSpacing = NSSize(width: 0, height: 10)
 
         let col = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "col"))
         tableView.addTableColumn(col)
@@ -76,7 +77,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         scrollView.hasHorizontalScroller = false
         scrollView.hasVerticalScroller = true
 
-        for val in Constants.dbHandler.grabAllClipboardHistory() {
+        for val in self.clipboardHistory {
             self.arrayController.addObject(Dummy(val))
         }
     }
@@ -92,13 +93,18 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return Constants.clipboardTestValues.count
+        return self.clipboardHistory.count
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let clipboardTableCell = ClipboardTableCell(frame: NSRect())
         if tableColumn?.identifier.rawValue == "col" {
-            clipboardTableCell.textField!.bind(.value, to: clipboardTableCell, withKeyPath: "objectValue.col", options: nil)
+            clipboardTableCell.textField!.bind(
+                .value,
+                to: clipboardTableCell,
+                withKeyPath: "objectValue.col",
+                options: nil
+            )
         }
         return clipboardTableCell
     }
@@ -106,6 +112,10 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
         let rowView = NSTableRowView()
         return rowView
+    }
+
+    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        return 50
     }
 
     override func keyUp(with event: NSEvent) {
@@ -124,26 +134,29 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         self.firstRowSelected = (selectedIndices == IndexSet([0]))
     }
 
-    static func extractRowsText(tableView: NSTableView, filterIndices: [Int] = []) -> [String] {
-        // swiftlint:disable force_cast
-        let relevantRows: [NSTableRowView]
-        // translating indices to table rowViews by filtering the table's subviews
+    static func extractRowsText(tableArrayController: NSArrayController, filterIndices: [Int] = []) -> [String] {
+        let relevantRows: [String]
+        let arrangedObjects = (tableArrayController.arrangedObjects as? [Dummy])!
+        // translating indices to strings (by extracting col from the underlying Dummy objects)
         if filterIndices.isEmpty {
-            relevantRows = (tableView.subviews as! [NSTableRowView])
+            relevantRows = arrangedObjects.map { (dummy) -> String in
+                dummy.col
+            }
         } else {
-            relevantRows = filterIndices.map { (int) -> NSTableRowView in
-                (tableView.subviews[int] as! NSTableRowView)
+            relevantRows = filterIndices.map { (int) -> String in
+                arrangedObjects[int].col
             }
         }
-        let relevantCells = (relevantRows.map { ($0.view(atColumn: 0)) as! ClipboardTableCell })  // translating rows to TableCells
-        // swiftlint:enable force_cast
-        return relevantCells.map { $0.textField!.stringValue }  // extracting text from TableCells, returning an array of all selected strings
+        return relevantRows
     }
 
     func getSelectedValues() -> [String]! {
         // fetching selected rows indices and converting it into an array
         let selectedRowIndices = (Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes.map({$0}))
-        return ClipboardTableVC.extractRowsText(tableView: Constants.appDelegate.clipboardTableVC.tableView, filterIndices: selectedRowIndices)
+        return ClipboardTableVC.extractRowsText(
+            tableArrayController: Constants.appDelegate.clipboardTableVC.arrayController,
+            filterIndices: selectedRowIndices
+        )
     }
 
     @objc private func onItemClicked() {
