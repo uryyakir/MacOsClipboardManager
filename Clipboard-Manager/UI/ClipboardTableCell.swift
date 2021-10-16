@@ -34,7 +34,6 @@ class ClipboardTableCell: NSTableCellView {
 
     private func generateCellTextField() -> NSTextField {
         let textField = NSTextField()
-        textField.font = NSFont(name: "Tahoma", size: 11)
         textField.drawsBackground = false
         textField.isBordered = false
         textField.isEditable = false

@@ -10,20 +10,20 @@ import AppKit
 
 class ClipboardHandler {
     static func copyToClipboard(values: [String]) {
-        Constants.pasteboard.declareTypes([.string], owner: nil)
-        Constants.pasteboard.setString(values.joined(separator: "\n"), forType: .string)
+        Constants.pasteboard.declareTypes([.html], owner: nil)
+        Constants.pasteboard.setString(values.joined(separator: "<br>"), forType: .html)
     }
 
     static func watchPasteboard() {
         // polling function to check for clipboard changes
         var changeCount = Constants.pasteboard.changeCount
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-            if let copiedString = Constants.pasteboard.string(forType: .string) {
+            if let copiedString = Constants.pasteboard.string(forType: .html) ?? Constants.pasteboard.string(forType: .string) {
                 if Constants.pasteboard.changeCount != changeCount {
                     Constants.dbHandler.insertCopiedValueToDB(copiedValue: copiedString, withCompletion: { response in
                         if response {
                             Constants.appDelegate.clipboardTableVC.arrayController.insert(
-                                Dummy(copiedString), atArrangedObjectIndex: 0
+                                ClipboardObject(copiedString), atArrangedObjectIndex: 0
                             )  // updating tableView to include copied string
                         }
                     })

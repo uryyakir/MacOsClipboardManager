@@ -8,11 +8,18 @@
 import Foundation
 import AppKit
 
-class Dummy: NSObject {
-    @objc dynamic var col: String
+class ClipboardObject: NSObject {
+    @objc dynamic var clipboardString: String
+    @objc dynamic var clipboardAttributedString: NSMutableAttributedString
 
-    init(_ col: String) {
-        self.col = col
+    init(_ clipboardStringVal: String) {
+        self.clipboardString = clipboardStringVal
+        self.clipboardAttributedString = clipboardStringVal.htmlToAttributedString!
+        self.clipboardAttributedString.addAttribute(
+            .foregroundColor,
+            value: NSColor(deviceRed: 8/255, green: 165/255, blue: 218/255, alpha: 1),
+            range: NSRange(location: 0, length: self.clipboardAttributedString.length)
+        )
     }
 }
 
@@ -79,7 +86,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         scrollView.hasVerticalScroller = true
 
         for val in self.clipboardHistory {
-            self.arrayController.addObject(Dummy(val))
+            self.arrayController.addObject(ClipboardObject(val))
         }
     }
 
@@ -89,7 +96,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
             .predicate,
             to: self.arrayController,
             withKeyPath: NSBindingName.filterPredicate.rawValue,
-            options: [.predicateFormat: "col CONTAINS[cd] $value"]
+            options: [.predicateFormat: "clipboardString CONTAINS[cd] $value"]
         )
     }
 
@@ -112,7 +119,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
             clipboardTableCell.textField!.bind(
                 .value,
                 to: clipboardTableCell,
-                withKeyPath: "objectValue.col",
+                withKeyPath: "objectValue.clipboardAttributedString",
                 options: nil
             )
         }
@@ -146,15 +153,15 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
 
     static func extractRowsText(tableArrayController: NSArrayController, filterIndices: [Int] = []) -> [String] {
         let relevantRows: [String]
-        let arrangedObjects = (tableArrayController.arrangedObjects as? [Dummy])!
-        // translating indices to strings (by extracting col from the underlying Dummy objects)
+        let arrangedObjects = (tableArrayController.arrangedObjects as? [ClipboardObject])!
+        // translating indices to strings (by extracting clipboardString from the underlying ClipboardObject objects)
         if filterIndices.isEmpty {
-            relevantRows = arrangedObjects.map { (dummy) -> String in
-                dummy.col
+            relevantRows = arrangedObjects.map { (clipboardObject) -> String in
+                clipboardObject.clipboardString
             }
         } else {
             relevantRows = filterIndices.map { (int) -> String in
-                arrangedObjects[int].col
+                arrangedObjects[int].clipboardString
             }
         }
         return relevantRows
@@ -184,10 +191,10 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         let row = tableView.row(at: pointInTableView)
         self.hoveredRow = tableView.rowView(atRow: row, makeIfNecessary: false)
         self.hoveredRow?.backgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
+        // TODO: if hovered for 3 seconds - open popover with entire text
     }
 
     override func mouseExited(with event: NSEvent) {
         self.hoveredRow?.backgroundColor = .clear
-
     }
 }
