@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class ViewController: NSViewController {
+class MainViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // register for clicks outside the NSWindow, that are set to close the application popover
@@ -23,12 +23,12 @@ class ViewController: NSViewController {
         }
     }
 
-    static func newInstance() -> ViewController {
+    static func newInstance() -> MainViewController {
         let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
         let identifier = NSStoryboard.SceneIdentifier("ViewController")
 
         guard let viewController = storyboard.instantiateController(withIdentifier: identifier)
-                as? ViewController else {
+                as? MainViewController else {
             fatalError("Unable to instantiate ViewController in Main.storyboard")
         }
         return viewController

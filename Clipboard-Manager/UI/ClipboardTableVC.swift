@@ -30,6 +30,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     var firstRowSelected: Bool = false
     let clipboardHistory: [String] = Constants.dbHandler.grabAllClipboardHistory()
     var hoveredRow: NSTableRowView?
+    let cellExtendedPopoverVC = CellExtendedPopoverVC.newInstance()
 
     override func loadView() {
         self.view = NSView()
@@ -187,11 +188,23 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     }
 
     override func mouseEntered(with event: NSEvent) {
+        // TODO: convert to ENUM with attributes calculating everything?
         let pointInTableView = self.tableView.convert(event.locationInWindow, to: nil)
         let row = tableView.row(at: pointInTableView)
         self.hoveredRow = tableView.rowView(atRow: row, makeIfNecessary: false)
         self.hoveredRow?.backgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
         // TODO: if hovered for 3 seconds - open popover with entire text
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            let cellExtendedPopover = CellExtendedPopover()
+            let hoveredRowRect = self.tableView.rect(ofRow: row)
+
+            cellExtendedPopover.contentViewController = self.cellExtendedPopoverVC  // set cell popover VC
+            cellExtendedPopover.show(
+                relativeTo: hoveredRowRect,
+                of: self.tableView,
+                preferredEdge: NSRectEdge.minX
+            )
+        }
     }
 
     override func mouseExited(with event: NSEvent) {

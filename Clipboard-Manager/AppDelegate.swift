@@ -12,7 +12,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     let popover = NSPopover()
-    let viewController = ViewController.newInstance()
+    let viewController = MainViewController.newInstance()
     var clipboardTableVC = ClipboardTableVC()
     let clipboardSearchFieldVC = ClipboardSearchFieldVC()
 
