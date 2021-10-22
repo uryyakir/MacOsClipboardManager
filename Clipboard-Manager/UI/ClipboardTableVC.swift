@@ -23,13 +23,24 @@ class ClipboardObject: NSObject {
     }
 }
 
+struct HoveredRow {
+    let rowIndex: Int
+    let rowView: NSTableRowView?
+
+    init(rowIndex: Int, rowView: NSTableRowView?) {
+        self.rowIndex = rowIndex
+        self.rowView = rowView
+    }
+}
+
 class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     let scrollView = NSScrollView()
     let tableView = NSTableView()
     let arrayController: NSArrayController = NSArrayController()
     var firstRowSelected: Bool = false
     let clipboardHistory: [String] = Constants.dbHandler.grabAllClipboardHistory()
-    var hoveredRow: NSTableRowView?
+    var hoveredRow: HoveredRow?
+    var hoverTimer: Timer?
     let cellExtendedPopoverVC = CellExtendedPopoverVC.newInstance()
 
     override func loadView() {
@@ -113,7 +124,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
                 rect: clipboardTableCell.frame,
                 options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
                 owner: self,
-                userInfo: nil
+                userInfo: ["row": row]
             )
         )
         if tableColumn?.identifier.rawValue == "col" {
@@ -187,27 +198,45 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         tableView.selectRowIndexes(IndexSet([0]), byExtendingSelection: false)
     }
 
+    private func getHoveredRowView(row: Int) -> HoveredRow {
+        let rowView = tableView.rowView(atRow: row, makeIfNecessary: false)
+        return HoveredRow(
+            rowIndex: row,
+            rowView: rowView
+        )
+    }
+
+    @objc private func checkRowStillHovered(sender: Timer) {
+        let cellExtendedPopover = CellExtendedPopover()
+        let hoveredRowRect = self.tableView.rect(ofRow: self.hoveredRow!.rowIndex)
+
+        cellExtendedPopover.contentViewController = self.cellExtendedPopoverVC  // set cell popover VC
+        cellExtendedPopover.show(
+            relativeTo: hoveredRowRect,
+            of: self.tableView,
+            preferredEdge: NSRectEdge.minX
+        )
+        sender.invalidate()
+    }
+
     override func mouseEntered(with event: NSEvent) {
         // TODO: convert to ENUM with attributes calculating everything?
-        let pointInTableView = self.tableView.convert(event.locationInWindow, to: nil)
-        let row = tableView.row(at: pointInTableView)
-        self.hoveredRow = tableView.rowView(atRow: row, makeIfNecessary: false)
-        self.hoveredRow?.backgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
-        // TODO: if hovered for 3 seconds - open popover with entire text
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            let cellExtendedPopover = CellExtendedPopover()
-            let hoveredRowRect = self.tableView.rect(ofRow: row)
-
-            cellExtendedPopover.contentViewController = self.cellExtendedPopoverVC  // set cell popover VC
-            cellExtendedPopover.show(
-                relativeTo: hoveredRowRect,
-                of: self.tableView,
-                preferredEdge: NSRectEdge.minX
-            )
-        }
+        self.hoveredRow = self.getHoveredRowView(
+            row: (event.trackingArea?.userInfo!["row"] as? Int)!
+        )
+        self.hoveredRow?.rowView!.backgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
+        self.hoverTimer = Timer.scheduledTimer(
+            timeInterval: Constants.timeBeforeHoverPopover,
+            target: self,
+            selector: #selector(self.checkRowStillHovered),
+            userInfo: nil,
+            repeats: true
+        )
     }
 
     override func mouseExited(with event: NSEvent) {
-        self.hoveredRow?.backgroundColor = .clear
+        self.hoveredRow?.rowView!.backgroundColor = .clear
+        // invalidate existing hovered row timer
+        self.hoverTimer!.invalidate()
     }
 }
