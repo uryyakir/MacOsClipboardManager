@@ -26,6 +26,7 @@ class ClipboardObject: NSObject {
 struct HoveredRow {
     let rowIndex: Int
     let rowView: NSTableRowView?
+    var cellExtendedPopover: CellExtendedPopover!
 
     init(rowIndex: Int, rowView: NSTableRowView?) {
         self.rowIndex = rowIndex
@@ -206,7 +207,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         )
     }
 
-    @objc private func checkRowStillHovered(sender: Timer) {
+    @objc private func popoverCellExtended(sender: Timer) {
         let cellExtendedPopover = CellExtendedPopover()
         let hoveredRowRect = self.tableView.rect(ofRow: self.hoveredRow!.rowIndex)
 
@@ -216,6 +217,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
             of: self.tableView,
             preferredEdge: NSRectEdge.minX
         )
+        self.hoveredRow?.cellExtendedPopover = cellExtendedPopover
         sender.invalidate()
     }
 
@@ -228,7 +230,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         self.hoverTimer = Timer.scheduledTimer(
             timeInterval: Constants.timeBeforeHoverPopover,
             target: self,
-            selector: #selector(self.checkRowStillHovered),
+            selector: #selector(self.popoverCellExtended),
             userInfo: nil,
             repeats: true
         )
@@ -236,6 +238,9 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
 
     override func mouseExited(with event: NSEvent) {
         self.hoveredRow?.rowView!.backgroundColor = .clear
+        if let cellExtendedPopover = self.hoveredRow?.cellExtendedPopover {
+            cellExtendedPopover.close()
+        }
         // invalidate existing hovered row timer
         self.hoverTimer!.invalidate()
     }
