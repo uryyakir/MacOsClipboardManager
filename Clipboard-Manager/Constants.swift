@@ -23,4 +23,5 @@ struct Constants {
     static let dbHandler = DatabaseHandler()
     static let cwd = FileManager.default.currentDirectoryPath
     static let timeBeforeHoverPopover = 3.0  // 3 seconds hover required to open popover
+    static var isInternalCopy: Bool = false  // tracking internal copy to clipboard, preventing from appending a new record to clipboard history
 }

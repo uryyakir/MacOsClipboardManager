@@ -26,7 +26,7 @@ class ClipboardObject: NSObject {
 struct HoveredRow {
     let rowIndex: Int
     let rowView: NSTableRowView?
-    var cellExtendedPopover: CellExtendedPopover!
+    var cellExtendedPopover: CellExtendedPopover?
 
     init(rowIndex: Int, rowView: NSTableRowView?) {
         self.rowIndex = rowIndex
@@ -47,7 +47,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     override func loadView() {
         self.view = NSView()
         // setup functions
-        setupScrollView()
+        ClipboardTableVC.setupScrollView(parentView: self.view, scrollView: self.scrollView)
         setupTableView()
         bindSearchField()
     }
@@ -59,23 +59,23 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         self.tableView.bind(.content, to: self.arrayController, withKeyPath: "arrangedObjects", options: nil)
     }
 
-    private func setupScrollView() {
-        self.view.addSubview(scrollView)
-        self.scrollView.translatesAutoresizingMaskIntoConstraints = false
-        self.scrollView.backgroundColor = NSColor.clear
-        self.scrollView.drawsBackground = false
-        self.view.addConstraints([
+    static func setupScrollView(parentView: NSView, scrollView: NSScrollView) {
+        parentView.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = NSColor.clear
+        scrollView.drawsBackground = false
+        parentView.addConstraints([
             NSLayoutConstraint(
-                item: self.scrollView, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 0
+                item: scrollView, attribute: .left, relatedBy: .equal, toItem: parentView, attribute: .left, multiplier: 1.0, constant: 0
             ),
             NSLayoutConstraint(
-                item: self.scrollView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1.0, constant: 23
+                item: scrollView, attribute: .top, relatedBy: .equal, toItem: parentView, attribute: .top, multiplier: 1.0, constant: 23
             ),
             NSLayoutConstraint(
-                item: self.scrollView, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1.0, constant: 0
+                item: scrollView, attribute: .right, relatedBy: .equal, toItem: parentView, attribute: .right, multiplier: 1.0, constant: 0
             ),
             NSLayoutConstraint(
-                item: self.scrollView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: 0
+                item: scrollView, attribute: .bottom, relatedBy: .equal, toItem: parentView, attribute: .bottom, multiplier: 1.0, constant: 0
             )
         ])
     }

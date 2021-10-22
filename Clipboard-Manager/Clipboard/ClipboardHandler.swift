@@ -12,6 +12,8 @@ class ClipboardHandler {
     static func copyToClipboard(values: [String]) {
         Constants.pasteboard.declareTypes([.html], owner: nil)
         Constants.pasteboard.setString(values.joined(separator: "<br>"), forType: .html)
+        Constants.isInternalCopy = true
+
     }
 
     static func watchPasteboard() {
@@ -19,7 +21,7 @@ class ClipboardHandler {
         var changeCount = Constants.pasteboard.changeCount
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
             if let copiedString = Constants.pasteboard.string(forType: .html) ?? Constants.pasteboard.string(forType: .string) {
-                if Constants.pasteboard.changeCount != changeCount {
+                if Constants.pasteboard.changeCount != changeCount && !Constants.isInternalCopy {
                     Constants.dbHandler.insertCopiedValueToDB(copiedValue: copiedString, withCompletion: { response in
                         if response {
                             Constants.appDelegate.clipboardTableVC.arrayController.insert(
@@ -28,6 +30,10 @@ class ClipboardHandler {
                         }
                     })
                     changeCount = Constants.pasteboard.changeCount
+                } else if Constants.isInternalCopy {
+                    // update changeCount and reset isInternalCopy
+                    changeCount = Constants.pasteboard.changeCount
+                    Constants.isInternalCopy = false
                 }
             }
         }
