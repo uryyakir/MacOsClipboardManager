@@ -24,4 +24,5 @@ struct Constants {
     static let cwd = FileManager.default.currentDirectoryPath
     static let timeBeforeHoverPopover = 3.0  // 3 seconds hover required to open popover
     static var isInternalCopy: Bool = false  // tracking internal copy to clipboard, preventing from appending a new record to clipboard history
+    static let textDefaultColor = NSColor(deviceRed: 8/255, green: 165/255, blue: 218/255, alpha: 1)
 }

@@ -69,4 +69,25 @@ extension AppDelegate {
         self.clipboardSearchFieldVC.view.leadingAnchor.constraint(equalTo: self.viewController.view.leadingAnchor, constant: 10).isActive = true
         self.clipboardSearchFieldVC.view.trailingAnchor.constraint(equalTo: self.viewController.view.trailingAnchor, constant: -10).isActive = true
     }
+
+    static func setupScrollView(parentView: NSView, scrollView: NSScrollView) {
+        parentView.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = NSColor.clear
+        scrollView.drawsBackground = false
+        parentView.addConstraints([
+            NSLayoutConstraint(
+                item: scrollView, attribute: .left, relatedBy: .equal, toItem: parentView, attribute: .left, multiplier: 1.0, constant: 0
+            ),
+            NSLayoutConstraint(
+                item: scrollView, attribute: .top, relatedBy: .equal, toItem: parentView, attribute: .top, multiplier: 1.0, constant: 23
+            ),
+            NSLayoutConstraint(
+                item: scrollView, attribute: .right, relatedBy: .equal, toItem: parentView, attribute: .right, multiplier: 1.0, constant: 0
+            ),
+            NSLayoutConstraint(
+                item: scrollView, attribute: .bottom, relatedBy: .equal, toItem: parentView, attribute: .bottom, multiplier: 1.0, constant: 0
+            )
+        ])
+    }
 }

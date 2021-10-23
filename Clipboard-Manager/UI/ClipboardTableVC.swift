@@ -12,14 +12,18 @@ class ClipboardObject: NSObject {
     @objc dynamic var clipboardString: String
     @objc dynamic var clipboardAttributedString: NSMutableAttributedString
 
-    init(_ clipboardStringVal: String) {
-        self.clipboardString = clipboardStringVal
-        self.clipboardAttributedString = clipboardStringVal.htmlToAttributedString!
-        self.clipboardAttributedString.addAttribute(
+    static func colorAttributedString(string: NSMutableAttributedString, color: NSColor) {
+        string.addAttribute(
             .foregroundColor,
-            value: NSColor(deviceRed: 8/255, green: 165/255, blue: 218/255, alpha: 1),
-            range: NSRange(location: 0, length: self.clipboardAttributedString.length)
+            value: color,
+            range: NSRange(location: 0, length: string.length)
         )
+    }
+
+    init(_ clipboardStringVal: String) {
+        self.clipboardString = clipboardStringVal.prepareForAttributedString
+        self.clipboardAttributedString = self.clipboardString.htmlToAttributedString!
+        ClipboardObject.colorAttributedString(string: self.clipboardAttributedString, color: Constants.textDefaultColor)
     }
 }
 
@@ -47,7 +51,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     override func loadView() {
         self.view = NSView()
         // setup functions
-        ClipboardTableVC.setupScrollView(parentView: self.view, scrollView: self.scrollView)
+        AppDelegate.setupScrollView(parentView: self.view, scrollView: self.scrollView)
         setupTableView()
         bindSearchField()
     }
@@ -57,27 +61,6 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         // only bind tableView to arrayController AFTER loadView function is run and tableView was setup
         // otherwise, the UI changes caused by the bind will re-invoke viewDidLayout causing multiple binds and UI bugs
         self.tableView.bind(.content, to: self.arrayController, withKeyPath: "arrangedObjects", options: nil)
-    }
-
-    static func setupScrollView(parentView: NSView, scrollView: NSScrollView) {
-        parentView.addSubview(scrollView)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = NSColor.clear
-        scrollView.drawsBackground = false
-        parentView.addConstraints([
-            NSLayoutConstraint(
-                item: scrollView, attribute: .left, relatedBy: .equal, toItem: parentView, attribute: .left, multiplier: 1.0, constant: 0
-            ),
-            NSLayoutConstraint(
-                item: scrollView, attribute: .top, relatedBy: .equal, toItem: parentView, attribute: .top, multiplier: 1.0, constant: 23
-            ),
-            NSLayoutConstraint(
-                item: scrollView, attribute: .right, relatedBy: .equal, toItem: parentView, attribute: .right, multiplier: 1.0, constant: 0
-            ),
-            NSLayoutConstraint(
-                item: scrollView, attribute: .bottom, relatedBy: .equal, toItem: parentView, attribute: .bottom, multiplier: 1.0, constant: 0
-            )
-        ])
     }
 
     private func setupTableView() {
@@ -97,7 +80,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         scrollView.documentView = tableView
         scrollView.hasHorizontalScroller = false
         scrollView.hasVerticalScroller = true
-
+        // populate table rows
         for val in self.clipboardHistory {
             self.arrayController.addObject(ClipboardObject(val))
         }
@@ -212,6 +195,14 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         let hoveredRowRect = self.tableView.rect(ofRow: self.hoveredRow!.rowIndex)
 
         cellExtendedPopover.contentViewController = self.cellExtendedPopoverVC  // set cell popover VC
+        if self.cellExtendedPopoverVC.textField == nil { self.cellExtendedPopoverVC.initView() }
+        let cellAttributedString = ClipboardTableVC.extractRowsText(
+            tableArrayController: self.arrayController,
+            filterIndices: [self.hoveredRow!.rowIndex]
+        )[0].htmlToAttributedString!
+        ClipboardObject.colorAttributedString(string: cellAttributedString, color: Constants.textDefaultColor)
+//        self.cellExtendedPopoverVC.textView!.textStorage?.setAttributedString(cellAttributedString)
+        self.cellExtendedPopoverVC.textField!.attributedStringValue = cellAttributedString
         cellExtendedPopover.show(
             relativeTo: hoveredRowRect,
             of: self.tableView,
@@ -239,7 +230,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     override func mouseExited(with event: NSEvent) {
         self.hoveredRow?.rowView!.backgroundColor = .clear
         if let cellExtendedPopover = self.hoveredRow?.cellExtendedPopover {
-            cellExtendedPopover.close()
+//            cellExtendedPopover.close()
         }
         // invalidate existing hovered row timer
         self.hoverTimer!.invalidate()
