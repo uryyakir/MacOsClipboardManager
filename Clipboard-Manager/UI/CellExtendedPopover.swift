@@ -24,7 +24,6 @@ class CellExtendedPopoverVC: NSViewController {
 
     func initView() {
         self.setupScrollableTextField()
-//        self.constrainScrollView()
     }
 
     override func viewDidLoad() {
@@ -43,33 +42,31 @@ class CellExtendedPopoverVC: NSViewController {
     }
 
     private func setupScrollableTextField() {
-        print("here")
-        self.scrollView = NSScrollView()
-        self.scrollView.backgroundColor = .clear
-        self.view.addSubview(self.scrollView)
-        self.scrollView.translatesAutoresizingMaskIntoConstraints = false
-        self.scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-        self.scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
-        self.scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
-        self.scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -10).isActive = true
-        self.scrollView.backgroundColor = .clear
-        self.scrollView.drawsBackground = false
-        self.scrollView.hasVerticalScroller = true
-        self.scrollView.hasHorizontalScroller = true
+        AppDelegate.setupScrollView(
+            parentView: view,
+            scrollView: self.scrollView,
+            leftConstant: 10,
+            topConstant: 10,
+            rightConstant: -10,
+            bottomConstant: -10,
+            hasScrollers: true
+        )
 
-        self.textField = NSTextField(frame: NSRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-        self.textField.textColor = .white
-        self.textField.isEditable = false
-        self.textField.drawsBackground = true
+        self.textField = self.setupTextField()
         self.constrainTextField()
     }
 
+    private func setupTextField() -> NSTextField {
+        let textField = NSTextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.isEditable = false
+        textField.drawsBackground = true
+        return textField
+    }
+
     private func constrainTextField() {
-        self.textField.translatesAutoresizingMaskIntoConstraints = false
         self.scrollView.documentView = self.textField
-        self.textField.leadingAnchor.constraint(lessThanOrEqualTo: self.scrollView.leadingAnchor, constant: 0).isActive = true
-        self.textField.trailingAnchor.constraint(greaterThanOrEqualTo: self.scrollView.trailingAnchor, constant: 0).isActive = true
-        self.textField.topAnchor.constraint(lessThanOrEqualTo: self.scrollView.topAnchor).isActive = true
-        self.textField.bottomAnchor.constraint(greaterThanOrEqualTo: self.scrollView.bottomAnchor).isActive = true
+        self.textField.heightAnchor.constraint(greaterThanOrEqualToConstant: self.view.bounds.height - 50).isActive = true
+        self.textField.widthAnchor.constraint(greaterThanOrEqualToConstant: self.view.bounds.width - 50).isActive = true
     }
 }

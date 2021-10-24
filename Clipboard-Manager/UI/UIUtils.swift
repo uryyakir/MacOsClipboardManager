@@ -70,23 +70,59 @@ extension AppDelegate {
         self.clipboardSearchFieldVC.view.trailingAnchor.constraint(equalTo: self.viewController.view.trailingAnchor, constant: -10).isActive = true
     }
 
-    static func setupScrollView(parentView: NSView, scrollView: NSScrollView) {
+    static func setupScrollView(
+        parentView: NSView,
+        scrollView: NSScrollView,
+        leftConstant: CGFloat = 0,
+        topConstant: CGFloat = 0,
+        rightConstant: CGFloat = 0,
+        bottomConstant: CGFloat = 0,
+        hasScrollers: Bool = false
+    ) {
         parentView.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = NSColor.clear
         scrollView.drawsBackground = false
+        if hasScrollers {
+            scrollView.hasHorizontalScroller = true
+            scrollView.hasVerticalScroller = true
+        }
         parentView.addConstraints([
             NSLayoutConstraint(
-                item: scrollView, attribute: .left, relatedBy: .equal, toItem: parentView, attribute: .left, multiplier: 1.0, constant: 0
+                item: scrollView,
+                attribute: .leading,
+                relatedBy: .equal,
+                toItem: parentView,
+                attribute: .leading,
+                multiplier: 1.0,
+                constant: leftConstant
             ),
             NSLayoutConstraint(
-                item: scrollView, attribute: .top, relatedBy: .equal, toItem: parentView, attribute: .top, multiplier: 1.0, constant: 23
+                item: scrollView,
+                attribute: .top,
+                relatedBy: .equal,
+                toItem: parentView,
+                attribute: .top,
+                multiplier: 1.0,
+                constant: topConstant
             ),
             NSLayoutConstraint(
-                item: scrollView, attribute: .right, relatedBy: .equal, toItem: parentView, attribute: .right, multiplier: 1.0, constant: 0
+                item: scrollView,
+                attribute: .trailing,
+                relatedBy: .equal,
+                toItem: parentView,
+                attribute: .trailing,
+                multiplier: 1.0,
+                constant: rightConstant
             ),
             NSLayoutConstraint(
-                item: scrollView, attribute: .bottom, relatedBy: .equal, toItem: parentView, attribute: .bottom, multiplier: 1.0, constant: 0
+                item: scrollView,
+                attribute: .bottom,
+                relatedBy: .equal,
+                toItem: parentView,
+                attribute: .bottom,
+                multiplier: 1.0,
+                constant: bottomConstant
             )
         ])
     }

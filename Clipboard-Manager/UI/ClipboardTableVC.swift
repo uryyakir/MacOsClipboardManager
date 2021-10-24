@@ -51,7 +51,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     override func loadView() {
         self.view = NSView()
         // setup functions
-        AppDelegate.setupScrollView(parentView: self.view, scrollView: self.scrollView)
+        AppDelegate.setupScrollView(parentView: self.view, scrollView: self.scrollView, topConstant: 23)
         setupTableView()
         bindSearchField()
     }
@@ -201,13 +201,13 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
             filterIndices: [self.hoveredRow!.rowIndex]
         )[0].htmlToAttributedString!
         ClipboardObject.colorAttributedString(string: cellAttributedString, color: Constants.textDefaultColor)
-//        self.cellExtendedPopoverVC.textView!.textStorage?.setAttributedString(cellAttributedString)
         self.cellExtendedPopoverVC.textField!.attributedStringValue = cellAttributedString
         cellExtendedPopover.show(
             relativeTo: hoveredRowRect,
             of: self.tableView,
             preferredEdge: NSRectEdge.minX
         )
+        self.cellExtendedPopoverVC.scrollView.documentView!.scroll(.zero)  // scrolling document view (containing the text field) to top-left
         self.hoveredRow?.cellExtendedPopover = cellExtendedPopover
         sender.invalidate()
     }
@@ -230,7 +230,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     override func mouseExited(with event: NSEvent) {
         self.hoveredRow?.rowView!.backgroundColor = .clear
         if let cellExtendedPopover = self.hoveredRow?.cellExtendedPopover {
-//            cellExtendedPopover.close()
+            cellExtendedPopover.close()
         }
         // invalidate existing hovered row timer
         self.hoverTimer!.invalidate()

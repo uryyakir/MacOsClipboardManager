@@ -11,7 +11,7 @@
             <objects>
                 <viewController storyboardIdentifier="CellExtendedPopoverVC" id="bU7-R8-ocO" customClass="CellExtendedPopoverVC" customModule="Clipboard_Manager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" appearanceType="darkAqua" id="tOy-S4-hL0">
-                        <rect key="frame" x="0.0" y="0.0" width="270" height="350"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="550"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </view>
                 </viewController>
