@@ -14,6 +14,7 @@ class ViewController: NSViewController {
         NotificationCenter.default.addObserver(forName: NSWindow.didResignKeyNotification, object: nil, queue: OperationQueue.main) { _ in
             Constants.appDelegate.closePopover(sender: self)
         }
+        ClipboardHandler.watchPasteboard()
     }
 
     override var representedObject: Any? {

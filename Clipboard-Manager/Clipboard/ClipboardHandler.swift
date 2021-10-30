@@ -13,4 +13,23 @@ class ClipboardHandler {
         Constants.pasteboard.declareTypes([.string], owner: nil)
         Constants.pasteboard.setString(values.joined(separator: "\n"), forType: .string)
     }
+
+    static func watchPasteboard() {
+        // polling function to check for clipboard changes
+        var changeCount = Constants.pasteboard.changeCount
+        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            if let copiedString = Constants.pasteboard.string(forType: .string) {
+                if Constants.pasteboard.changeCount != changeCount {
+                    Constants.dbHandler.insertCopiedValueToDB(copiedValue: copiedString, withCompletion: { response in
+                        if response {
+                            Constants.appDelegate.clipboardTableVC.arrayController.insert(
+                                Dummy(copiedString), atArrangedObjectIndex: 0
+                            )  // updating tableView to include copied string
+                        }
+                    })
+                    changeCount = Constants.pasteboard.changeCount
+                }
+            }
+        }
+    }
 }

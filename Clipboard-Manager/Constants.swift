@@ -20,4 +20,6 @@ struct Constants {
     static let appDelegate = NSApplication.shared.delegate as! AppDelegate
     static let clipboardTestValues = ["hello", "my", "name", "is", "Uri", "Yakir", "help", "Hellman", "hell"]
     static let pasteboard = NSPasteboard.general
+    static let dbHandler = DatabaseHandler()
+    static let cwd = FileManager.default.currentDirectoryPath
 }
