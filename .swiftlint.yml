@@ -4,3 +4,6 @@ excluded:
 
 line_length:
   warning: 150
+
+type_body_length:
+  warning: 250
