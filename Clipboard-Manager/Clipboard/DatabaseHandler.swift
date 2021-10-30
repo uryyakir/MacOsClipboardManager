@@ -68,8 +68,4 @@ class DatabaseHandler {
             fatalError("failed to grab clipboard history from database")
         }
     }
-
-    func dummy() {
-        // TODO: remove this function when Constants variable is referenced in one of the VC
-    }
 }

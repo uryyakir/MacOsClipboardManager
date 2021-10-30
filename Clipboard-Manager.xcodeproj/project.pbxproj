@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84132ABC272DF99100D20633 /* ClipboardObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84132ABB272DF99100D20633 /* ClipboardObject.swift */; };
+		84132ABE272DF9AF00D20633 /* HoveredRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84132ABD272DF9AF00D20633 /* HoveredRow.swift */; };
 		843F639F271B5E77005E6541 /* CellExtendedPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843F639E271B5E77005E6541 /* CellExtendedPopover.swift */; };
 		845CC32826FD137A00F24D1A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC32726FD137A00F24D1A /* AppDelegate.swift */; };
 		845CC32A26FD137A00F24D1A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC32926FD137A00F24D1A /* MainViewController.swift */; };
@@ -46,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		84132ABB272DF99100D20633 /* ClipboardObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardObject.swift; sourceTree = "<group>"; };
+		84132ABD272DF9AF00D20633 /* HoveredRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoveredRow.swift; sourceTree = "<group>"; };
 		843F639E271B5E77005E6541 /* CellExtendedPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellExtendedPopover.swift; sourceTree = "<group>"; };
 		845CC32426FD137A00F24D1A /* Clipboard Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Clipboard Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		845CC32726FD137A00F24D1A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -166,6 +170,7 @@
 			children = (
 				8472CEEC27027F8D00A9D44A /* ClipboardHandler.swift */,
 				84C8E32427122AB4002D474C /* DatabaseHandler.swift */,
+				84132ABB272DF99100D20633 /* ClipboardObject.swift */,
 			);
 			path = Clipboard;
 			sourceTree = "<group>";
@@ -178,6 +183,7 @@
 				8472CEEE2702820B00A9D44A /* ClipboardTableCell.swift */,
 				84AEF6CA27033A7200751A96 /* ClipboardSearchField.swift */,
 				843F639E271B5E77005E6541 /* CellExtendedPopover.swift */,
+				84132ABD272DF9AF00D20633 /* HoveredRow.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -343,12 +349,14 @@
 				845CC32A26FD137A00F24D1A /* MainViewController.swift in Sources */,
 				8461093C271B4E7C00331D12 /* String.swift in Sources */,
 				845CC32826FD137A00F24D1A /* AppDelegate.swift in Sources */,
+				84132ABC272DF99100D20633 /* ClipboardObject.swift in Sources */,
 				8487686A26FD31E100BCAB06 /* ClipboardTableVC.swift in Sources */,
 				843F639F271B5E77005E6541 /* CellExtendedPopover.swift in Sources */,
 				8472CEEF2702820B00A9D44A /* ClipboardTableCell.swift in Sources */,
 				8472CEE82701FA5200A9D44A /* NSView.swift in Sources */,
 				84C8E32527122AB4002D474C /* DatabaseHandler.swift in Sources */,
 				8487686C27011F4600BCAB06 /* UIUtils.swift in Sources */,
+				84132ABE272DF9AF00D20633 /* HoveredRow.swift in Sources */,
 				84AEF6CB27033A7200751A96 /* ClipboardSearchField.swift in Sources */,
 				8472CEED27027F8D00A9D44A /* ClipboardHandler.swift in Sources */,
 				8472CEEB27027D4500A9D44A /* Constants.swift in Sources */,
@@ -541,6 +549,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Uri-Yakir.Clipboard-Manager";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = on;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -572,6 +581,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Uri-Yakir.Clipboard-Manager";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = on;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

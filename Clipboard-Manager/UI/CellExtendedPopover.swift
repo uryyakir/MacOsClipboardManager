@@ -9,6 +9,8 @@ import Foundation
 import Cocoa
 
 class CellExtendedPopover: NSPopover {
+    var userExaminesExtendedPopover: Bool = false
+
     override init() {
         super.init()
     }
@@ -54,6 +56,14 @@ class CellExtendedPopoverVC: NSViewController {
 
         self.textField = self.setupTextField()
         self.constrainTextField()
+        self.view.addTrackingArea(
+            // add tracking inside the scrollView (to later support hover-detection)
+            NSTrackingArea(
+                rect: self.view.frame,
+                options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
+                owner: self
+            )
+        )
     }
 
     private func setupTextField() -> NSTextField {
@@ -66,7 +76,22 @@ class CellExtendedPopoverVC: NSViewController {
 
     private func constrainTextField() {
         self.scrollView.documentView = self.textField
-        self.textField.heightAnchor.constraint(greaterThanOrEqualToConstant: self.view.bounds.height - 50).isActive = true
-        self.textField.widthAnchor.constraint(greaterThanOrEqualToConstant: self.view.bounds.width - 50).isActive = true
+        self.textField.heightAnchor.constraint(greaterThanOrEqualToConstant: self.view.bounds.height - 25).isActive = true
+        self.textField.widthAnchor.constraint(greaterThanOrEqualToConstant: self.view.bounds.width - 25).isActive = true
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        if let cellExtendedPopover = Constants.appDelegate.clipboardTableVC.hoveredRow?.cellExtendedPopover {
+            cellExtendedPopover.userExaminesExtendedPopover = true
+        }
+        // otherwise - it probably means user tried to enter popover via another row, thus overwriting the rows cellExtendedPopover attribute
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        guard let extendedPopover = Constants.appDelegate.clipboardTableVC.hoveredRow?.cellExtendedPopover else {
+            return
+        }
+        extendedPopover.userExaminesExtendedPopover = false
+        extendedPopover.close()
     }
 }
