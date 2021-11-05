@@ -136,33 +136,34 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         self.firstRowSelected = (selectedIndices == IndexSet([0]))
     }
 
-    static func extractRowsText(tableArrayController: NSArrayController, filterIndices: [Int] = []) -> [String] {
+    static func extractRowsText(tableArrayController: NSArrayController, filterIndices: [Int] = [], getRawStrings: Bool = false) -> [String] {
         let relevantRows: [String]
         let arrangedObjects = (tableArrayController.arrangedObjects as? [ClipboardObject])!
         // translating indices to strings (by extracting clipboardString from the underlying ClipboardObject objects)
         if filterIndices.isEmpty {
             relevantRows = arrangedObjects.map { (clipboardObject) -> String in
-                clipboardObject.clipboardString
+                getRawStrings ? clipboardObject.rawClipboardString : clipboardObject.clipboardString
             }
         } else {
             relevantRows = filterIndices.map { (int) -> String in
-                arrangedObjects[int].clipboardString
+                getRawStrings ? arrangedObjects[int].rawClipboardString : arrangedObjects[int].clipboardString
             }
         }
         return relevantRows
     }
 
-    func getSelectedValues() -> [String]! {
+    func getSelectedValues(getRawStrings: Bool = false) -> [String]! {
         // fetching selected rows indices and converting it into an array
         let selectedRowIndices = (Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes.map({$0}))
         return ClipboardTableVC.extractRowsText(
             tableArrayController: Constants.appDelegate.clipboardTableVC.arrayController,
-            filterIndices: selectedRowIndices
+            filterIndices: selectedRowIndices,
+            getRawStrings: getRawStrings
         )
     }
 
     @objc private func onItemClicked() {
-        ClipboardHandler.copyToClipboard(values: self.getSelectedValues()!)
+        ClipboardHandler.copyToClipboard(values: self.getSelectedValues(getRawStrings: true)!)
     }
 
     func highlightFirstItem(_ sender: Any) {

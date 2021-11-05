@@ -9,6 +9,7 @@ import Foundation
 import Cocoa
 
 class ClipboardObject: NSObject {
+    @objc dynamic var rawClipboardString: String
     @objc dynamic var clipboardString: String
     @objc dynamic var clipboardAttributedString: NSMutableAttributedString
 
@@ -21,6 +22,7 @@ class ClipboardObject: NSObject {
     }
 
     init(_ clipboardStringVal: String) {
+        self.rawClipboardString = clipboardStringVal
         self.clipboardString = clipboardStringVal.prepareForAttributedString
         self.clipboardAttributedString = self.clipboardString.htmlToAttributedString!
         ClipboardObject.colorAttributedString(string: self.clipboardAttributedString, color: Constants.textDefaultColor)
