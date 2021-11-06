@@ -13,7 +13,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     let tableView = NSTableView()
     let arrayController: NSArrayController = NSArrayController()
     var firstRowSelected: Bool = false
-    let clipboardHistory: [String] = Constants.dbHandler.grabAllClipboardHistory()
+    let clipboardHistory: [ClipboardCopiedObject] = Constants.dbHandler.grabAllClipboardHistory()
     var hoveredRow: HoveredRow?
     let cellExtendedPopoverVC = CellExtendedPopoverVC.newInstance()
     var hoveredRowsWhilePopoverOpen: [HoveredRow] = []
@@ -142,34 +142,31 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         self.firstRowSelected = (selectedIndices == IndexSet([0]))
     }
 
-    static func extractRowsText(tableArrayController: NSArrayController, filterIndices: [Int] = [], getRawStrings: Bool = false) -> [String] {
-        let relevantRows: [String]
+    static func extractRowsText(tableArrayController: NSArrayController, filterIndices: [Int] = []) -> [ClipboardObject] {
+        let relevantRows: [ClipboardObject]
         let arrangedObjects = (tableArrayController.arrangedObjects as? [ClipboardObject])!
         // translating indices to strings (by extracting clipboardString from the underlying ClipboardObject objects)
         if filterIndices.isEmpty {
-            relevantRows = arrangedObjects.map { (clipboardObject) -> String in
-                getRawStrings ? clipboardObject.rawClipboardString : clipboardObject.clipboardString
-            }
+            relevantRows = arrangedObjects
         } else {
-            relevantRows = filterIndices.map { (int) -> String in
-                getRawStrings ? arrangedObjects[int].rawClipboardString : arrangedObjects[int].clipboardString
+            relevantRows = filterIndices.map { (int) -> ClipboardObject in
+                arrangedObjects[int]
             }
         }
         return relevantRows
     }
 
-    func getSelectedValues(getRawStrings: Bool = false) -> [String]! {
+    func getSelectedValues() -> [ClipboardObject]! {
         // fetching selected rows indices and converting it into an array
         let selectedRowIndices = (Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes.map({$0}))
         return ClipboardTableVC.extractRowsText(
             tableArrayController: Constants.appDelegate.clipboardTableVC.arrayController,
-            filterIndices: selectedRowIndices,
-            getRawStrings: getRawStrings
+            filterIndices: selectedRowIndices
         )
     }
 
     @objc private func onItemClicked() {
-        ClipboardHandler.copyToClipboard(values: self.getSelectedValues(getRawStrings: true)!)
+        ClipboardHandler.copyToClipboard(values: self.getSelectedValues()!)
     }
 
     func highlightFirstItem(_ sender: Any) {
@@ -187,10 +184,14 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     }
 
     private func prepareCellExtendedPopoverText() {
-        let cellAttributedString = ClipboardTableVC.extractRowsText(
+        let clipboardObject = ClipboardTableVC.extractRowsText(
             tableArrayController: self.arrayController,
             filterIndices: [self.hoveredRow!.rowIndex]
-        )[0].htmlToAttributedString(resizeToWidth: CellExtendedPopoverVC.newInstance().view.bounds.width, resizeToHeight: nil)!
+        )[0]
+        let cellAttributedString = (clipboardObject.HTMLClipboardString ?? clipboardObject.rawClipboardString)!.htmlToAttributedString(
+            resizeToWidth: CellExtendedPopoverVC.newInstance().view.bounds.width,
+            resizeToHeight: nil
+        )!
         ClipboardObject.colorAttributedString(string: cellAttributedString, color: Constants.textDefaultColor)
         self.cellExtendedPopoverVC.textField!.attributedStringValue = cellAttributedString
     }
