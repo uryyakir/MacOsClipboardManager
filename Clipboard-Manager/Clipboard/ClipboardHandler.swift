@@ -8,11 +8,28 @@
 import Foundation
 import AppKit
 
+struct ClipboardCopiedObject {
+    let copiedValueRaw: String?
+    let copiedValueHTML: String?
+}
+
 class ClipboardHandler {
-    static func copyToClipboard(values: [String]) {
+    static func copyToClipboard(values: [ClipboardObject]) {
         Constants.pasteboard.declareTypes([.html, .string], owner: nil)
-        Constants.pasteboard.setString(values.joined(separator: "<br>"), forType: .html)
-        Constants.pasteboard.setString(values.joined(separator: "\n"), forType: .string)
+        // set clipboard contents for applications supporting HTML (e.g Chrome, Microsoft Word etc.)
+        Constants.pasteboard.setString(
+            values.map({
+                ($0.HTMLClipboardString ?? $0.rawClipboardString)!.prepareForAttributedString
+            }).joined(separator: "<br>"),
+            forType: .html
+        )
+        // set clipboard contents for applications not supporting HTML (e.g. notes, XCode etc.)
+        Constants.pasteboard.setString(
+            values.map({
+                ($0.rawClipboardString ?? $0.HTMLClipboardString )!
+            }).joined(separator: "\n"),
+            forType: .string
+        )
         Constants.isInternalCopy = true
     }
 
@@ -20,12 +37,14 @@ class ClipboardHandler {
         // polling function to check for clipboard changes
         var changeCount = Constants.pasteboard.changeCount
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-            if let copiedString = Constants.pasteboard.string(forType: .html) ?? Constants.pasteboard.string(forType: .string) {
+            let copiedStringRaw = Constants.pasteboard.string(forType: .string), copiedStringHTML = Constants.pasteboard.string(forType: .html)
+            if copiedStringRaw != nil || copiedStringHTML != nil {
+                let clipboardCopiedObj = ClipboardCopiedObject(copiedValueRaw: copiedStringRaw, copiedValueHTML: copiedStringHTML)
                 if Constants.pasteboard.changeCount != changeCount && !Constants.isInternalCopy {
-                    Constants.dbHandler.insertCopiedValueToDB(copiedValue: copiedString, withCompletion: { response in
+                    Constants.dbHandler.insertCopiedValueToDB(copiedObject: clipboardCopiedObj, withCompletion: { response in
                         if response {
                             Constants.appDelegate.clipboardTableVC.arrayController.insert(
-                                ClipboardObject(copiedString), atArrangedObjectIndex: 0
+                                ClipboardObject(clipboardCopiedObj), atArrangedObjectIndex: 0
                             )  // updating tableView to include copied string
                         }
                     })

@@ -13,7 +13,8 @@ class DatabaseHandler {
     // TODO: implement b64 encoding for images (+ find a way to show the image in visual table)
     let dbConn: Connection?
     let clipboardTable: Table!
-    var clipboardContent: Expression<String>
+    var clipboardContentRaw: Expression<String?>
+    var clipboardContentHTML: Expression<String?>
     var insertionTime: Expression<TimeInterval?>
 
     init() {
@@ -21,7 +22,8 @@ class DatabaseHandler {
             // NOTE: db file-path is stored in /Users/$username$/Library/Containers/com.Uri-Yakir.Clipboard-Manager/Data
             self.dbConn = try Connection("db.sqlite3")
             self.clipboardTable = Table("clipboard")
-            self.clipboardContent = Expression<String>("CLIPBOARD_CONTENT")
+            self.clipboardContentRaw = Expression<String?>("CLIPBOARD_CONTENT_RAW")
+            self.clipboardContentHTML = Expression<String?>("CLIPBOARD_CONTENT_HTML")
             self.insertionTime = Expression<TimeInterval?>("INSERTION_TIME")
             self.setupTable()
         } catch {
@@ -37,7 +39,8 @@ class DatabaseHandler {
                 print("creating clipboard table")
                 do {
                     try self.dbConn?.run(self.clipboardTable.create { type in
-                        type.column(self.clipboardContent)
+                        type.column(self.clipboardContentRaw)
+                        type.column(self.clipboardContentHTML)
                         type.column(self.insertionTime)
                     })
                 } catch {}
@@ -45,9 +48,13 @@ class DatabaseHandler {
         }
     }
 
-    func insertCopiedValueToDB(copiedValue: String, withCompletion completion: @escaping (_ success: Bool) -> Void) {
+    func insertCopiedValueToDB(copiedObject: ClipboardCopiedObject, withCompletion completion: @escaping (_ success: Bool) -> Void) {
         do {
-            let insertRecord = self.clipboardTable.insert(self.clipboardContent <- copiedValue, self.insertionTime <- NSDate().timeIntervalSince1970)
+            let insertRecord = self.clipboardTable.insert(
+                self.clipboardContentRaw <- copiedObject.copiedValueRaw,
+                self.clipboardContentHTML <- copiedObject.copiedValueHTML,
+                self.insertionTime <- NSDate().timeIntervalSince1970
+            )
             _ = try self.dbConn?.run(insertRecord)
             completion(true)
             return
@@ -56,12 +63,12 @@ class DatabaseHandler {
         }
     }
 
-    func grabAllClipboardHistory() -> [String] {
-        var clipboardHistoryList: [String] = []
+    func grabAllClipboardHistory() -> [ClipboardCopiedObject] {
+        var clipboardHistoryList: [ClipboardCopiedObject] = []
         do {
             let clipboardHistory = try self.dbConn?.prepare("SELECT * FROM clipboard ORDER BY INSERTION_TIME desc")
             for row in clipboardHistory! {
-                clipboardHistoryList.append((row[0] as? String)!)
+                clipboardHistoryList.append(ClipboardCopiedObject(copiedValueRaw: (row[0] as? String), copiedValueHTML: (row[1] as? String)))
             }
             return clipboardHistoryList
         } catch {

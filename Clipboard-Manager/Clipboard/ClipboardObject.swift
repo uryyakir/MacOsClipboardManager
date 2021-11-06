@@ -9,7 +9,8 @@ import Foundation
 import Cocoa
 
 class ClipboardObject: NSObject {
-    @objc dynamic var rawClipboardString: String
+    @objc dynamic var rawClipboardString: String?
+    @objc dynamic var HTMLClipboardString: String?
     @objc dynamic var clipboardString: String
     @objc dynamic var clipboardAttributedString: NSMutableAttributedString
 
@@ -21,9 +22,10 @@ class ClipboardObject: NSObject {
         )
     }
 
-    init(_ clipboardStringVal: String) {
-        self.rawClipboardString = clipboardStringVal
-        self.clipboardString = clipboardStringVal.prepareForAttributedString
+    init(_ clipboardObject: ClipboardCopiedObject) {
+        self.rawClipboardString = clipboardObject.copiedValueRaw
+        self.HTMLClipboardString = clipboardObject.copiedValueHTML
+        self.clipboardString = (clipboardObject.copiedValueHTML ?? clipboardObject.copiedValueRaw)!.prepareForAttributedString
         self.clipboardAttributedString = self.clipboardString.htmlToAttributedString(
             resizeToWidth: nil, resizeToHeight: Constants.appDelegate.clipboardTableVC.tableView.rowHeight + 20.0
         )!
