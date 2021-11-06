@@ -12,6 +12,7 @@ class ClipboardHandler {
     static func copyToClipboard(values: [String]) {
         Constants.pasteboard.declareTypes([.html, .string], owner: nil)
         Constants.pasteboard.setString(values.joined(separator: "<br>"), forType: .html)
+        Constants.pasteboard.setString(values.joined(separator: "\n"), forType: .string)
         Constants.isInternalCopy = true
     }
 
