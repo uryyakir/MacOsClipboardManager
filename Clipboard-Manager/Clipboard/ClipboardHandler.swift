@@ -19,7 +19,7 @@ class ClipboardHandler {
         // set clipboard contents for applications supporting HTML (e.g Chrome, Microsoft Word etc.)
         Constants.pasteboard.setString(
             values.map({
-                ($0.HTMLClipboardString ?? $0.rawClipboardString)!.prepareForAttributedString
+                ($0.HTMLClipboardString ?? $0.rawClipboardString!.prepareForAttributedString)!
             }).joined(separator: "<br>"),
             forType: .html
         )

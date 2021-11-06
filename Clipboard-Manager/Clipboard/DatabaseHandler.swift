@@ -10,7 +10,6 @@ import SQLite
 
 class DatabaseHandler {
     // TODO: implement total Mb db size, when size is surpassed - delete oldest records until size falls below threshold
-    // TODO: implement b64 encoding for images (+ find a way to show the image in visual table)
     let dbConn: Connection?
     let clipboardTable: Table!
     var clipboardContentRaw: Expression<String?>

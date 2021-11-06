@@ -188,7 +188,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
             tableArrayController: self.arrayController,
             filterIndices: [self.hoveredRow!.rowIndex]
         )[0]
-        let cellAttributedString = (clipboardObject.HTMLClipboardString ?? clipboardObject.rawClipboardString)!.htmlToAttributedString(
+        let cellAttributedString = (clipboardObject.HTMLClipboardString ?? clipboardObject.rawClipboardString?.prepareForAttributedString)!.htmlToAttributedString(
             resizeToWidth: CellExtendedPopoverVC.newInstance().view.bounds.width,
             resizeToHeight: nil
         )!
