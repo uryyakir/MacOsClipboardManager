@@ -55,7 +55,7 @@ class MainViewController: NSViewController {
                 Constants.appDelegate.closePopover(sender: self)
             }
         case KeyCodes.ENTER:  // Enter key
-            let selectedValues = (Constants.appDelegate.clipboardTableVC.getSelectedValues())!
+            let selectedValues = (Constants.appDelegate.clipboardTableVC.getSelectedValues(getRawStrings: true))!
             ClipboardHandler.copyToClipboard(values: selectedValues)
 
         default:

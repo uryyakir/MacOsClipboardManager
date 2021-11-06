@@ -81,7 +81,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
             .predicate,
             to: self.arrayController,
             withKeyPath: NSBindingName.filterPredicate.rawValue,
-            options: [.predicateFormat: "clipboardString CONTAINS[cd] $value"]
+            options: [.predicateFormat: "rawClipboardString CONTAINS[cd] $value"]
         )
     }
 
@@ -123,6 +123,12 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     override func keyUp(with event: NSEvent) {
         let searchField = (Constants.appDelegate.clipboardSearchFieldVC.view as? NSSearchField)
         let selectedIndices = Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes
+        if [KeyCodes.KEYUP, KeyCodes.KEYDOWN].contains(Int(event.keyCode)) {
+            let hoveredRowIndex = Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes.first!
+            self.doMouseExited()
+            self.setAndInitiateHoveredRow(hoveredRowIndex: hoveredRowIndex, backgroundColorRequired: false)
+            super.keyDown(with: event)
+        }
         if event.keyCode == KeyCodes.KEYUP && self.firstRowSelected {  // if user pressed the "UP" key while the first row is selected
             if selectedIndices.count == 1 && selectedIndices.first == 0 {  // move to search field only if the first row is the only row selected
                 self.view.window?.makeFirstResponder(Constants.appDelegate.clipboardSearchFieldVC.view)
@@ -136,33 +142,34 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         self.firstRowSelected = (selectedIndices == IndexSet([0]))
     }
 
-    static func extractRowsText(tableArrayController: NSArrayController, filterIndices: [Int] = []) -> [String] {
+    static func extractRowsText(tableArrayController: NSArrayController, filterIndices: [Int] = [], getRawStrings: Bool = false) -> [String] {
         let relevantRows: [String]
         let arrangedObjects = (tableArrayController.arrangedObjects as? [ClipboardObject])!
         // translating indices to strings (by extracting clipboardString from the underlying ClipboardObject objects)
         if filterIndices.isEmpty {
             relevantRows = arrangedObjects.map { (clipboardObject) -> String in
-                clipboardObject.clipboardString
+                getRawStrings ? clipboardObject.rawClipboardString : clipboardObject.clipboardString
             }
         } else {
             relevantRows = filterIndices.map { (int) -> String in
-                arrangedObjects[int].clipboardString
+                getRawStrings ? arrangedObjects[int].rawClipboardString : arrangedObjects[int].clipboardString
             }
         }
         return relevantRows
     }
 
-    func getSelectedValues() -> [String]! {
+    func getSelectedValues(getRawStrings: Bool = false) -> [String]! {
         // fetching selected rows indices and converting it into an array
         let selectedRowIndices = (Constants.appDelegate.clipboardTableVC.tableView.selectedRowIndexes.map({$0}))
         return ClipboardTableVC.extractRowsText(
             tableArrayController: Constants.appDelegate.clipboardTableVC.arrayController,
-            filterIndices: selectedRowIndices
+            filterIndices: selectedRowIndices,
+            getRawStrings: getRawStrings
         )
     }
 
     @objc private func onItemClicked() {
-        ClipboardHandler.copyToClipboard(values: self.getSelectedValues()!)
+        ClipboardHandler.copyToClipboard(values: self.getSelectedValues(getRawStrings: true)!)
     }
 
     func highlightFirstItem(_ sender: Any) {
@@ -216,8 +223,8 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         rowView.backgroundColor = Constants.cellHoverBackgroundColor
     }
 
-    private func setHoveredCellBehavior(rowView: NSTableRowView? = nil) -> Timer {
-        self.setHoveredCellBackgroundColor(rowView: rowView ?? self.hoveredRow!.rowView!)
+    private func setHoveredCellBehavior(backgroundColorRequired: Bool = true, rowView: NSTableRowView? = nil) -> Timer {
+        if backgroundColorRequired { self.setHoveredCellBackgroundColor(rowView: rowView ?? self.hoveredRow!.rowView!) }
         return Timer.scheduledTimer(
             timeInterval: Constants.timeBeforeHoverPopover,
             target: self,
@@ -227,11 +234,11 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         )
     }
 
-    private func setAndInitiateHoveredRow(hoveredRowIndex: Int) {
+    private func setAndInitiateHoveredRow(hoveredRowIndex: Int, backgroundColorRequired: Bool = true) {
         self.hoveredRow = self.getHoveredRowView(
             row: hoveredRowIndex
         )
-        self.hoveredRow!.hoverTimer = self.setHoveredCellBehavior()
+        self.hoveredRow!.hoverTimer = self.setHoveredCellBehavior(backgroundColorRequired: backgroundColorRequired)
     }
 
     private func handleRowHoverWhileOtherRowPopoverIsOpen(currentOtherHoveredRow: HoveredRow) {
@@ -298,8 +305,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         })
     }
 
-    override func mouseEntered(with event: NSEvent) {
-        let hoveredRowIndex = (event.trackingArea?.userInfo!["row"] as? Int)!
+    func doMouseEntered(event: NSEvent, hoveredRowIndex: Int) {
         if self.hoveredRow == nil {
             // set hovered row, alter background color and set popover timer
             self.setAndInitiateHoveredRow(hoveredRowIndex: hoveredRowIndex)
@@ -315,7 +321,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
             self.hoveredRow!.hoverTimer = self.setHoveredCellBehavior()
             return
         }
-        // user hovers different row than the previous one
+        // user hovers different row than the previous ones
         if let previousCellExtendedPopover = self.hoveredRow?.cellExtendedPopover {
             if previousCellExtendedPopover.isShown {
                 // previous row's extended popover is still shown
@@ -327,7 +333,12 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         self.setAndInitiateHoveredRow(hoveredRowIndex: hoveredRowIndex)
     }
 
-    override func mouseExited(with event: NSEvent) {
+    override func mouseEntered(with event: NSEvent) {
+        let hoveredRowIndex = (event.trackingArea?.userInfo!["row"] as? Int)!
+        self.doMouseEntered(event: event, hoveredRowIndex: hoveredRowIndex)
+    }
+
+    private func doMouseExited() {
         if !self.hoveredRowsWhilePopoverOpen.isEmpty {
             // remove and invalidate oldest hoveredRow
             let hoveredRow = self.hoveredRowsWhilePopoverOpen.removeFirst()
@@ -346,6 +357,10 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
             }
         }
         // always invalidate existing hovered row timer when it is exited
-        self.hoveredRow!.hoverTimer!.invalidate()
+        self.hoveredRow?.hoverTimer!.invalidate()
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        self.doMouseExited()
     }
 }
