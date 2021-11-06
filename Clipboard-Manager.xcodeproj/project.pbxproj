@@ -18,13 +18,15 @@
 		845CC34626FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC34526FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift */; };
 		8461093C271B4E7C00331D12 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8461093B271B4E7C00331D12 /* String.swift */; };
 		846EEE432736061300DA43FD /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846EEE422736061300DA43FD /* NSImage.swift */; };
+		846EEE462736E6B000DA43FD /* CellExtendedPopoverVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846EEE452736E6B000DA43FD /* CellExtendedPopoverVC.swift */; };
+		846EEE4A2736EB6500DA43FD /* ClipboardTableVCSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846EEE492736EB6500DA43FD /* ClipboardTableVCSetup.swift */; };
 		8472CEE82701FA5200A9D44A /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472CEE72701FA5200A9D44A /* NSView.swift */; };
 		8472CEEB27027D4500A9D44A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472CEEA27027D4500A9D44A /* Constants.swift */; };
 		8472CEED27027F8D00A9D44A /* ClipboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472CEEC27027F8D00A9D44A /* ClipboardHandler.swift */; };
 		8472CEEF2702820B00A9D44A /* ClipboardTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472CEEE2702820B00A9D44A /* ClipboardTableCell.swift */; };
 		8485E0332710D50900CF2918 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8485E0322710D50900CF2918 /* Assets.xcassets */; };
 		8487686A26FD31E100BCAB06 /* ClipboardTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487686926FD31E100BCAB06 /* ClipboardTableVC.swift */; };
-		8487686C27011F4600BCAB06 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487686B27011F4600BCAB06 /* UIUtils.swift */; };
+		8487686C27011F4600BCAB06 /* UIGlobalUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8487686B27011F4600BCAB06 /* UIGlobalUtils.swift */; };
 		848B1924271B6C9E00DD3C9F /* CellPopover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848B1923271B6C9E00DD3C9F /* CellPopover.storyboard */; };
 		84AEF6CB27033A7200751A96 /* ClipboardSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AEF6CA27033A7200751A96 /* ClipboardSearchField.swift */; };
 		84C8E32327122A66002D474C /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 84C8E32227122A66002D474C /* SQLite */; };
@@ -65,13 +67,15 @@
 		845CC35226FD14A400F24D1A /* Clipboard-Manager-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Clipboard-Manager-Info.plist"; sourceTree = SOURCE_ROOT; };
 		8461093B271B4E7C00331D12 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		846EEE422736061300DA43FD /* NSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
+		846EEE452736E6B000DA43FD /* CellExtendedPopoverVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellExtendedPopoverVC.swift; sourceTree = "<group>"; };
+		846EEE492736EB6500DA43FD /* ClipboardTableVCSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardTableVCSetup.swift; sourceTree = "<group>"; };
 		8472CEE72701FA5200A9D44A /* NSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
 		8472CEEA27027D4500A9D44A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8472CEEC27027F8D00A9D44A /* ClipboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardHandler.swift; sourceTree = "<group>"; };
 		8472CEEE2702820B00A9D44A /* ClipboardTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardTableCell.swift; sourceTree = "<group>"; };
 		8485E0322710D50900CF2918 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8487686926FD31E100BCAB06 /* ClipboardTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardTableVC.swift; sourceTree = "<group>"; };
-		8487686B27011F4600BCAB06 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
+		8487686B27011F4600BCAB06 /* UIGlobalUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGlobalUtils.swift; sourceTree = "<group>"; };
 		848B1923271B6C9E00DD3C9F /* CellPopover.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CellPopover.storyboard; sourceTree = "<group>"; };
 		84AEF6CA27033A7200751A96 /* ClipboardSearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardSearchField.swift; sourceTree = "<group>"; };
 		84C8E32427122AB4002D474C /* DatabaseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHandler.swift; sourceTree = "<group>"; };
@@ -126,17 +130,17 @@
 		845CC32626FD137A00F24D1A /* Clipboard-Manager */ = {
 			isa = PBXGroup;
 			children = (
+				846EEE482736E76900DA43FD /* Storyboards */,
+				846EEE472736E74000DA43FD /* Database */,
+				846EEE442736E67C00DA43FD /* VC */,
 				8472CEE927027D2E00A9D44A /* Clipboard */,
 				8472CEE62701FA4200A9D44A /* Extensions */,
 				8487686726FD2A5D00BCAB06 /* UI */,
 				845CC35226FD14A400F24D1A /* Clipboard-Manager-Info.plist */,
 				845CC32726FD137A00F24D1A /* AppDelegate.swift */,
-				845CC32926FD137A00F24D1A /* MainViewController.swift */,
-				845CC32D26FD137F00F24D1A /* Main.storyboard */,
 				845CC33026FD137F00F24D1A /* Clipboard_Manager.entitlements */,
 				8472CEEA27027D4500A9D44A /* Constants.swift */,
 				8485E0322710D50900CF2918 /* Assets.xcassets */,
-				848B1923271B6C9E00DD3C9F /* CellPopover.storyboard */,
 			);
 			path = "Clipboard-Manager";
 			sourceTree = "<group>";
@@ -158,6 +162,34 @@
 			path = "Clipboard-ManagerUITests";
 			sourceTree = "<group>";
 		};
+		846EEE442736E67C00DA43FD /* VC */ = {
+			isa = PBXGroup;
+			children = (
+				845CC32926FD137A00F24D1A /* MainViewController.swift */,
+				8487686926FD31E100BCAB06 /* ClipboardTableVC.swift */,
+				846EEE452736E6B000DA43FD /* CellExtendedPopoverVC.swift */,
+				846EEE492736EB6500DA43FD /* ClipboardTableVCSetup.swift */,
+			);
+			path = VC;
+			sourceTree = "<group>";
+		};
+		846EEE472736E74000DA43FD /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				84C8E32427122AB4002D474C /* DatabaseHandler.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		846EEE482736E76900DA43FD /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				845CC32D26FD137F00F24D1A /* Main.storyboard */,
+				848B1923271B6C9E00DD3C9F /* CellPopover.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
 		8472CEE62701FA4200A9D44A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,7 +204,6 @@
 			isa = PBXGroup;
 			children = (
 				8472CEEC27027F8D00A9D44A /* ClipboardHandler.swift */,
-				84C8E32427122AB4002D474C /* DatabaseHandler.swift */,
 				84132ABB272DF99100D20633 /* ClipboardObject.swift */,
 			);
 			path = Clipboard;
@@ -181,8 +212,7 @@
 		8487686726FD2A5D00BCAB06 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				8487686926FD31E100BCAB06 /* ClipboardTableVC.swift */,
-				8487686B27011F4600BCAB06 /* UIUtils.swift */,
+				8487686B27011F4600BCAB06 /* UIGlobalUtils.swift */,
 				8472CEEE2702820B00A9D44A /* ClipboardTableCell.swift */,
 				84AEF6CA27033A7200751A96 /* ClipboardSearchField.swift */,
 				843F639E271B5E77005E6541 /* CellExtendedPopover.swift */,
@@ -352,6 +382,7 @@
 				845CC32A26FD137A00F24D1A /* MainViewController.swift in Sources */,
 				8461093C271B4E7C00331D12 /* String.swift in Sources */,
 				845CC32826FD137A00F24D1A /* AppDelegate.swift in Sources */,
+				846EEE4A2736EB6500DA43FD /* ClipboardTableVCSetup.swift in Sources */,
 				84132ABC272DF99100D20633 /* ClipboardObject.swift in Sources */,
 				846EEE432736061300DA43FD /* NSImage.swift in Sources */,
 				8487686A26FD31E100BCAB06 /* ClipboardTableVC.swift in Sources */,
@@ -359,7 +390,8 @@
 				8472CEEF2702820B00A9D44A /* ClipboardTableCell.swift in Sources */,
 				8472CEE82701FA5200A9D44A /* NSView.swift in Sources */,
 				84C8E32527122AB4002D474C /* DatabaseHandler.swift in Sources */,
-				8487686C27011F4600BCAB06 /* UIUtils.swift in Sources */,
+				8487686C27011F4600BCAB06 /* UIGlobalUtils.swift in Sources */,
+				846EEE462736E6B000DA43FD /* CellExtendedPopoverVC.swift in Sources */,
 				84132ABE272DF9AF00D20633 /* HoveredRow.swift in Sources */,
 				84AEF6CB27033A7200751A96 /* ClipboardSearchField.swift in Sources */,
 				8472CEED27027F8D00A9D44A /* ClipboardHandler.swift in Sources */,

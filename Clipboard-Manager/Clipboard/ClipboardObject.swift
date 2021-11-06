@@ -31,4 +31,19 @@ class ClipboardObject: NSObject {
         )!
         ClipboardObject.colorAttributedString(string: self.clipboardAttributedString, color: Constants.textDefaultColor)
     }
+
+    func extractAttributedStringFromCell() -> NSMutableAttributedString {
+        /*
+         When receiving some ClipboardObject instance - convert its content to an attributed string.
+         The attributed string will be shown in cell's extended popover.
+         */
+        let objectContent = (self.HTMLClipboardString ?? self.rawClipboardString?.prepareForAttributedString)!
+        let objectAttributedString = objectContent.htmlToAttributedString(
+            // in case we got an image, provide resize details
+            resizeToWidth: Constants.cellExtendedPopoverWidth,
+            resizeToHeight: nil
+        )!
+        ClipboardObject.colorAttributedString(string: objectAttributedString, color: Constants.textDefaultColor)
+        return objectAttributedString
+    }
 }
