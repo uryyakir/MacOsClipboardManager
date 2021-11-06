@@ -190,7 +190,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         let cellAttributedString = ClipboardTableVC.extractRowsText(
             tableArrayController: self.arrayController,
             filterIndices: [self.hoveredRow!.rowIndex]
-        )[0].htmlToAttributedString!
+        )[0].htmlToAttributedString(resizeToWidth: CellExtendedPopoverVC.newInstance().view.bounds.width, resizeToHeight: nil)!
         ClipboardObject.colorAttributedString(string: cellAttributedString, color: Constants.textDefaultColor)
         self.cellExtendedPopoverVC.textField!.attributedStringValue = cellAttributedString
     }
