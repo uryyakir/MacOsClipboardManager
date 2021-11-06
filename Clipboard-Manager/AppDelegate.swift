@@ -9,7 +9,6 @@ import Cocoa
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     let popover = NSPopover()
     let viewController = MainViewController.newInstance()
@@ -19,6 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         setupApplicationUI()
+        Constants.makeConstantsAssertions()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

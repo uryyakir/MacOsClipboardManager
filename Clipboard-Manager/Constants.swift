@@ -17,8 +17,18 @@ enum KeyCodes {
 
 struct Constants {
     // swiftlint:disable force_cast
+    // setup process
+    static let applicationIcon = NSImage(named: NSImage.Name("clipboard-icon"))
+    // table VC constants
+    static let caseInsensitive: Bool = true
+    static let diacriticInsensitive: Bool = true
+    static let predicateOptions = (Constants.caseInsensitive ? "c" : "") + (Constants.diacriticInsensitive ? "d" : "")
+    static let predicateMatchClipboardObjectAttribute: String = "rawClipboardString"
+    static let cellTextFieldClipboardObjectAttribute: String = "clipboardAttributedString"
+    static let tableViewColumnName = "col"
+    static let cellExtendedPopoverWidth = CellExtendedPopoverVC.newInstance().view.bounds.width
+    // other constants
     static let appDelegate = NSApplication.shared.delegate as! AppDelegate
-    static let clipboardTestValues = ["hello", "my", "name", "is", "Uri", "Yakir", "help", "Hellman", "hell"]
     static let pasteboard = NSPasteboard.general
     static let dbHandler = DatabaseHandler()
     static let cwd = FileManager.default.currentDirectoryPath
@@ -27,4 +37,23 @@ struct Constants {
     static let textDefaultColor = NSColor(deviceRed: 8/255, green: 165/255, blue: 218/255, alpha: 1)
     static let cellHoverBackgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
     static let timeBeforeExtendedPopoverClose = 1.0
+
+    static func makeConstantsAssertions() {
+        Constants.validateClipboardObjectAttributes()
+    }
+
+    private static func validateClipboardObjectAttributes() {
+        let attributesMirror = Mirror(
+            reflecting: ClipboardObject(
+                ClipboardCopiedObject(
+                    copiedValueRaw: "dummy",
+                    copiedValueHTML: "dummy"
+                )
+            )
+        ).children.compactMap { $0.label }
+        assert(
+            attributesMirror.contains(Constants.predicateMatchClipboardObjectAttribute) &&
+            attributesMirror.contains(Constants.cellTextFieldClipboardObjectAttribute)
+        )
+    }
 }

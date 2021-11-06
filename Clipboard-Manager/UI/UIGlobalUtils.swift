@@ -19,7 +19,7 @@ extension AppDelegate {
         // This function setups the application icon on the client's taskbar
         // & defines popover functionality
         if let button = self.statusItem.button {
-            button.image = NSImage(named: NSImage.Name("clipboard-icon"))
+            button.image = Constants.applicationIcon
             button.action = #selector(AppDelegate.togglePopover(_:))
 
             self.popover.setValue(true, forKey: "shouldHideAnchor")
@@ -79,6 +79,7 @@ extension AppDelegate {
         bottomConstant: CGFloat = 0,
         hasScrollers: Bool = false
     ) {
+        // shortcut function for setting-up and constraining a scroll-view to its parent
         parentView.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = NSColor.clear
