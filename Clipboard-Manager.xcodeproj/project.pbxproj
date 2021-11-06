@@ -17,6 +17,7 @@
 		845CC34426FD137F00F24D1A /* Clipboard_ManagerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC34326FD137F00F24D1A /* Clipboard_ManagerUITests.swift */; };
 		845CC34626FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC34526FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift */; };
 		8461093C271B4E7C00331D12 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8461093B271B4E7C00331D12 /* String.swift */; };
+		846EEE432736061300DA43FD /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846EEE422736061300DA43FD /* NSImage.swift */; };
 		8472CEE82701FA5200A9D44A /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472CEE72701FA5200A9D44A /* NSView.swift */; };
 		8472CEEB27027D4500A9D44A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472CEEA27027D4500A9D44A /* Constants.swift */; };
 		8472CEED27027F8D00A9D44A /* ClipboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8472CEEC27027F8D00A9D44A /* ClipboardHandler.swift */; };
@@ -63,6 +64,7 @@
 		845CC34526FD137F00F24D1A /* Clipboard_ManagerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clipboard_ManagerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		845CC35226FD14A400F24D1A /* Clipboard-Manager-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Clipboard-Manager-Info.plist"; sourceTree = SOURCE_ROOT; };
 		8461093B271B4E7C00331D12 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		846EEE422736061300DA43FD /* NSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
 		8472CEE72701FA5200A9D44A /* NSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
 		8472CEEA27027D4500A9D44A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8472CEEC27027F8D00A9D44A /* ClipboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardHandler.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 			children = (
 				8472CEE72701FA5200A9D44A /* NSView.swift */,
 				8461093B271B4E7C00331D12 /* String.swift */,
+				846EEE422736061300DA43FD /* NSImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				8461093C271B4E7C00331D12 /* String.swift in Sources */,
 				845CC32826FD137A00F24D1A /* AppDelegate.swift in Sources */,
 				84132ABC272DF99100D20633 /* ClipboardObject.swift in Sources */,
+				846EEE432736061300DA43FD /* NSImage.swift in Sources */,
 				8487686A26FD31E100BCAB06 /* ClipboardTableVC.swift in Sources */,
 				843F639F271B5E77005E6541 /* CellExtendedPopover.swift in Sources */,
 				8472CEEF2702820B00A9D44A /* ClipboardTableCell.swift in Sources */,

@@ -24,7 +24,9 @@ class ClipboardObject: NSObject {
     init(_ clipboardStringVal: String) {
         self.rawClipboardString = clipboardStringVal
         self.clipboardString = clipboardStringVal.prepareForAttributedString
-        self.clipboardAttributedString = self.clipboardString.htmlToAttributedString!
+        self.clipboardAttributedString = self.clipboardString.htmlToAttributedString(
+            resizeToWidth: nil, resizeToHeight: Constants.appDelegate.clipboardTableVC.tableView.rowHeight + 20.0
+        )!
         ClipboardObject.colorAttributedString(string: self.clipboardAttributedString, color: Constants.textDefaultColor)
     }
 }
