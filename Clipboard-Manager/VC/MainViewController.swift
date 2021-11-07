@@ -24,11 +24,9 @@ class MainViewController: NSViewController {
     }
 
     static func newInstance() -> MainViewController {
-        let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
-        let identifier = NSStoryboard.SceneIdentifier("ViewController")
-
-        guard let viewController = storyboard.instantiateController(withIdentifier: identifier)
-                as? MainViewController else {
+        guard let viewController = Storyboards.mainStoryboard.storyboard.instantiateController(
+            withIdentifier: Storyboards.mainStoryboard.identifier
+        ) as? MainViewController else {
             fatalError("Unable to instantiate ViewController in Main.storyboard")
         }
         return viewController
@@ -48,13 +46,13 @@ class MainViewController: NSViewController {
     override func keyDown(with event: NSEvent) {
         super.keyDown(with: event)
         switch Int(event.keyCode) {
-        case (KeyCodes.ESC):  // ESC key
+        case (KeyCodes.ESC.rawValue):  // ESC key
             // if an extended cell popover is open - close it
             // otherwise - close application main popover
             if !MainViewController.closeCellExtendedPopoverIfOpen() {
                 Constants.appDelegate.closePopover(sender: self)
             }
-        case KeyCodes.ENTER:  // Enter key
+        case KeyCodes.ENTER.rawValue:  // Enter key
             let selectedValues = (Constants.appDelegate.clipboardTableVC.getSelectedValues())!
             ClipboardHandler.copyToClipboard(values: selectedValues)
 

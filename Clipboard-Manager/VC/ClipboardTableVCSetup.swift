@@ -47,7 +47,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         tableView.delegate = self
         tableView.dataSource = self
         tableView.headerView = nil
-        tableView.backgroundColor = NSColor.clear
+        tableView.backgroundColor = Constants.NSViewsBackgroundColor
         tableView.appearance = NSAppearance(named: NSAppearance.Name.vibrantDark)
         tableView.allowsMultipleSelection = true
         tableView.doubleAction = #selector(onItemDoubleClicked)
@@ -90,7 +90,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
 
     @objc private func contentViewDidChangeBounds(_ notification: NSNotification) {
         if let hoveredRow = self.hoveredRow {
-            self.hoveredRow?.rowView?.backgroundColor = NSColor.clear
+            self.hoveredRow?.rowView?.backgroundColor = Constants.NSViewsBackgroundColor
             self.hoveredRow?.hoverTimer?.invalidate()
             if let extendedCellPopover = hoveredRow.cellExtendedPopover {
                 extendedCellPopover.close()
