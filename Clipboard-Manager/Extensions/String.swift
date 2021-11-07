@@ -9,34 +9,34 @@ import Foundation
 import AppKit
 
 extension String {
+    var prepareForAttributedString: String {
+        return self.replacingOccurrences(of: " ", with: "\u{2000}")  // replacing spaces with unicode sequence to be rendered in the attributed string
+            .replacingOccurrences(of: TextNewLine.HTML.rawValue, with: "&lt;br&gt;")  // escaping actual "<br>" tags within the text
+            .replacingOccurrences(of: TextNewLine.RAW.rawValue, with: TextNewLine.HTML.rawValue)
+    }
+
+    var htmlToString: String {
+        return self.htmlToAttributedString()?.string ?? ""
+    }
+
     func htmlToAttributedString(resizeToWidth: Double? = nil, resizeToHeight: Double? = nil) -> NSMutableAttributedString? {
         guard let data = self.data(using: .utf8) else { return nil }
         do {
-            let pattern = "src=\"(.*?)\""
-            let regex = try NSRegularExpression(pattern: pattern, options: [])
-            if let match = regex.firstMatch(in: self, options: [], range: NSRange(self.startIndex..., in: self)) {
-                let imagePath = String(self[Range(match.range(at: 1), in: self)!])
-                let image: NSImage
-                if imagePath.contains("base64") {
-                    let b64Pattern = "base64(.*)"
-                    let b64Regex = try NSRegularExpression(pattern: b64Pattern, options: [])
-                    guard let b64Match = b64Regex.firstMatch(
-                        in: imagePath, options: [], range: NSRange(imagePath.startIndex..., in: imagePath)
-                    ) else { return nil }
-                    let b64Data = String(imagePath[Range(b64Match.range(at: 1), in: imagePath)!])
-                    let b64DataDecoded = Data(base64Encoded: b64Data, options: .ignoreUnknownCharacters)
-                    image = NSImage(data: b64DataDecoded!)!
+            if let imagePath = self.reMatchAndExtractMatchingSubstringFromText(reExpression: RegexPatterns.HTMLImageSrcRE.rawValue) {
+                assert(resizeToWidth != nil || resizeToHeight != nil)
+                let image = String.extractImageSourceFromString(stringRepresentingImage: imagePath)
+                let resizedImage = Constants.appDelegate.resizeImageWithRatio(
+                    image: image,
+                    resizeToWidth: resizeToWidth,
+                    resizeToHeight: resizeToHeight
+                )
+                // store resized image as an attributed string's attachment
+                if let resizedImage = resizedImage {
+                    return resizedImage.imageToAttributedString()
                 } else {
-                    let url = NSURL(string: imagePath)!
-                    image = NSImage(byReferencing: url.absoluteURL!)
+                    // return placeholder for a failed image load
+                    return NSMutableAttributedString(string: Constants.failedImageLoadPlaceholder)
                 }
-                let imageWidth = (image.size.width == 0.0 ? 30.0 : image.size.width)
-                let imageHeight = (image.size.height == 0.0 ? 30.0 : image.size.height)
-                let resizeRatio = (resizeToWidth ?? resizeToHeight!) / imageWidth
-                let imageResized = image.resized(to: NSSize(width: resizeRatio * imageWidth, height: resizeRatio * imageHeight))
-                let imageAttachment = NSTextAttachment()
-                imageAttachment.image = imageResized
-                return NSMutableAttributedString(attachment: imageAttachment)
             }
             return try NSMutableAttributedString(
                 data: data,
@@ -48,13 +48,37 @@ extension String {
         }
     }
 
-    var prepareForAttributedString: String {
-        return self.replacingOccurrences(of: " ", with: "\u{2000}")  // replacing spaces with unicode sequence to be rendered in the attributed string
-            .replacingOccurrences(of: "<br>", with: "&lt;br&gt;")  // escaping actual "<br>" tags within the text
-            .replacingOccurrences(of: "\n", with: "<br>")
+    static func extractImageSourceFromString(stringRepresentingImage: String) -> NSImage? {
+        let image: NSImage?
+        if stringRepresentingImage.contains(RegexPatterns.b64ImageSignature.rawValue) && !stringRepresentingImage.contains("http") {
+            // assume that text is a base64 representation of an image
+            let b64Data = stringRepresentingImage.reMatchAndExtractMatchingSubstringFromText(
+                reExpression: RegexPatterns.b64ImageRE.rawValue
+            )
+            let b64DataDecoded = Data(base64Encoded: b64Data!, options: .ignoreUnknownCharacters)
+            image = NSImage(data: b64DataDecoded!)
+        } else {
+            // assume that text is simply a URL reference to image hosted-source
+            let url = NSURL(string: stringRepresentingImage)!
+            image = NSImage(byReferencing: url.absoluteURL!)
+        }
+        if image != nil {
+            if image!.isValid { return image }
+        }
+        // if image is nil or it's invalid - return nil
+        return nil
     }
 
-    var htmlToString: String {
-        return self.htmlToAttributedString()?.string ?? ""
+    private func reMatchAndExtractMatchingSubstringFromText(reExpression: String) -> String? {
+        do {
+            let regularExpression = try NSRegularExpression(pattern: reExpression, options: [])
+            guard let reMatch = regularExpression.firstMatch(
+                in: self, options: [], range: NSRange(self.startIndex..., in: self)
+            ) else { return nil }
+
+            return String(self[Range(reMatch.range(at: 1), in: self)!])
+        } catch {
+            return nil
+        }
     }
 }

@@ -26,4 +26,10 @@ extension NSImage {
         }
         return nil
     }
+
+    func imageToAttributedString() -> NSMutableAttributedString {
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = self
+        return NSMutableAttributedString(attachment: imageAttachment)
+    }
 }

@@ -12,14 +12,16 @@ class ClipboardObject: NSObject {
     @objc dynamic var rawClipboardString: String?
     @objc dynamic var HTMLClipboardString: String?
     @objc dynamic var clipboardString: String
-    @objc dynamic var clipboardAttributedString: NSMutableAttributedString
+    @objc dynamic var clipboardAttributedString: NSMutableAttributedString?
 
-    static func colorAttributedString(string: NSMutableAttributedString, color: NSColor) {
-        string.addAttribute(
-            .foregroundColor,
-            value: color,
-            range: NSRange(location: 0, length: string.length)
-        )
+    static func colorAttributedString(string: NSMutableAttributedString?, color: NSColor) {
+        if string != nil {
+            string!.addAttribute(
+                .foregroundColor,
+                value: color,
+                range: NSRange(location: 0, length: string!.length)
+            )
+        }
     }
 
     init(_ clipboardObject: ClipboardCopiedObject) {

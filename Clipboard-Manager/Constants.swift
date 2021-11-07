@@ -8,17 +8,57 @@
 import Cocoa
 import Foundation
 
-enum KeyCodes {
-    static let ESC = 53
-    static let ENTER = 36
-    static let KEYUP = 126
-    static let KEYDOWN = 125
+enum KeyCodes: Int {
+    case ESC = 53
+    case ENTER = 36
+    case KEYUP = 126
+    case KEYDOWN = 125
+}
+
+enum TextNewLine: String {
+    case RAW = "\n"
+    case HTML = "<br>"
+}
+
+enum RegexPatterns: String {
+    case HTMLImageSrcRE = "src=\"(.*?)\""
+    case b64ImageSignature = "base64"
+    case b64ImageRE = "base64(.*)"
+}
+
+enum DBConstants: String {
+    case DBFilename = "db.sqlite3"
+    case tableName = "clipboard"
+    case clipboardContentRawCol = "CLIPBOARD_CONTENT_RAW"
+    case clipboardContentHTMLCol = "CLIPBOARD_CONTENT_HTML"
+    case insertionTimeCol = "INSERTION_TIME"
+    case selectAllHistoryQuery = "SELECT * FROM clipboard ORDER BY INSERTION_TIME desc"
+}
+
+struct Storyboard {
+    let storyboard: NSStoryboard
+    let identifier: NSStoryboard.SceneIdentifier
+
+    init(storyboardName: String, storyboardScene: String) {
+        self.storyboard = NSStoryboard(name: NSStoryboard.Name(storyboardName), bundle: nil)
+        self.identifier = NSStoryboard.SceneIdentifier(storyboardScene)
+    }
+}
+
+class Storyboards {
+    static let mainStoryboard = Storyboard(storyboardName: "Main", storyboardScene: "ViewController")
+    static let cellExtendedPopoverStoryboard = Storyboard(storyboardName: "CellPopover", storyboardScene: "CellExtendedPopoverVC")
 }
 
 struct Constants {
     // swiftlint:disable force_cast
     // setup process
     static let applicationIcon = NSImage(named: NSImage.Name("clipboard-icon"))
+    static let NSViewsBackgroundColor = NSColor.clear
+    static let appDelegate = NSApplication.shared.delegate as! AppDelegate
+    static let pasteboard = NSPasteboard.general
+    static let dbHandler = DatabaseHandler()
+    static let cwd = FileManager.default.currentDirectoryPath
     // table VC constants
     static let caseInsensitive: Bool = true
     static let diacriticInsensitive: Bool = true
@@ -27,16 +67,13 @@ struct Constants {
     static let cellTextFieldClipboardObjectAttribute: String = "clipboardAttributedString"
     static let tableViewColumnName = "col"
     static let cellExtendedPopoverWidth = CellExtendedPopoverVC.newInstance().view.bounds.width
-    // other constants
-    static let appDelegate = NSApplication.shared.delegate as! AppDelegate
-    static let pasteboard = NSPasteboard.general
-    static let dbHandler = DatabaseHandler()
-    static let cwd = FileManager.default.currentDirectoryPath
     static let timeBeforeHoverPopover = 3.0  // 3 seconds hover required to open popover
-    static var isInternalCopy: Bool = false  // tracking internal copy to clipboard, preventing from appending a new record to clipboard history
     static let textDefaultColor = NSColor(deviceRed: 8/255, green: 165/255, blue: 218/255, alpha: 1)
     static let cellHoverBackgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
     static let timeBeforeExtendedPopoverClose = 1.0
+    // other constants
+    static var isInternalCopy: Bool = false  // tracking internal copy to clipboard, preventing from appending a new record to clipboard history
+    static let failedImageLoadPlaceholder = "<image couldn't be extracted>"
 
     static func makeConstantsAssertions() {
         Constants.validateClipboardObjectAttributes()

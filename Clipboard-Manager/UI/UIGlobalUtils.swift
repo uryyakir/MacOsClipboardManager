@@ -10,9 +10,9 @@ import Cocoa
 
 extension AppDelegate {
     func setupApplicationUI() {
-        setupStatusBarItem()
-        setupClipboardSearchField()
-        setupClipboardTableVC()
+        self.setupStatusBarItem()
+        self.setupClipboardSearchField()
+        self.setupClipboardTableVC()
     }
 
     private func setupStatusBarItem() {
@@ -30,9 +30,9 @@ extension AppDelegate {
 
     @objc private func togglePopover(_ sender: NSStatusItem) {
         if self.popover.isShown {
-            closePopover(sender: sender)
+            self.closePopover(sender: sender)
         } else {
-            showPopover(sender: sender)
+            self.showPopover(sender: sender)
         }
     }
 
@@ -49,7 +49,7 @@ extension AppDelegate {
     private func setupClipboardTableVC() {
         self.clipboardTableVC.view.frame = self.viewController.view.frame
         self.viewController.view.addSubview(self.clipboardTableVC.view)
-        constrainClipboardTableVC()
+        self.constrainClipboardTableVC()
     }
 
     private func constrainClipboardTableVC() {
@@ -61,7 +61,7 @@ extension AppDelegate {
 
     private func setupClipboardSearchField() {
         self.viewController.view.addSubview(self.clipboardSearchFieldVC.view)
-        constrainClipboardSearchField()
+        self.constrainClipboardSearchField()
     }
 
     private func constrainClipboardSearchField() {
@@ -82,7 +82,7 @@ extension AppDelegate {
         // shortcut function for setting-up and constraining a scroll-view to its parent
         parentView.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = NSColor.clear
+        scrollView.backgroundColor = Constants.NSViewsBackgroundColor
         scrollView.drawsBackground = false
         if hasScrollers {
             scrollView.hasHorizontalScroller = true
@@ -126,5 +126,13 @@ extension AppDelegate {
                 constant: bottomConstant
             )
         ])
+    }
+
+    func resizeImageWithRatio(image: NSImage?, resizeToWidth: Double? = nil, resizeToHeight: Double? = nil) -> NSImage? {
+        if image == nil { return nil }
+        let imageWidth = image!.size.width
+        let imageHeight = image!.size.height
+        let resizeRatio = (resizeToWidth ?? resizeToHeight!) / imageWidth
+        return image!.resized(to: NSSize(width: resizeRatio * imageWidth, height: resizeRatio * imageHeight))
     }
 }

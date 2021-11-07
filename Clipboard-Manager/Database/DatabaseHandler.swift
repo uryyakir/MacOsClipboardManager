@@ -19,11 +19,11 @@ class DatabaseHandler {
     init() {
         do {
             // NOTE: db file-path is stored in /Users/$username$/Library/Containers/com.Uri-Yakir.Clipboard-Manager/Data
-            self.dbConn = try Connection("db.sqlite3")
-            self.clipboardTable = Table("clipboard")
-            self.clipboardContentRaw = Expression<String?>("CLIPBOARD_CONTENT_RAW")
-            self.clipboardContentHTML = Expression<String?>("CLIPBOARD_CONTENT_HTML")
-            self.insertionTime = Expression<TimeInterval?>("INSERTION_TIME")
+            self.dbConn = try Connection(DBConstants.DBFilename.rawValue)
+            self.clipboardTable = Table(DBConstants.tableName.rawValue)
+            self.clipboardContentRaw = Expression<String?>(DBConstants.clipboardContentRawCol.rawValue)
+            self.clipboardContentHTML = Expression<String?>(DBConstants.clipboardContentHTMLCol.rawValue)
+            self.insertionTime = Expression<TimeInterval?>(DBConstants.insertionTimeCol.rawValue)
             self.setupTable()
         } catch {
             fatalError("failed to initialize DatabaseHandler")
@@ -43,11 +43,15 @@ class DatabaseHandler {
                         type.column(self.insertionTime)
                     })
                 } catch {}
-            } else { print(error) }
+            } else {
+                print(error)
+                fatalError("uncaught error raised from table setup")
+            }
         }
     }
 
     func insertCopiedValueToDB(copiedObject: ClipboardCopiedObject, withCompletion completion: @escaping (_ success: Bool) -> Void) {
+        // Storing a user-copied value into the SQLite database
         do {
             let insertRecord = self.clipboardTable.insert(
                 self.clipboardContentRaw <- copiedObject.copiedValueRaw,
@@ -63,9 +67,10 @@ class DatabaseHandler {
     }
 
     func grabAllClipboardHistory() -> [ClipboardCopiedObject] {
+        // on application initiation - grab all clipboard history, and use it to populate application table
         var clipboardHistoryList: [ClipboardCopiedObject] = []
         do {
-            let clipboardHistory = try self.dbConn?.prepare("SELECT * FROM clipboard ORDER BY INSERTION_TIME desc")
+            let clipboardHistory = try self.dbConn?.prepare(DBConstants.selectAllHistoryQuery.rawValue)
             for row in clipboardHistory! {
                 clipboardHistoryList.append(ClipboardCopiedObject(copiedValueRaw: (row[0] as? String), copiedValueHTML: (row[1] as? String)))
             }

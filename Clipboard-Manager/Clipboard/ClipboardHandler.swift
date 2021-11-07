@@ -20,14 +20,14 @@ class ClipboardHandler {
         Constants.pasteboard.setString(
             values.map({
                 ($0.HTMLClipboardString ?? $0.rawClipboardString!.prepareForAttributedString)!
-            }).joined(separator: "<br>"),
+            }).joined(separator: TextNewLine.HTML.rawValue),
             forType: .html
         )
         // set clipboard contents for applications not supporting HTML (e.g. notes, XCode etc.)
         Constants.pasteboard.setString(
             values.map({
                 ($0.rawClipboardString ?? $0.HTMLClipboardString )!
-            }).joined(separator: "\n"),
+            }).joined(separator: TextNewLine.RAW.rawValue),
             forType: .string
         )
         Constants.isInternalCopy = true

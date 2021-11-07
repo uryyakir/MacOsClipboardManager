@@ -14,6 +14,14 @@ class CellExtendedPopoverVC: NSViewController {
 
     func initView() {
         self.setupScrollableTextField()
+        // add tracking inside the scrollView (to later support hover-detection)
+        self.view.addTrackingArea(
+            NSTrackingArea(
+                rect: self.view.frame,
+                options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
+                owner: self
+            )
+        )
     }
 
     override func viewDidLoad() {
@@ -21,11 +29,9 @@ class CellExtendedPopoverVC: NSViewController {
     }
 
     static func newInstance() -> CellExtendedPopoverVC {
-        let storyboard = NSStoryboard(name: NSStoryboard.Name("CellPopover"), bundle: nil)
-        let identifier = NSStoryboard.SceneIdentifier("CellExtendedPopoverVC")
-
-        guard let viewController = storyboard.instantiateController(withIdentifier: identifier)
-                as? CellExtendedPopoverVC else {
+        guard let viewController = Storyboards.cellExtendedPopoverStoryboard.storyboard.instantiateController(
+            withIdentifier: Storyboards.cellExtendedPopoverStoryboard.identifier
+        ) as? CellExtendedPopoverVC else {
             fatalError("Unable to instantiate ViewController in CellPopover.storyboard")
         }
         return viewController
@@ -44,14 +50,6 @@ class CellExtendedPopoverVC: NSViewController {
 
         self.textField = self.setupTextField()
         self.constrainTextField()
-        self.view.addTrackingArea(
-            // add tracking inside the scrollView (to later support hover-detection)
-            NSTrackingArea(
-                rect: self.view.frame,
-                options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
-                owner: self
-            )
-        )
     }
 
     private func setupTextField() -> NSTextField {
@@ -69,6 +67,7 @@ class CellExtendedPopoverVC: NSViewController {
     }
 
     override func mouseEntered(with event: NSEvent) {
+        // mark that user is examining the popover, thus preventing it from closing
         if let cellExtendedPopover = Constants.appDelegate.clipboardTableVC.hoveredRow?.cellExtendedPopover {
             cellExtendedPopover.userExaminesExtendedPopover = true
         }
@@ -76,6 +75,7 @@ class CellExtendedPopoverVC: NSViewController {
     }
 
     override func mouseExited(with event: NSEvent) {
+        // closing popover upon exit
         guard let extendedPopover = Constants.appDelegate.clipboardTableVC.hoveredRow?.cellExtendedPopover else {
             return
         }

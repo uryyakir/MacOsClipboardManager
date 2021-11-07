@@ -14,15 +14,19 @@ extension ClipboardTableVC {
          This function defines application behavior in relation to user keyboard presses.
          This includes alteration between search field and table cells, populating search field when letters are pressed etc.
          */
-        if [KeyCodes.KEYUP, KeyCodes.KEYDOWN].contains(Int(event.keyCode)) {
+        if [KeyCodes.KEYUP.rawValue, KeyCodes.KEYDOWN.rawValue].contains(Int(event.keyCode)) {
+            if let currentCellExtendedPopover = self.hoveredRow?.cellExtendedPopover {
+                // close it even if mouse hovers the popover
+                if currentCellExtendedPopover.isShown { currentCellExtendedPopover.close() }
+            }
             self.initiateCellPopoverWithKeyboardNavigation()
         }
-        if event.keyCode == KeyCodes.KEYUP && self.firstRowSelected {  // if user pressed the "UP" key while the first row is selected
+        if event.keyCode == KeyCodes.KEYUP.rawValue && self.firstRowSelected {  // if user pressed the "UP" key while the first row is selected
             // move to search field only if the first row is the only row selected
             if self.selectedRowIndexes.count == 1 && self.selectedRowIndexes.first == 0 {
                 self.view.window?.makeFirstResponder(self.searchField)
             }
-        } else if event.keyCode <= 50 && event.keyCode != KeyCodes.ENTER {  // all keyboard keys relevant for clipboard history lookup
+        } else if event.keyCode <= 50 && event.keyCode != KeyCodes.ENTER.rawValue {  // all keyboard keys relevant for clipboard history lookup
             self.initiateClipboardSearchWithInput(characters: event.characters!)
         }
         self.firstRowSelected = (self.selectedRowIndexes == IndexSet([0]))
@@ -153,7 +157,7 @@ extension ClipboardTableVC {
     }
 
     private func handleRowHoverWhileOtherRowPopoverIsOpen(currentOtherHoveredRow: HoveredRow) {
-        self.hoveredRow?.rowView?.backgroundColor = .clear  // remove color from previously hovered row
+        self.hoveredRow?.rowView?.backgroundColor = Constants.NSViewsBackgroundColor  // remove color from previously hovered row
         // initiate popover sequence on newly hovered row
         currentOtherHoveredRow.hoverTimer = self.setHoveredCellBehavior(rowView: currentOtherHoveredRow.rowView!)
         self.hoveredRowsWhilePopoverOpen.append(currentOtherHoveredRow)
@@ -188,7 +192,7 @@ extension ClipboardTableVC {
                 // enough time passed so that a previously open popover should've closed by now (unless user hovers it)
                 if cellExtendedPopover!.isShown && self.hoveredRowsWhilePopoverOpen.isEmpty {
                     // assuming user moved cursor to open popover - noop
-                    currentOtherHoveredRow.rowView!.backgroundColor = .clear
+                    currentOtherHoveredRow.rowView!.backgroundColor = Constants.NSViewsBackgroundColor
                     completion()
                     timer.invalidate()
                 } else if !self.hoveredRowsWhilePopoverOpen.isEmpty {
@@ -205,7 +209,7 @@ extension ClipboardTableVC {
                     // another row was hovered while a popover is open
                     DispatchQueue.main.async {
                         cellExtendedPopover!.close()  // close open popover
-                        self.hoveredRow?.rowView?.backgroundColor = .clear  // reset background color
+                        self.hoveredRow?.rowView?.backgroundColor = Constants.NSViewsBackgroundColor  // reset background color
                         self.hoveredRow = hoveredRow  // set currently hovered row as self.hoveredRow
                         completion()
                         timer.invalidate()
@@ -254,11 +258,11 @@ extension ClipboardTableVC {
             // remove and invalidate oldest hoveredRow
             let hoveredRow = self.hoveredRowsWhilePopoverOpen.removeFirst()
             hoveredRow.hoverTimer!.invalidate()
-            hoveredRow.rowView?.backgroundColor = .clear
+            hoveredRow.rowView?.backgroundColor = Constants.NSViewsBackgroundColor
         } else {
             // "normal" behavior - user exited some row and moved to another
             // without doing so while a popover was open
-            self.hoveredRow?.rowView?.backgroundColor = .clear
+            self.hoveredRow?.rowView?.backgroundColor = Constants.NSViewsBackgroundColor
             if let cellExtendedPopover = self.hoveredRow?.cellExtendedPopover {
                 // schedule a timer until previously open popover is closed
                 Timer.scheduledTimer(withTimeInterval: Constants.timeBeforeExtendedPopoverClose, repeats: false, block: { _ in
