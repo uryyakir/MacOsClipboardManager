@@ -8,6 +8,9 @@
 import Cocoa
 
 class MainViewController: NSViewController {
+    var clipboardTableVC = ClipboardTableVC()
+    let clipboardSearchFieldVC = ClipboardSearchFieldVC()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // register for clicks outside the NSWindow, that are set to close the application popover
@@ -32,11 +35,11 @@ class MainViewController: NSViewController {
         return viewController
     }
 
-    static func closeCellExtendedPopoverIfOpen() -> Bool {
-        if let hoveredRow = Constants.appDelegate.clipboardTableVC.hoveredRow {
+    func closeCellExtendedPopoverIfOpen() -> Bool {
+        if let hoveredRow = self.clipboardTableVC.hoveredRow {
             if let cellExtendedPopover = hoveredRow.cellExtendedPopover {
                 cellExtendedPopover.close()
-                Constants.appDelegate.clipboardTableVC.hoveredRow!.cellExtendedPopover = nil
+                self.clipboardTableVC.hoveredRow!.cellExtendedPopover = nil
                 return true
             }
         }
@@ -49,11 +52,11 @@ class MainViewController: NSViewController {
         case (KeyCodes.ESC.rawValue):  // ESC key
             // if an extended cell popover is open - close it
             // otherwise - close application main popover
-            if !MainViewController.closeCellExtendedPopoverIfOpen() {
+            if !self.closeCellExtendedPopoverIfOpen() {
                 Constants.appDelegate.closePopover(sender: self)
             }
         case KeyCodes.ENTER.rawValue:  // Enter key
-            let selectedValues = (Constants.appDelegate.clipboardTableVC.getSelectedValues())!
+            let selectedValues = (self.clipboardTableVC.getSelectedValues())!
             ClipboardHandler.copyToClipboard(values: selectedValues)
 
         default:

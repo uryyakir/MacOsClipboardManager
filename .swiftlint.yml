@@ -3,7 +3,7 @@ excluded:
   - Clipboard-ManagerUITests/
 
 line_length:
-  warning: 150
+  warning: 160
 
 type_body_length:
   warning: 250

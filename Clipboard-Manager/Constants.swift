@@ -56,6 +56,7 @@ struct Constants {
     static let applicationIcon = NSImage(named: NSImage.Name("clipboard-icon"))
     static let NSViewsBackgroundColor = NSColor.clear
     static let appDelegate = NSApplication.shared.delegate as! AppDelegate
+    static let mainVC = MainViewController.newInstance()
     static let pasteboard = NSPasteboard.general
     static let dbHandler = DatabaseHandler()
     static let cwd = FileManager.default.currentDirectoryPath
@@ -66,6 +67,7 @@ struct Constants {
     static let predicateMatchClipboardObjectAttribute: String = "rawClipboardString"
     static let cellTextFieldClipboardObjectAttribute: String = "clipboardAttributedString"
     static let tableViewColumnName = "col"
+    static let cellTrackingDataKey = "row"
     static let cellExtendedPopoverWidth = CellExtendedPopoverVC.newInstance().view.bounds.width
     static let timeBeforeHoverPopover = 3.0  // 3 seconds hover required to open popover
     static let textDefaultColor = NSColor(deviceRed: 8/255, green: 165/255, blue: 218/255, alpha: 1)

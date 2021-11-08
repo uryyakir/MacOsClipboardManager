@@ -28,10 +28,10 @@ class ClipboardSearchFieldVC: NSViewController, NSSearchFieldDelegate {
 
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         if commandSelector == #selector(moveDown(_:)) {
-            Constants.appDelegate.clipboardTableVC.highlightFirstItem(self.view)
+            Constants.mainVC.clipboardTableVC.highlightFirstItem(self.view)
             return true
         } else if commandSelector == #selector(cancelOperation(_:)) {
-            _ = MainViewController.closeCellExtendedPopoverIfOpen()
+            _ = Constants.mainVC.closeCellExtendedPopoverIfOpen()
             if (self.view as? ClipboardSearchField)!.stringValue == "" {
                 Constants.appDelegate.closePopover(sender: self)
             }

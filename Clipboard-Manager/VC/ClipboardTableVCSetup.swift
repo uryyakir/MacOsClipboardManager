@@ -25,7 +25,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     override func loadView() {
         self.view = NSView()
         // get search field reference after AppDelegate has finished initialization
-        self.searchField = (Constants.appDelegate.clipboardSearchFieldVC.view as? NSSearchField)!
+        self.searchField = (Constants.mainVC.clipboardSearchFieldVC.view as? NSSearchField)!
         // setup functions
         AppDelegate.setupScrollView(parentView: self.view, scrollView: self.scrollView, topConstant: 23)
         self.setupTableView()
@@ -110,7 +110,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
                 rect: clipboardTableCell.frame,
                 options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
                 owner: self,
-                userInfo: ["row": row]
+                userInfo: [Constants.cellTrackingDataKey: row]
             )
         )
         if tableColumn?.identifier.rawValue == Constants.tableViewColumnName {

@@ -43,7 +43,7 @@ class ClipboardHandler {
                 if Constants.pasteboard.changeCount != changeCount && !Constants.isInternalCopy {
                     Constants.dbHandler.insertCopiedValueToDB(copiedObject: clipboardCopiedObj, withCompletion: { response in
                         if response {
-                            Constants.appDelegate.clipboardTableVC.arrayController.insert(
+                            Constants.mainVC.clipboardTableVC.arrayController.insert(
                                 ClipboardObject(clipboardCopiedObj), atArrangedObjectIndex: 0
                             )  // updating tableView to include copied string
                         }

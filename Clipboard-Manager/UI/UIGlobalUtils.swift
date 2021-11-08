@@ -11,8 +11,8 @@ import Cocoa
 extension AppDelegate {
     func setupApplicationUI() {
         self.setupStatusBarItem()
-        self.setupClipboardSearchField()
-        self.setupClipboardTableVC()
+        Constants.mainVC.setupClipboardSearchField()
+        Constants.mainVC.setupClipboardTableVC()
     }
 
     private func setupStatusBarItem() {
@@ -23,7 +23,7 @@ extension AppDelegate {
             button.action = #selector(AppDelegate.togglePopover(_:))
 
             self.popover.setValue(true, forKey: "shouldHideAnchor")
-            self.popover.contentViewController = self.viewController
+            self.popover.contentViewController = Constants.mainVC
             self.popover.animates = false
         }
     }
@@ -44,30 +44,6 @@ extension AppDelegate {
 
     func closePopover(sender: Any?) {
         self.popover.performClose(sender)
-    }
-
-    private func setupClipboardTableVC() {
-        self.clipboardTableVC.view.frame = self.viewController.view.frame
-        self.viewController.view.addSubview(self.clipboardTableVC.view)
-        self.constrainClipboardTableVC()
-    }
-
-    private func constrainClipboardTableVC() {
-        self.clipboardTableVC.view.topAnchor.constraint(equalTo: self.clipboardSearchFieldVC.view.topAnchor, constant: 10).isActive = true
-        self.clipboardTableVC.view.bottomAnchor.constraint(equalTo: self.viewController.view.bottomAnchor, constant: 0).isActive = true
-        self.clipboardTableVC.view.leadingAnchor.constraint(equalTo: self.viewController.view.leadingAnchor, constant: 0).isActive = true
-        self.clipboardTableVC.view.trailingAnchor.constraint(equalTo: self.viewController.view.trailingAnchor, constant: 0).isActive = true
-    }
-
-    private func setupClipboardSearchField() {
-        self.viewController.view.addSubview(self.clipboardSearchFieldVC.view)
-        self.constrainClipboardSearchField()
-    }
-
-    private func constrainClipboardSearchField() {
-        self.clipboardSearchFieldVC.view.topAnchor.constraint(equalTo: self.viewController.view.topAnchor, constant: 10).isActive = true
-        self.clipboardSearchFieldVC.view.leadingAnchor.constraint(equalTo: self.viewController.view.leadingAnchor, constant: 10).isActive = true
-        self.clipboardSearchFieldVC.view.trailingAnchor.constraint(equalTo: self.viewController.view.trailingAnchor, constant: -10).isActive = true
     }
 
     static func setupScrollView(
@@ -134,5 +110,32 @@ extension AppDelegate {
         let imageHeight = image!.size.height
         let resizeRatio = (resizeToWidth ?? resizeToHeight!) / imageWidth
         return image!.resized(to: NSSize(width: resizeRatio * imageWidth, height: resizeRatio * imageHeight))
+    }
+}
+
+extension MainViewController {
+    func setupClipboardTableVC() {
+        Constants.mainVC.clipboardTableVC.view.frame = self.view.frame
+        self.view.addSubview(self.clipboardTableVC.view)
+        self.constrainClipboardTableVC()
+    }
+
+    private func constrainClipboardTableVC() {
+        Constants.mainVC.clipboardTableVC.view.topAnchor.constraint(
+            equalTo: Constants.mainVC.clipboardSearchFieldVC.view.topAnchor, constant: 10).isActive = true
+        self.clipboardTableVC.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        self.clipboardTableVC.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        self.clipboardTableVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
+    }
+
+    func setupClipboardSearchField() {
+        self.view.addSubview(self.clipboardSearchFieldVC.view)
+        self.constrainClipboardSearchField()
+    }
+
+    private func constrainClipboardSearchField() {
+        self.clipboardSearchFieldVC.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
+        self.clipboardSearchFieldVC.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
+        self.clipboardSearchFieldVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
     }
 }
