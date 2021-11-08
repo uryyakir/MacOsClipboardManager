@@ -11,12 +11,8 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     let popover = NSPopover()
-    let viewController = MainViewController.newInstance()
-    var clipboardTableVC = ClipboardTableVC()
-    let clipboardSearchFieldVC = ClipboardSearchFieldVC()
 
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
+    func applicationWillFinishLaunching(_ notification: Notification) {
         self.setupApplicationUI()
         Constants.makeConstantsAssertions()
     }

@@ -68,7 +68,7 @@ class CellExtendedPopoverVC: NSViewController {
 
     override func mouseEntered(with event: NSEvent) {
         // mark that user is examining the popover, thus preventing it from closing
-        if let cellExtendedPopover = Constants.appDelegate.clipboardTableVC.hoveredRow?.cellExtendedPopover {
+        if let cellExtendedPopover = Constants.mainVC.clipboardTableVC.hoveredRow?.cellExtendedPopover {
             cellExtendedPopover.userExaminesExtendedPopover = true
         }
         // otherwise - it probably means user tried to enter popover via another row, thus overwriting the rows cellExtendedPopover attribute
@@ -76,7 +76,7 @@ class CellExtendedPopoverVC: NSViewController {
 
     override func mouseExited(with event: NSEvent) {
         // closing popover upon exit
-        guard let extendedPopover = Constants.appDelegate.clipboardTableVC.hoveredRow?.cellExtendedPopover else {
+        guard let extendedPopover = Constants.mainVC.clipboardTableVC.hoveredRow?.cellExtendedPopover else {
             return
         }
         extendedPopover.userExaminesExtendedPopover = false

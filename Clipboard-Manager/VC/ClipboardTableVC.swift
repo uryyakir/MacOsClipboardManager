@@ -78,7 +78,7 @@ extension ClipboardTableVC {
          When the user moves from search field to table navigation using the down arrow-key,
          move focus back to table and highlight the first row.
          */
-        let tableView = Constants.appDelegate.clipboardTableVC.tableView
+        let tableView = Constants.mainVC.clipboardTableVC.tableView
         self.view.window?.makeFirstResponder(tableView)
         tableView.selectRowIndexes(IndexSet([0]), byExtendingSelection: false)
     }
@@ -249,7 +249,7 @@ extension ClipboardTableVC {
     }
 
     override func mouseEntered(with event: NSEvent) {
-        let hoveredRowIndex = (event.trackingArea?.userInfo!["row"] as? Int)!
+        let hoveredRowIndex = (event.trackingArea?.userInfo![Constants.cellTrackingDataKey] as? Int)!
         self.doMouseEntered(event: event, hoveredRowIndex: hoveredRowIndex)
     }
 
