@@ -100,7 +100,7 @@ extension ClipboardTableVC {
             filterIndices: [self.hoveredRow!.rowIndex]
         )[0]
         let cellAttributedString = clipboardObject.extractAttributedStringFromCell()
-        self.cellExtendedPopoverVC.textField!.attributedStringValue = cellAttributedString
+        self.cellExtendedPopoverVC!.textField!.attributedStringValue = cellAttributedString
     }
 
     private func cellExtendedPopoverIsVisible(cellExtendedPopover: CellExtendedPopover, hoveredRowRect: NSRect) {
@@ -109,7 +109,7 @@ extension ClipboardTableVC {
             of: self.tableView,
             preferredEdge: NSRectEdge.minX
         )
-        self.cellExtendedPopoverVC.scrollView.documentView!.scroll(.zero)  // scrolling document view (containing the text field) to top-left
+        self.cellExtendedPopoverVC!.scrollView.documentView!.scroll(.zero)  // scrolling document view (containing the text field) to top-left
     }
 
     @objc private func popoverCellExtended(sender: Timer) {
@@ -119,10 +119,12 @@ extension ClipboardTableVC {
          */
         let cellExtendedPopover = CellExtendedPopover()
         let hoveredRowRect = self.tableView.rect(ofRow: self.hoveredRow!.rowIndex)
+        // reallocate CellExtendedPopoverVC if previously deallocated
+        if self.cellExtendedPopoverVC == nil { self.cellExtendedPopoverVC = CellExtendedPopoverVC.newInstance() }
 
         cellExtendedPopover.contentViewController = self.cellExtendedPopoverVC  // set cell popover VC
-        if self.cellExtendedPopoverVC.textField == nil {
-            self.cellExtendedPopoverVC.initView()  // on first run, init VC so the textField attribute is available
+        if self.cellExtendedPopoverVC!.textField == nil {
+            self.cellExtendedPopoverVC!.initView()  // on first run, init VC so the textField attribute is available
         }
         self.prepareCellExtendedPopoverText()
         self.cellExtendedPopoverIsVisible(cellExtendedPopover: cellExtendedPopover, hoveredRowRect: hoveredRowRect)
@@ -267,7 +269,9 @@ extension ClipboardTableVC {
                 // schedule a timer until previously open popover is closed
                 Timer.scheduledTimer(withTimeInterval: Constants.timeBeforeExtendedPopoverClose, repeats: false, block: { _ in
                     // close popover if user isn't examining it after timer is complete
-                    if !cellExtendedPopover.userExaminesExtendedPopover { cellExtendedPopover.close() }
+                    if !cellExtendedPopover.userExaminesExtendedPopover {
+                        cellExtendedPopover.close()
+                    }
                 })
             }
         }
