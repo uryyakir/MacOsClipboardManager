@@ -21,7 +21,7 @@ class CellExtendedPopover: NSPopover, NSPopoverDelegate {
     }
 
     func popoverDidClose(_ notification: Notification) {
-        // removign reference to cellExtendedPopoverVC to dealloc memory
+        // removing reference to cellExtendedPopoverVC to dealloc memory
         Constants.mainVC.clipboardTableVC.cellExtendedPopoverVC = nil
     }
 }

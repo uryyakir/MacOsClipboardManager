@@ -31,6 +31,7 @@
 		84AEF6CB27033A7200751A96 /* ClipboardSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AEF6CA27033A7200751A96 /* ClipboardSearchField.swift */; };
 		84C8E32327122A66002D474C /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 84C8E32227122A66002D474C /* SQLite */; };
 		84C8E32527122AB4002D474C /* DatabaseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C8E32427122AB4002D474C /* DatabaseHandler.swift */; };
+		84D73806273EDF8A00C3B29B /* selection-sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 84D73805273EDF8A00C3B29B /* selection-sound.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		848B1923271B6C9E00DD3C9F /* CellPopover.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CellPopover.storyboard; sourceTree = "<group>"; };
 		84AEF6CA27033A7200751A96 /* ClipboardSearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardSearchField.swift; sourceTree = "<group>"; };
 		84C8E32427122AB4002D474C /* DatabaseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHandler.swift; sourceTree = "<group>"; };
+		84D73805273EDF8A00C3B29B /* selection-sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "selection-sound.wav"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 		845CC32626FD137A00F24D1A /* Clipboard-Manager */ = {
 			isa = PBXGroup;
 			children = (
+				84D73804273EDF7C00C3B29B /* Sounds */,
 				846EEE482736E76900DA43FD /* Storyboards */,
 				846EEE472736E74000DA43FD /* Database */,
 				846EEE442736E67C00DA43FD /* VC */,
@@ -219,6 +222,14 @@
 				84132ABD272DF9AF00D20633 /* HoveredRow.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		84D73804273EDF7C00C3B29B /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				84D73805273EDF8A00C3B29B /* selection-sound.wav */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -335,6 +346,7 @@
 				8485E0332710D50900CF2918 /* Assets.xcassets in Resources */,
 				845CC32F26FD137F00F24D1A /* Main.storyboard in Resources */,
 				848B1924271B6C9E00DD3C9F /* CellPopover.storyboard in Resources */,
+				84D73806273EDF8A00C3B29B /* selection-sound.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

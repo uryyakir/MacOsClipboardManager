@@ -72,6 +72,10 @@ struct Constants {
     static let timeBeforeHoverPopover = 3.0  // 3 seconds hover required to open popover
     static let textDefaultColor = NSColor(deviceRed: 8/255, green: 165/255, blue: 218/255, alpha: 1)
     static let cellHoverBackgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
+    static let cellBorderColor = NSColor(deviceRed: 30/255, green: 144/255, blue: 255/255, alpha: 0.2).cgColor
+    static let cellSelectionBorderAlternationInterval = 0.3
+    static let cellSelectionBorderColorIterations = 3
+    static let cellSelectionBorderColor = NSColor(deviceRed: 249/255, green: 240/255, blue: 24/255, alpha: 0.4).cgColor
     static let timeBeforeExtendedPopoverClose = 1.0
     // other constants
     static var isInternalCopy: Bool = false  // tracking internal copy to clipboard, preventing from appending a new record to clipboard history

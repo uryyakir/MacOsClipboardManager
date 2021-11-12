@@ -45,6 +45,18 @@ extension ClipboardTableVC {
         self.searchField!.sendAction(searchField?.action, to: searchField?.target)  // update table record filtering
     }
 
+    private func getSelectedCells(indexSet: IndexSet) -> [ClipboardTableCell] {
+        /*
+         Return an array of the selected ClipboardTableCell-s.
+         This is useful for cell UI actions across all selected cells.
+         */
+        return Array(indexSet).map { (index) -> ClipboardTableCell in
+            (self.tableView.rowView(
+                atRow: index, makeIfNecessary: false
+            )?.view(atColumn: 0) as? ClipboardTableCell)!
+        }
+    }
+
     private func extractRowsText(filterIndices: [Int] = []) -> [ClipboardObject] {
         /*
          Given an array controller and a list of the relevant indices - extract a list of ClipboardObject-s
@@ -64,6 +76,7 @@ extension ClipboardTableVC {
     func getSelectedValues() -> [ClipboardObject]! {
         // fetching selected rows indices and converting it into an array
         let selectedRowIndices = (self.selectedRowIndexes.map({$0}))
+        self.getSelectedCells(indexSet: selectedRowIndexes).forEach { $0.flashSelection() }  // indicate cell selection via border flashing
         return self.extractRowsText(
             filterIndices: selectedRowIndices
         )
