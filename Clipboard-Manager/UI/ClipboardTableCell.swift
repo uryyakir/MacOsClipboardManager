@@ -9,7 +9,6 @@ import Foundation
 import Cocoa
 
 class ClipboardTableCell: NSTableCellView {
-
     override init(frame: NSRect) {
         super.init(frame: frame)
         self.drawBorder()
@@ -29,7 +28,7 @@ class ClipboardTableCell: NSTableCellView {
         self.wantsLayer = true
         self.layer?.borderWidth = 2
         self.layer?.cornerRadius = 5
-        self.layer?.borderColor = NSColor(deviceRed: 30/255, green: 144/255, blue: 255/255, alpha: 0.2).cgColor
+        self.layer?.borderColor = Constants.cellBorderColor
     }
 
     private func generateCellTextField() -> NSTextField {
@@ -54,5 +53,21 @@ class ClipboardTableCell: NSTableCellView {
                 item: self.textField!, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: 0
             )
         ])
+    }
+
+    func flashSelection() {
+        // let the user know he has selected some cell/s
+        let originalBorderWidth = self.layer!.borderWidth
+        var iteration = 0
+        Timer.scheduledTimer(withTimeInterval: Constants.cellSelectionBorderAlternationInterval, repeats: true, block: { timer in
+            self.layer?.borderWidth = originalBorderWidth + 1.5
+            self.layer!.borderColor = Constants.cellSelectionBorderColor
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.cellSelectionBorderAlternationInterval / 2, execute: {
+                self.layer?.borderWidth = originalBorderWidth
+                self.layer?.borderColor = Constants.cellBorderColor
+            })
+            iteration += 1
+            if iteration >= Constants.cellSelectionBorderColorIterations { timer.invalidate() }
+        })
     }
 }

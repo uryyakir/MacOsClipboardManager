@@ -16,7 +16,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     var firstRowSelected: Bool = false
     let clipboardHistory: [ClipboardCopiedObject] = Constants.dbHandler.grabAllClipboardHistory()
     var hoveredRow: HoveredRow?
-    let cellExtendedPopoverVC = CellExtendedPopoverVC.newInstance()
+    var cellExtendedPopoverVC: CellExtendedPopoverVC? = CellExtendedPopoverVC.newInstance()
     var hoveredRowsWhilePopoverOpen: [HoveredRow] = []
     var selectedRowIndexes: IndexSet {
         return self.tableView.selectedRowIndexes
