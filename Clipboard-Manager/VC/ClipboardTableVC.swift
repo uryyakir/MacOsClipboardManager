@@ -26,7 +26,8 @@ extension ClipboardTableVC {
             if self.selectedRowIndexes.count == 1 && self.selectedRowIndexes.first == 0 {
                 self.view.window?.makeFirstResponder(self.searchField)
             }
-        } else if event.keyCode <= 50 && event.keyCode != KeyCodes.ENTER.rawValue {  // all keyboard keys relevant for clipboard history lookup
+        } else if event.keyCode <= 50 && event.keyCode != KeyCodes.ENTER.rawValue {
+            // all keyboard keys relevant for clipboard history lookup
             self.initiateClipboardSearchWithInput(characters: event.characters!)
         }
         self.firstRowSelected = (self.selectedRowIndexes == IndexSet([0]))
@@ -147,7 +148,7 @@ extension ClipboardTableVC {
     }
 
     private func setHoveredCellBackgroundColor(rowView: NSTableRowView) {
-        rowView.backgroundColor = Constants.cellHoverBackgroundColor
+        rowView.backgroundColor = TableViewConstants.cellHoverBackgroundColor
     }
 
     private func setHoveredCellBehavior(backgroundColorRequired: Bool = true, rowView: NSTableRowView? = nil) -> Timer {
@@ -156,7 +157,7 @@ extension ClipboardTableVC {
          */
         if backgroundColorRequired { self.setHoveredCellBackgroundColor(rowView: rowView ?? self.hoveredRow!.rowView!) }
         return Timer.scheduledTimer(
-            timeInterval: Constants.timeBeforeHoverPopover,
+            timeInterval: TableViewConstants.timeBeforeHoverPopover,
             target: self,
             selector: #selector(self.popoverCellExtended),
             userInfo: nil,
@@ -203,7 +204,7 @@ extension ClipboardTableVC {
 
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { timer in
             // iterate every 0.1 sec and check current status
-            if timerStopIteration > Constants.timeBeforeExtendedPopoverClose + 0.1 {
+            if timerStopIteration > TableViewConstants.timeBeforeExtendedPopoverClose + 0.1 {
                 // enough time passed so that a previously open popover should've closed by now (unless user hovers it)
                 if cellExtendedPopover!.isShown && self.hoveredRowsWhilePopoverOpen.isEmpty {
                     // assuming user moved cursor to open popover - noop
@@ -264,7 +265,7 @@ extension ClipboardTableVC {
     }
 
     override func mouseEntered(with event: NSEvent) {
-        let hoveredRowIndex = (event.trackingArea?.userInfo![Constants.cellTrackingDataKey] as? Int)!
+        let hoveredRowIndex = (event.trackingArea?.userInfo![TableViewConstants.cellTrackingDataKey] as? Int)!
         self.doMouseEntered(event: event, hoveredRowIndex: hoveredRowIndex)
     }
 
@@ -280,7 +281,7 @@ extension ClipboardTableVC {
             self.hoveredRow?.rowView?.backgroundColor = Constants.NSViewsBackgroundColor
             if let cellExtendedPopover = self.hoveredRow?.cellExtendedPopover {
                 // schedule a timer until previously open popover is closed
-                Timer.scheduledTimer(withTimeInterval: Constants.timeBeforeExtendedPopoverClose, repeats: false, block: { _ in
+                Timer.scheduledTimer(withTimeInterval: TableViewConstants.timeBeforeExtendedPopoverClose, repeats: false, block: { _ in
                     // close popover if user isn't examining it after timer is complete
                     if !cellExtendedPopover.userExaminesExtendedPopover {
                         cellExtendedPopover.close()

@@ -49,12 +49,11 @@ class ClipboardHandler {
                             Constants.dbHandler.trimDatabaseRecords()
                         }
                     })
-                    changeCount = Constants.pasteboard.changeCount
                 } else if Constants.isInternalCopy {
                     // update changeCount and reset isInternalCopy
-                    changeCount = Constants.pasteboard.changeCount
                     Constants.isInternalCopy = false
                 }
+                changeCount = Constants.pasteboard.changeCount  // update change count before next iteration
             }
         }
     }

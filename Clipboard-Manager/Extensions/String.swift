@@ -37,12 +37,13 @@ extension String {
                     // return placeholder for a failed image load
                     return NSMutableAttributedString(string: Constants.failedImageLoadPlaceholder)
                 }
+            } else {
+                return try NSMutableAttributedString(
+                    data: data,
+                    options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue],
+                    documentAttributes: nil
+                )
             }
-            return try NSMutableAttributedString(
-                data: data,
-                options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue],
-                documentAttributes: nil
-            )
         } catch {
             return nil
         }

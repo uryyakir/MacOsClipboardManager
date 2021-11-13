@@ -53,9 +53,32 @@ struct Storyboard {
     }
 }
 
-class Storyboards {
+struct Storyboards {
     static let mainStoryboard = Storyboard(storyboardName: "Main", storyboardScene: "ViewController")
     static let cellExtendedPopoverStoryboard = Storyboard(storyboardName: "CellPopover", storyboardScene: "CellExtendedPopoverVC")
+}
+
+struct TableViewConstants {
+    // search field constants
+    static let caseInsensitive: Bool = true
+    static let diacriticInsensitive: Bool = true
+    static let predicateOptions = (TableViewConstants.caseInsensitive ? "c" : "") + (TableViewConstants.diacriticInsensitive ? "d" : "")
+    static let predicateMatchClipboardObjectAttribute: String = "rawClipboardString"
+    static let cellTextFieldClipboardObjectAttribute: String = "clipboardAttributedString"
+    // table view constants
+    static let tableViewColumnName = "col"
+    static let cellTrackingDataKey = "row"
+    static let textDefaultColor = NSColor(deviceRed: 8/255, green: 165/255, blue: 218/255, alpha: 1)
+    static let cellHoverBackgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
+    static let cellBorderColor = NSColor(deviceRed: 30/255, green: 144/255, blue: 255/255, alpha: 0.2).cgColor
+    static let cellSelectionBorderAlternationInterval = 0.3
+    static let cellSelectionBorderColorIterations = 3
+    static let cellSelectionBorderColor = NSColor(deviceRed: 249/255, green: 240/255, blue: 24/255, alpha: 0.4).cgColor
+    static let cellSelectionSound = NSSound(named: "selection-sound")
+    // cell extended popover constants
+    static let cellExtendedPopoverWidth = CellExtendedPopoverVC.newInstance().view.bounds.width
+    static let timeBeforeHoverPopover = 3.0  // 3 seconds hover required to open popover
+    static let timeBeforeExtendedPopoverClose = 1.0
 }
 
 struct Constants {
@@ -68,24 +91,7 @@ struct Constants {
     static let pasteboard = NSPasteboard.general
     static let dbHandler = DatabaseHandler()
     static let cwd = FileManager.default.currentDirectoryPath
-    // table VC constants
-    static let caseInsensitive: Bool = true
-    static let diacriticInsensitive: Bool = true
-    static let predicateOptions = (Constants.caseInsensitive ? "c" : "") + (Constants.diacriticInsensitive ? "d" : "")
-    static let predicateMatchClipboardObjectAttribute: String = "rawClipboardString"
-    static let cellTextFieldClipboardObjectAttribute: String = "clipboardAttributedString"
-    static let tableViewColumnName = "col"
-    static let cellTrackingDataKey = "row"
-    static let cellExtendedPopoverWidth = CellExtendedPopoverVC.newInstance().view.bounds.width
-    static let timeBeforeHoverPopover = 3.0  // 3 seconds hover required to open popover
-    static let textDefaultColor = NSColor(deviceRed: 8/255, green: 165/255, blue: 218/255, alpha: 1)
-    static let cellHoverBackgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
-    static let cellBorderColor = NSColor(deviceRed: 30/255, green: 144/255, blue: 255/255, alpha: 0.2).cgColor
-    static let cellSelectionBorderAlternationInterval = 0.3
-    static let cellSelectionBorderColorIterations = 3
-    static let cellSelectionBorderColor = NSColor(deviceRed: 249/255, green: 240/255, blue: 24/255, alpha: 0.4).cgColor
-    static let cellSelectionSound = NSSound(named: "selection-sound")
-    static let timeBeforeExtendedPopoverClose = 1.0
+
     // other constants
     static var isInternalCopy: Bool = false  // tracking internal copy to clipboard, preventing from appending a new record to clipboard history
     static let failedImageLoadPlaceholder = "<image couldn't be extracted>"
@@ -104,8 +110,8 @@ struct Constants {
             )
         ).children.compactMap { $0.label }
         assert(
-            attributesMirror.contains(Constants.predicateMatchClipboardObjectAttribute) &&
-            attributesMirror.contains(Constants.cellTextFieldClipboardObjectAttribute)
+            attributesMirror.contains(TableViewConstants.predicateMatchClipboardObjectAttribute) &&
+            attributesMirror.contains(TableViewConstants.cellTextFieldClipboardObjectAttribute)
         )
     }
 }

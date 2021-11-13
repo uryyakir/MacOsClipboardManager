@@ -32,6 +32,7 @@
 		84C8E32327122A66002D474C /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 84C8E32227122A66002D474C /* SQLite */; };
 		84C8E32527122AB4002D474C /* DatabaseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C8E32427122AB4002D474C /* DatabaseHandler.swift */; };
 		84D73806273EDF8A00C3B29B /* selection-sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 84D73805273EDF8A00C3B29B /* selection-sound.wav */; };
+		84D738082740754900C3B29B /* ClipboardSearchFieldVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D738072740754800C3B29B /* ClipboardSearchFieldVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		84AEF6CA27033A7200751A96 /* ClipboardSearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardSearchField.swift; sourceTree = "<group>"; };
 		84C8E32427122AB4002D474C /* DatabaseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHandler.swift; sourceTree = "<group>"; };
 		84D73805273EDF8A00C3B29B /* selection-sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "selection-sound.wav"; sourceTree = "<group>"; };
+		84D738072740754800C3B29B /* ClipboardSearchFieldVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardSearchFieldVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,8 +172,9 @@
 			children = (
 				845CC32926FD137A00F24D1A /* MainViewController.swift */,
 				8487686926FD31E100BCAB06 /* ClipboardTableVC.swift */,
-				846EEE452736E6B000DA43FD /* CellExtendedPopoverVC.swift */,
 				846EEE492736EB6500DA43FD /* ClipboardTableVCSetup.swift */,
+				846EEE452736E6B000DA43FD /* CellExtendedPopoverVC.swift */,
+				84D738072740754800C3B29B /* ClipboardSearchFieldVC.swift */,
 			);
 			path = VC;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				8461093C271B4E7C00331D12 /* String.swift in Sources */,
 				845CC32826FD137A00F24D1A /* AppDelegate.swift in Sources */,
 				846EEE4A2736EB6500DA43FD /* ClipboardTableVCSetup.swift in Sources */,
+				84D738082740754900C3B29B /* ClipboardSearchFieldVC.swift in Sources */,
 				84132ABC272DF99100D20633 /* ClipboardObject.swift in Sources */,
 				846EEE432736061300DA43FD /* NSImage.swift in Sources */,
 				8487686A26FD31E100BCAB06 /* ClipboardTableVC.swift in Sources */,
