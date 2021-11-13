@@ -59,7 +59,7 @@ class MainViewController: NSViewController {
         case KeyCodes.ENTER.rawValue:  // Enter key
             let selectedValues = (self.clipboardTableVC.getSelectedValues())!
             ClipboardHandler.copyToClipboard(values: selectedValues)
-//            NSSound(named: "selection-sound")?.play()
+            Constants.cellSelectionSound?.play()
 
         default:
             break

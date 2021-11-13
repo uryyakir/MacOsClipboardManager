@@ -84,6 +84,7 @@ struct Constants {
     static let cellSelectionBorderAlternationInterval = 0.3
     static let cellSelectionBorderColorIterations = 3
     static let cellSelectionBorderColor = NSColor(deviceRed: 249/255, green: 240/255, blue: 24/255, alpha: 0.4).cgColor
+    static let cellSelectionSound = NSSound(named: "selection-sound")
     static let timeBeforeExtendedPopoverClose = 1.0
     // other constants
     static var isInternalCopy: Bool = false  // tracking internal copy to clipboard, preventing from appending a new record to clipboard history
