@@ -26,7 +26,18 @@ class DatabaseHandler {
             self.insertionTime = Expression<TimeInterval?>(DBConstants.insertionTimeCol.rawValue)
             self.setupTable()
         } catch {
-            fatalError("failed to initialize DatabaseHandler")
+            fatalError("failed to initialize DatabaseHandler!\n\(error)")
+        }
+    }
+
+    var dbFileSize: Int {
+        do {
+            let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let dbFileURL = dir.first?.deletingLastPathComponent().appendingPathComponent(DBConstants.DBFilename.rawValue)
+            let fileResource = try dbFileURL!.resourceValues(forKeys: [.fileSizeKey])
+            return fileResource.fileSize!
+        } catch {
+            fatalError("failed to get DBFile size!\n\(error)")
         }
     }
 
@@ -44,8 +55,7 @@ class DatabaseHandler {
                     })
                 } catch {}
             } else {
-                print(error)
-                fatalError("uncaught error raised from table setup")
+                fatalError("uncaught error raised from table setup!\n\(error)")
             }
         }
     }
@@ -62,7 +72,7 @@ class DatabaseHandler {
             completion(true)
             return
         } catch {
-            fatalError("failed to insert record to db file")
+            fatalError("failed to insert record to db file!\n\(error)")
         }
     }
 
@@ -70,13 +80,40 @@ class DatabaseHandler {
         // on application initiation - grab all clipboard history, and use it to populate application table
         var clipboardHistoryList: [ClipboardCopiedObject] = []
         do {
-            let clipboardHistory = try self.dbConn?.prepare(DBConstants.selectAllHistoryQuery.rawValue)
+            let clipboardHistory = try self.dbConn?.prepare(DBQueries.selectAllHistoryQuery)
             for row in clipboardHistory! {
                 clipboardHistoryList.append(ClipboardCopiedObject(copiedValueRaw: (row[0] as? String), copiedValueHTML: (row[1] as? String)))
             }
             return clipboardHistoryList
         } catch {
-            fatalError("failed to grab clipboard history from database")
+            fatalError("failed to grab clipboard history from database!\n\(error)")
+        }
+    }
+
+    private func deleteOldestRecord() {
+        do {
+            let oldestRecordId = try self.dbConn?.prepare(DBQueries.getOldestRecordIdQuery)
+            let rowId = (oldestRecordId!.map { $0 }[0][0] as? Int64)!
+            let oldestRecord = self.clipboardTable.filter(rowid == rowId)
+            try self.dbConn!.run(oldestRecord.delete())
+            try self.dbConn?.vacuum()  // clear up deleted space to update DB file size
+        } catch {
+            fatalError("failed to delete oldest record from database!\n\(error)")
+        }
+    }
+
+    func trimDatabaseRecords() {
+        /*
+         We don't want the database to get too large - this is unnecessary and slows the launch of the application.
+         I've set some size threshold for the database - whenever the database surpasses this limit,
+         it'll trim older records until its size is back to acceptable range.
+         */
+        while Double(self.dbFileSize) / DBQueries.bitsToMBConversionRatio > DBQueries.maxAllowedDBFileSizeMB {
+            self.deleteOldestRecord()
+            let arrayController = Constants.mainVC.clipboardTableVC.arrayController
+            arrayController.remove(atArrangedObjectIndexes: IndexSet([
+                (arrayController.arrangedObjects as? [Any])!.count - 1
+            ]))
         }
     }
 }
