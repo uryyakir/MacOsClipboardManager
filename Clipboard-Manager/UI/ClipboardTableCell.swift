@@ -70,4 +70,14 @@ class ClipboardTableCell: NSTableCellView {
             if iteration >= Constants.cellSelectionBorderColorIterations { timer.invalidate() }
         })
     }
+
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        switch Int(event.keyCode) {
+        case KeyCodes.ENTER.rawValue, KeyCodes.ESC.rawValue:
+            // prevent the default `dooonk` sound for those
+            return true
+        default:
+            return false
+        }
+    }
 }

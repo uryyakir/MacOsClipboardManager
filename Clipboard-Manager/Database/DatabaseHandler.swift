@@ -9,7 +9,6 @@ import Foundation
 import SQLite
 
 class DatabaseHandler {
-    // TODO: implement total Mb db size, when size is surpassed - delete oldest records until size falls below threshold
     let dbConn: Connection?
     let clipboardTable: Table!
     var clipboardContentRaw: Expression<String?>
