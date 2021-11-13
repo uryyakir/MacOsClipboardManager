@@ -21,12 +21,6 @@ class MainViewController: NSViewController {
         ClipboardHandler.watchPasteboard()
     }
 
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
-
     static func newInstance() -> MainViewController {
         guard let viewController = Storyboards.mainStoryboard.storyboard.instantiateController(
             withIdentifier: Storyboards.mainStoryboard.identifier
@@ -59,10 +53,35 @@ class MainViewController: NSViewController {
         case KeyCodes.ENTER.rawValue:  // Enter key
             let selectedValues = (self.clipboardTableVC.getSelectedValues())!
             ClipboardHandler.copyToClipboard(values: selectedValues)
-            Constants.cellSelectionSound?.play()
+            TableViewConstants.cellSelectionSound?.play()
 
         default:
             break
         }
+    }
+
+    func setupClipboardTableVC() {
+        Constants.mainVC.clipboardTableVC.view.frame = self.view.frame
+        self.view.addSubview(self.clipboardTableVC.view)
+        self.constrainClipboardTableVC()
+    }
+
+    private func constrainClipboardTableVC() {
+        Constants.mainVC.clipboardTableVC.view.topAnchor.constraint(
+            equalTo: Constants.mainVC.clipboardSearchFieldVC.view.topAnchor, constant: 10).isActive = true
+        self.clipboardTableVC.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        self.clipboardTableVC.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        self.clipboardTableVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
+    }
+
+    func setupClipboardSearchField() {
+        self.view.addSubview(self.clipboardSearchFieldVC.view)
+        self.constrainClipboardSearchField()
+    }
+
+    private func constrainClipboardSearchField() {
+        self.clipboardSearchFieldVC.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
+        self.clipboardSearchFieldVC.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
+        self.clipboardSearchFieldVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
     }
 }

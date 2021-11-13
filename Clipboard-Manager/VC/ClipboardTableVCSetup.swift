@@ -53,7 +53,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
         tableView.doubleAction = #selector(onItemDoubleClicked)
         tableView.intercellSpacing = NSSize(width: 0, height: 10)
         // setup table column
-        let col = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: Constants.tableViewColumnName))
+        let col = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: TableViewConstants.tableViewColumnName))
         tableView.addTableColumn(col)
         // setup table scroll view
         scrollView.documentView = tableView
@@ -73,7 +73,7 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
             .predicate,
             to: self.arrayController,
             withKeyPath: NSBindingName.filterPredicate.rawValue,
-            options: [.predicateFormat: "\(Constants.predicateMatchClipboardObjectAttribute) CONTAINS[\(Constants.predicateOptions)] $value"]
+            options: [.predicateFormat: "\(TableViewConstants.predicateMatchClipboardObjectAttribute) CONTAINS[\(TableViewConstants.predicateOptions)] $value"]
         )
     }
 
@@ -110,14 +110,14 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
                 rect: clipboardTableCell.frame,
                 options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
                 owner: self,
-                userInfo: [Constants.cellTrackingDataKey: row]
+                userInfo: [TableViewConstants.cellTrackingDataKey: row]
             )
         )
-        if tableColumn?.identifier.rawValue == Constants.tableViewColumnName {
+        if tableColumn?.identifier.rawValue == TableViewConstants.tableViewColumnName {
             clipboardTableCell.textField!.bind(
                 .value,
                 to: clipboardTableCell,
-                withKeyPath: "objectValue.\(Constants.cellTextFieldClipboardObjectAttribute)",
+                withKeyPath: "objectValue.\(TableViewConstants.cellTextFieldClipboardObjectAttribute)",
                 options: nil
             )
         }

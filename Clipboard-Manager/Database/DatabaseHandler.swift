@@ -30,9 +30,9 @@ class DatabaseHandler {
     }
 
     var dbFileSize: Int {
+        let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let dbFileURL = dir.first?.deletingLastPathComponent().appendingPathComponent(DBConstants.DBFilename.rawValue)
         do {
-            let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-            let dbFileURL = dir.first?.deletingLastPathComponent().appendingPathComponent(DBConstants.DBFilename.rawValue)
             let fileResource = try dbFileURL!.resourceValues(forKeys: [.fileSizeKey])
             return fileResource.fileSize!
         } catch {
@@ -109,6 +109,7 @@ class DatabaseHandler {
          */
         while Double(self.dbFileSize) / DBQueries.bitsToMBConversionRatio > DBQueries.maxAllowedDBFileSizeMB {
             self.deleteOldestRecord()
+            // remove oldest record from table
             let arrayController = Constants.mainVC.clipboardTableVC.arrayController
             arrayController.remove(atArrangedObjectIndexes: IndexSet([
                 (arrayController.arrangedObjects as? [Any])!.count - 1

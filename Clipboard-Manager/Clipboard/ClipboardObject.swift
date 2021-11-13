@@ -31,7 +31,7 @@ class ClipboardObject: NSObject {
         self.clipboardAttributedString = self.clipboardString.htmlToAttributedString(
             resizeToWidth: nil, resizeToHeight: Constants.mainVC.clipboardTableVC.tableView.rowHeight + 20.0
         )!
-        ClipboardObject.colorAttributedString(string: self.clipboardAttributedString, color: Constants.textDefaultColor)
+        ClipboardObject.colorAttributedString(string: self.clipboardAttributedString, color: TableViewConstants.textDefaultColor)
     }
 
     func extractAttributedStringFromCell() -> NSMutableAttributedString {
@@ -42,10 +42,10 @@ class ClipboardObject: NSObject {
         let objectContent = (self.HTMLClipboardString ?? self.rawClipboardString?.prepareForAttributedString)!
         let objectAttributedString = objectContent.htmlToAttributedString(
             // in case we got an image, provide resize details
-            resizeToWidth: Constants.cellExtendedPopoverWidth,
+            resizeToWidth: TableViewConstants.cellExtendedPopoverWidth,
             resizeToHeight: nil
         )!
-        ClipboardObject.colorAttributedString(string: objectAttributedString, color: Constants.textDefaultColor)
+        ClipboardObject.colorAttributedString(string: objectAttributedString, color: TableViewConstants.textDefaultColor)
         return objectAttributedString
     }
 }
