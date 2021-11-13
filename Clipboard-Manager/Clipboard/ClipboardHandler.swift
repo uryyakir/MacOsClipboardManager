@@ -46,6 +46,7 @@ class ClipboardHandler {
                             Constants.mainVC.clipboardTableVC.arrayController.insert(
                                 ClipboardObject(clipboardCopiedObj), atArrangedObjectIndex: 0
                             )  // updating tableView to include copied string
+                            Constants.dbHandler.trimDatabaseRecords()
                         }
                     })
                     changeCount = Constants.pasteboard.changeCount

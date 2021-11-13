@@ -32,7 +32,15 @@ enum DBConstants: String {
     case clipboardContentRawCol = "CLIPBOARD_CONTENT_RAW"
     case clipboardContentHTMLCol = "CLIPBOARD_CONTENT_HTML"
     case insertionTimeCol = "INSERTION_TIME"
-    case selectAllHistoryQuery = "SELECT * FROM clipboard ORDER BY INSERTION_TIME desc"
+}
+
+class DBQueries {
+    static let selectAllHistoryQuery = "SELECT * FROM \(DBConstants.tableName.rawValue) ORDER BY \(DBConstants.insertionTimeCol.rawValue) desc"
+    static let getOldestRecordIdQuery = """
+    SELECT ROWID FROM \(DBConstants.tableName.rawValue) ORDER BY \(DBConstants.insertionTimeCol.rawValue) ASC LIMIT 1
+    """
+    static let bitsToMBConversionRatio = 1_000_000.0
+    static let maxAllowedDBFileSizeMB = 3.0
 }
 
 struct Storyboard {
