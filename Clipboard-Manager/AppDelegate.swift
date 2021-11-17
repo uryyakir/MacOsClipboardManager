@@ -13,6 +13,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let popover = NSPopover()
 
     func applicationWillFinishLaunching(_ notification: Notification) {
+        self.scaleApplicationWindowsToMonitorSize()
         self.setupApplicationUI()
         Constants.makeConstantsAssertions()
     }

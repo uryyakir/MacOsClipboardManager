@@ -27,6 +27,7 @@ class MainViewController: NSViewController {
         ) as? MainViewController else {
             fatalError("Unable to instantiate ViewController in Main.storyboard")
         }
+        viewController.view.setFrameSize(TableViewConstants.defaultMainFrameSize)
         return viewController
     }
 

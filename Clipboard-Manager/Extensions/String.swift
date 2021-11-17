@@ -38,11 +38,16 @@ extension String {
                     return NSMutableAttributedString(string: Constants.failedImageLoadPlaceholder)
                 }
             } else {
-                return try NSMutableAttributedString(
+                let attributedString = try NSMutableAttributedString(
                     data: data,
                     options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue],
                     documentAttributes: nil
                 )
+                attributedString.setAttributes(
+                    [.font: NSFont.systemFont(ofSize: TableViewConstants.defaultAttributedStringFontSize)],
+                    range: NSRange(location: 0, length: attributedString.length)
+                )
+                return attributedString
             }
         } catch {
             return nil

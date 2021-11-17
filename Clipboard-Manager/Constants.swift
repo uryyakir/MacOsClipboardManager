@@ -66,6 +66,13 @@ struct TableViewConstants {
     static let predicateMatchClipboardObjectAttribute: String = "rawClipboardString"
     static let cellTextFieldClipboardObjectAttribute: String = "clipboardAttributedString"
     // table view constants
+    // this is my home-monitor's size. On different monitors, the app will be scaled accordingly
+    static let relativeToScreenSize = NSSize(width: 1920.0, height: 1080.0)
+    // default attributes for my home-monitor
+    static var defaultMainFrameSize = NSSize(width: 370.0, height: 600.0)
+    static var defaultCellExtendedPopoverFrameSize = NSSize(width: 450.0, height: 550.0)
+    static var defaultAttributedStringFontSize = 12.0
+
     static let tableViewColumnName = "col"
     static let cellTrackingDataKey = "row"
     static let textDefaultColor = NSColor(deviceRed: 8/255, green: 165/255, blue: 218/255, alpha: 1)
@@ -85,12 +92,13 @@ struct Constants {
     // swiftlint:disable force_cast
     // setup process
     static let applicationIcon = NSImage(named: NSImage.Name("clipboard-icon"))
-    static let NSViewsBackgroundColor = NSColor.clear
+    static let NSViewsBackgroundColor = NSColor.darkGray
     static let appDelegate = NSApplication.shared.delegate as! AppDelegate
     static let mainVC = MainViewController.newInstance()
     static let pasteboard = NSPasteboard.general
     static let dbHandler = DatabaseHandler()
     static let cwd = FileManager.default.currentDirectoryPath
+    static let currentScreenSize = NSScreen.main?.frame
 
     // other constants
     static var isInternalCopy: Bool = false  // tracking internal copy to clipboard, preventing from appending a new record to clipboard history
