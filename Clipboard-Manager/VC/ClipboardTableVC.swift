@@ -34,9 +34,10 @@ extension ClipboardTableVC {
     }
 
     private func initiateCellPopoverWithKeyboardNavigation() {
-        let hoveredRowIndex = self.selectedRowIndexes.first!
-        self.doMouseExited()
-        self.setAndInitiateHoveredRow(hoveredRowIndex: hoveredRowIndex, backgroundColorRequired: false)
+        if let hoveredRowIndex = self.selectedRowIndexes.first {
+            self.doMouseExited()
+            self.setAndInitiateHoveredRow(hoveredRowIndex: hoveredRowIndex, backgroundColorRequired: false)
+        }
     }
 
     private func initiateClipboardSearchWithInput(characters: String) {
