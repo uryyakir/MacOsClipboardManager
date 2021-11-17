@@ -111,4 +111,17 @@ extension AppDelegate {
         let resizeRatio = (resizeToWidth ?? resizeToHeight!) / imageWidth
         return image!.resized(to: NSSize(width: resizeRatio * imageWidth, height: resizeRatio * imageHeight))
     }
+
+    func scaleApplicationWindowsToMonitorSize() {
+        if let currentScreenSize = Constants.currentScreenSize {
+            let widthRatio = (currentScreenSize.width / TableViewConstants.relativeToScreenSize.width)
+            let heightRatio = (currentScreenSize.height / TableViewConstants.relativeToScreenSize.height)
+            TableViewConstants.defaultMainFrameSize.width *= widthRatio
+            TableViewConstants.defaultMainFrameSize.height *= heightRatio
+            TableViewConstants.defaultCellExtendedPopoverFrameSize.width *= widthRatio
+            TableViewConstants.defaultCellExtendedPopoverFrameSize.height *= heightRatio
+
+            TableViewConstants.defaultAttributedStringFontSize *= (widthRatio + heightRatio) / 2
+        }
+    }
 }

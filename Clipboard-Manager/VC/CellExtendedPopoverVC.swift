@@ -34,6 +34,7 @@ class CellExtendedPopoverVC: NSViewController {
         ) as? CellExtendedPopoverVC else {
             fatalError("Unable to instantiate ViewController in CellPopover.storyboard")
         }
+        viewController.view.setFrameSize(TableViewConstants.defaultCellExtendedPopoverFrameSize)
         return viewController
     }
 
