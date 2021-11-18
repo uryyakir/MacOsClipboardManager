@@ -11,6 +11,7 @@ import Cocoa
 extension AppDelegate {
     func setupApplicationUI() {
         self.setupStatusBarItem()
+        Constants.mainVC.setupExitButton()
         Constants.mainVC.setupClipboardSearchField()
         Constants.mainVC.setupClipboardTableVC()
     }
@@ -42,7 +43,7 @@ extension AppDelegate {
         }
     }
 
-    func closePopover(sender: Any?) {
+    @objc func closePopover(sender: Any?) {
         self.popover.close()
     }
 

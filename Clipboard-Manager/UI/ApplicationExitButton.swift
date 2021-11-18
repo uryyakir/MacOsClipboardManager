@@ -20,5 +20,10 @@ class ApplicationExitButton: NSButton {
 
     private func setupExitButton() {
         self.translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundColor = .red
+        self.title = "X"
+        self.layer!.cornerRadius = 5
+        self.layer?.borderWidth = 1
+        self.action = #selector(Constants.appDelegate.closePopover)
     }
 }

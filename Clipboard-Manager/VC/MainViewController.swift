@@ -82,12 +82,19 @@ class MainViewController: NSViewController {
     }
 
     private func constrainClipboardSearchField() {
-        self.clipboardSearchFieldVC.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
+        self.clipboardSearchFieldVC.view.topAnchor.constraint(equalTo: self.applicationExitButton.bottomAnchor, constant: 10).isActive = true
         self.clipboardSearchFieldVC.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
         self.clipboardSearchFieldVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
     }
 
+    func setupExitButton() {
+        self.view.addSubview(self.applicationExitButton)
+        self.constrainExitButton()
+    }
+
     private func constrainExitButton() {
-//        self.
+        self.applicationExitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
+        self.applicationExitButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
+        self.applicationExitButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
     }
 }
