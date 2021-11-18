@@ -64,7 +64,6 @@ struct TableViewConstants {
     static let diacriticInsensitive: Bool = true
     static let predicateOptions = (TableViewConstants.caseInsensitive ? "c" : "") + (TableViewConstants.diacriticInsensitive ? "d" : "")
     static let predicateMatchClipboardObjectAttribute: String = "rawClipboardString"
-    static let cellTextFieldClipboardObjectAttribute: String = "clipboardAttributedString"
     // table view constants
     // this is my home-monitor's size. On different monitors, the app will be scaled accordingly
     static let relativeToScreenSize = NSSize(width: 1920.0, height: 1080.0)
@@ -78,6 +77,8 @@ struct TableViewConstants {
     static let textDefaultColor = NSColor(deviceRed: 8/255, green: 165/255, blue: 218/255, alpha: 1)
     static let cellHoverBackgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
     static let cellBorderColor = NSColor(deviceRed: 30/255, green: 144/255, blue: 255/255, alpha: 0.2).cgColor
+    static let cellTextFieldClipboardObjectAttribute: String = "clipboardAttributedStringShortened"
+    static let cellTextFieldMaxLength = 150
     static let cellSelectionBorderAlternationInterval = 0.3
     static let cellSelectionBorderColorIterations = 3
     static let cellSelectionBorderColor = NSColor(deviceRed: 249/255, green: 240/255, blue: 24/255, alpha: 0.4).cgColor

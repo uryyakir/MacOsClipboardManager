@@ -43,7 +43,7 @@ extension AppDelegate {
     }
 
     func closePopover(sender: Any?) {
-        self.popover.performClose(sender)
+        self.popover.close()
     }
 
     static func setupScrollView(
