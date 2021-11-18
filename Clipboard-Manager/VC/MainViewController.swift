@@ -95,6 +95,6 @@ class MainViewController: NSViewController {
     private func constrainExitButton() {
         self.applicationExitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
         self.applicationExitButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-        self.applicationExitButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
+        self.applicationExitButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
     }
 }

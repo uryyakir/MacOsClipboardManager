@@ -43,7 +43,7 @@ extension AppDelegate {
         }
     }
 
-    func closePopover(sender: Any?) {
+    @objc func closePopover(sender: Any?) {
         self.popover.close()
     }
 
