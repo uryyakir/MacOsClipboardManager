@@ -11,6 +11,7 @@ import Cocoa
 extension AppDelegate {
     func setupApplicationUI() {
         self.setupStatusBarItem()
+        Constants.mainVC.setupExitButton()
         Constants.mainVC.setupClipboardSearchField()
         Constants.mainVC.setupClipboardTableVC()
     }

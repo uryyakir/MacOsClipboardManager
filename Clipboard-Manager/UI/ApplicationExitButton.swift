@@ -20,5 +20,6 @@ class ApplicationExitButton: NSButton {
 
     private func setupExitButton() {
         self.translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundColor = .cyan
     }
 }
