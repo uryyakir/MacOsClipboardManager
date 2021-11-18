@@ -41,14 +41,17 @@ class ClipboardHandler {
             if copiedStringRaw != nil || copiedStringHTML != nil {
                 let clipboardCopiedObj = ClipboardCopiedObject(copiedValueRaw: copiedStringRaw, copiedValueHTML: copiedStringHTML)
                 if Constants.pasteboard.changeCount != changeCount && !Constants.isInternalCopy {
-                    Constants.dbHandler.insertCopiedValueToDB(copiedObject: clipboardCopiedObj, withCompletion: { response in
-                        if response {
-                            Constants.mainVC.clipboardTableVC.arrayController.insert(
-                                ClipboardObject(clipboardCopiedObj), atArrangedObjectIndex: 0
-                            )  // updating tableView to include copied string
-                            Constants.dbHandler.trimDatabaseRecords()
-                        }
-                    })
+                    let copiedClipboardObject = ClipboardObject(clipboardCopiedObj)
+                    if copiedClipboardObject != (Constants.mainVC.clipboardTableVC.arrayController.arrangedObjects as? [ClipboardObject])?.first {
+                        Constants.dbHandler.insertCopiedValueToDB(copiedObject: clipboardCopiedObj, withCompletion: { response in
+                            if response {
+                                Constants.mainVC.clipboardTableVC.arrayController.insert(
+                                    copiedClipboardObject, atArrangedObjectIndex: 0
+                                )  // updating tableView to include copied string
+                                Constants.dbHandler.trimDatabaseRecords()
+                            }
+                        })
+                    }
                 } else if Constants.isInternalCopy {
                     // update changeCount and reset isInternalCopy
                     Constants.isInternalCopy = false

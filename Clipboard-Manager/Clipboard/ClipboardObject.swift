@@ -50,4 +50,8 @@ class ClipboardObject: NSObject {
         ClipboardObject.colorAttributedString(string: objectAttributedString, color: TableViewConstants.textDefaultColor)
         return objectAttributedString
     }
+
+    static func != (lhs: ClipboardObject, rhs: ClipboardObject?) -> Bool {
+        return lhs.rawClipboardString != rhs?.rawClipboardString
+    }
 }

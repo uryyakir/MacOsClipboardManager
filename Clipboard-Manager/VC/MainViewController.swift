@@ -11,6 +11,7 @@ import AVFoundation
 class MainViewController: NSViewController {
     var clipboardTableVC = ClipboardTableVC()
     let clipboardSearchFieldVC = ClipboardSearchFieldVC()
+    let applicationExitButton = ApplicationExitButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,5 +85,9 @@ class MainViewController: NSViewController {
         self.clipboardSearchFieldVC.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
         self.clipboardSearchFieldVC.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
         self.clipboardSearchFieldVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
+    }
+
+    private func constrainExitButton() {
+//        self.
     }
 }

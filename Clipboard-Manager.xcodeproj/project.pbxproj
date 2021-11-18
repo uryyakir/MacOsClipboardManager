@@ -11,6 +11,7 @@
 		84132ABE272DF9AF00D20633 /* HoveredRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84132ABD272DF9AF00D20633 /* HoveredRow.swift */; };
 		843F639F271B5E77005E6541 /* CellExtendedPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843F639E271B5E77005E6541 /* CellExtendedPopover.swift */; };
 		8457F8DE2746A94A005BC49B /* NSMutableAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8457F8DD2746A94A005BC49B /* NSMutableAttributedString.swift */; };
+		8457F8E02746AF0D005BC49B /* ApplicationExitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8457F8DF2746AF0D005BC49B /* ApplicationExitButton.swift */; };
 		845CC32826FD137A00F24D1A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC32726FD137A00F24D1A /* AppDelegate.swift */; };
 		845CC32A26FD137A00F24D1A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845CC32926FD137A00F24D1A /* MainViewController.swift */; };
 		845CC32F26FD137F00F24D1A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 845CC32D26FD137F00F24D1A /* Main.storyboard */; };
@@ -58,6 +59,7 @@
 		84132ABD272DF9AF00D20633 /* HoveredRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoveredRow.swift; sourceTree = "<group>"; };
 		843F639E271B5E77005E6541 /* CellExtendedPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellExtendedPopover.swift; sourceTree = "<group>"; };
 		8457F8DD2746A94A005BC49B /* NSMutableAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString.swift; sourceTree = "<group>"; };
+		8457F8DF2746AF0D005BC49B /* ApplicationExitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationExitButton.swift; sourceTree = "<group>"; };
 		845CC32426FD137A00F24D1A /* Clipboard Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Clipboard Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		845CC32726FD137A00F24D1A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		845CC32926FD137A00F24D1A /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				84AEF6CA27033A7200751A96 /* ClipboardSearchField.swift */,
 				843F639E271B5E77005E6541 /* CellExtendedPopover.swift */,
 				84132ABD272DF9AF00D20633 /* HoveredRow.swift */,
+				8457F8DF2746AF0D005BC49B /* ApplicationExitButton.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 				8472CEEF2702820B00A9D44A /* ClipboardTableCell.swift in Sources */,
 				8472CEE82701FA5200A9D44A /* NSView.swift in Sources */,
 				84C8E32527122AB4002D474C /* DatabaseHandler.swift in Sources */,
+				8457F8E02746AF0D005BC49B /* ApplicationExitButton.swift in Sources */,
 				8487686C27011F4600BCAB06 /* UIGlobalUtils.swift in Sources */,
 				8457F8DE2746A94A005BC49B /* NSMutableAttributedString.swift in Sources */,
 				846EEE462736E6B000DA43FD /* CellExtendedPopoverVC.swift in Sources */,
