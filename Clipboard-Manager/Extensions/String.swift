@@ -47,6 +47,7 @@ extension String {
                     [.font: NSFont.systemFont(ofSize: TableViewConstants.defaultAttributedStringFontSize)],
                     range: NSRange(location: 0, length: attributedString.length)
                 )
+
                 return attributedString
             }
         } catch {

@@ -13,6 +13,7 @@ class ClipboardObject: NSObject {
     @objc dynamic var HTMLClipboardString: String?
     @objc dynamic var clipboardString: String
     @objc dynamic var clipboardAttributedString: NSMutableAttributedString?
+    @objc dynamic var clipboardAttributedStringShortened: NSAttributedString?
 
     static func colorAttributedString(string: NSMutableAttributedString?, color: NSColor) {
         if string != nil {
@@ -32,6 +33,7 @@ class ClipboardObject: NSObject {
             resizeToWidth: nil, resizeToHeight: Constants.mainVC.clipboardTableVC.tableView.rowHeight + 20.0
         )!
         ClipboardObject.colorAttributedString(string: self.clipboardAttributedString, color: TableViewConstants.textDefaultColor)
+        self.clipboardAttributedStringShortened = self.clipboardAttributedString?.attributedStringShortened
     }
 
     func extractAttributedStringFromCell() -> NSMutableAttributedString {
