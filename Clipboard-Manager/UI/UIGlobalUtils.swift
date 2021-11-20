@@ -11,7 +11,8 @@ import Cocoa
 extension AppDelegate {
     func setupApplicationUI() {
         self.setupStatusBarItem()
-        Constants.mainVC.setupExitButton()
+        Constants.mainVC.setupMinimizeButton()
+        Constants.mainVC.setupQuitButton()
         Constants.mainVC.setupClipboardSearchField()
         Constants.mainVC.setupClipboardTableVC()
     }
@@ -27,6 +28,10 @@ extension AppDelegate {
             self.popover.contentViewController = Constants.mainVC
             self.popover.animates = false
         }
+    }
+
+    @objc func killApplication() {
+        NSApplication.shared.terminate(self)
     }
 
     @objc private func togglePopover(_ sender: NSStatusItem) {

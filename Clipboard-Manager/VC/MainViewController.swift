@@ -11,6 +11,7 @@ import AVFoundation
 class MainViewController: NSViewController {
     var clipboardTableVC = ClipboardTableVC()
     let clipboardSearchFieldVC = ClipboardSearchFieldVC()
+    let applicationMinimizeButton = ApplicationExitButton()
     let applicationExitButton = ApplicationExitButton()
 
     override func viewDidLoad() {
@@ -71,7 +72,7 @@ class MainViewController: NSViewController {
     private func constrainClipboardTableVC() {
         Constants.mainVC.clipboardTableVC.view.topAnchor.constraint(
             equalTo: Constants.mainVC.clipboardSearchFieldVC.view.topAnchor, constant: 10).isActive = true
-        self.clipboardTableVC.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        self.clipboardTableVC.view.bottomAnchor.constraint(equalTo: self.applicationExitButton.topAnchor, constant: -10).isActive = true
         self.clipboardTableVC.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
         self.clipboardTableVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
     }
@@ -82,19 +83,32 @@ class MainViewController: NSViewController {
     }
 
     private func constrainClipboardSearchField() {
-        self.clipboardSearchFieldVC.view.topAnchor.constraint(equalTo: self.applicationExitButton.bottomAnchor, constant: 10).isActive = true
+        self.clipboardSearchFieldVC.view.topAnchor.constraint(equalTo: self.applicationMinimizeButton.bottomAnchor, constant: 10).isActive = true
         self.clipboardSearchFieldVC.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
         self.clipboardSearchFieldVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
     }
 
-    func setupExitButton() {
+    func setupMinimizeButton() {
+        self.applicationMinimizeButton.setupMinimizeButton()
+        self.view.addSubview(self.applicationMinimizeButton)
+        self.constrainMinimizeButton()
+    }
+
+    private func constrainMinimizeButton() {
+        self.applicationMinimizeButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
+        self.applicationMinimizeButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
+        self.applicationMinimizeButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+    }
+
+    func setupQuitButton() {
+        self.applicationExitButton.setupExitButton()
         self.view.addSubview(self.applicationExitButton)
         self.constrainExitButton()
     }
 
     private func constrainExitButton() {
-        self.applicationExitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
-        self.applicationExitButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-        self.applicationExitButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        self.applicationExitButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        self.applicationExitButton.bottomAnchor.constraint(greaterThanOrEqualTo: self.view.bottomAnchor, constant: -10).isActive = true
+        self.applicationExitButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
     }
 }
