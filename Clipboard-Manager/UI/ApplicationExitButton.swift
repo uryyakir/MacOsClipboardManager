@@ -11,19 +11,25 @@ import Cocoa
 class ApplicationExitButton: NSButton {
     override init(frame: NSRect) {
         super.init(frame: frame)
-        self.setupExitButton()
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.wantsLayer = true
+        self.layer?.cornerRadius = 5
+        self.layer?.borderWidth = 1
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupExitButton() {
-        self.translatesAutoresizingMaskIntoConstraints = false
+    func setupMinimizeButton() {
         self.backgroundColor = .red
         self.title = "X"
-        self.layer!.cornerRadius = 5
-        self.layer?.borderWidth = 1
         self.action = #selector(Constants.appDelegate.closePopover)
+    }
+
+    func setupExitButton() {
+        self.backgroundColor = NSColor(deviceRed: 16/256, green: 16/256, blue: 40/256, alpha: 1)
+        self.title = "Kill Application"
+        self.action = #selector(Constants.appDelegate.killApplication)
     }
 }
