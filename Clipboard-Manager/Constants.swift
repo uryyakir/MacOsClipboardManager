@@ -92,7 +92,7 @@ struct TableViewConstants {
 struct Constants {
     // swiftlint:disable force_cast
     // setup process
-    static let applicationIcon = NSImage(named: NSImage.Name("clipboard-icon"))
+    static let applicationIcon = NSImage(named: NSImage.Name("clipboard-icon-white"))
     static let NSViewsBackgroundColor = NSColor.darkGray
     static let appDelegate = NSApplication.shared.delegate as! AppDelegate
     static let mainVC = MainViewController.newInstance()
