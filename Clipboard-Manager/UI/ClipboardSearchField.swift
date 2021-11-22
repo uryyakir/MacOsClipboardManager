@@ -17,4 +17,12 @@ class ClipboardSearchField: NSSearchField {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func becomeFirstResponder() -> Bool {
+        Constants.mainVC.clipboardTableVC.hoveredRow?.hoverTimer?.invalidate()  // if an existing timer is in progress for the first row - invalidate that
+        guard super.becomeFirstResponder() else {
+            return false
+        }
+        return true
+    }
 }
