@@ -29,7 +29,12 @@ class ApplicationExitButton: NSButton {
 
     func setupExitButton() {
         self.backgroundColor = NSColor(deviceRed: 16/256, green: 16/256, blue: 40/256, alpha: 1)
-        self.title = "Kill Application"
+        // setup title
+        let title = NSMutableAttributedString(string: "Quit  ⌘Q")
+        title.addAttribute(.foregroundColor, value: NSColor.white, range: NSRange(location: 0, length: 4))
+        title.addAttribute(.foregroundColor, value: NSColor.systemGray, range: NSRange(location: 5, length: title.length - 5))
+        self.attributedTitle = title
+        // setup click action
         self.action = #selector(Constants.appDelegate.killApplication)
     }
 }
