@@ -119,15 +119,21 @@ extension AppDelegate {
     }
 
     func scaleApplicationWindowsToMonitorSize() {
+        /*
+         Make all necessary adjustments to the different attributes constructing the application's UI.
+         Make sure to scale everything according to current client's screen resolution, scaled in comparison to my home-monitor
+         */
         if let currentScreenSize = Constants.currentScreenSize {
             let widthRatio = (currentScreenSize.width / TableViewConstants.relativeToScreenSize.width)
             let heightRatio = (currentScreenSize.height / TableViewConstants.relativeToScreenSize.height)
+            let ratiosAverage = (widthRatio + heightRatio) / 2
             TableViewConstants.defaultMainFrameSize.width *= widthRatio
             TableViewConstants.defaultMainFrameSize.height *= heightRatio
             TableViewConstants.defaultCellExtendedPopoverFrameSize.width *= widthRatio
             TableViewConstants.defaultCellExtendedPopoverFrameSize.height *= heightRatio
 
-            TableViewConstants.defaultAttributedStringFontSize *= (widthRatio + heightRatio) / 2
+            TableViewConstants.defaultAttributedStringFontSize *= ratiosAverage
+            TableViewConstants.defaultCellHeight *= ratiosAverage
         }
     }
 }

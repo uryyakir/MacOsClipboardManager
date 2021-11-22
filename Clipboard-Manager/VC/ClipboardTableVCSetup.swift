@@ -130,6 +130,6 @@ class ClipboardTableVC: NSViewController, NSTableViewDelegate, NSTableViewDataSo
     }
 
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return 50
+        return TableViewConstants.defaultCellHeight
     }
 }
