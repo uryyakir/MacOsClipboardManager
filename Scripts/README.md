@@ -1,19 +1,16 @@
 # HOWTO: Create a keyboard shortcut to open / close the Clipboard Manager
 ## simply follow the following steps:
-<ol>
-  <li>Copy the `applescript workflow` to your local 'Services' folder using the following Terminal command:
-    
+
+1. Download the Scripts folder from this repository to your device. I recommend using this [tool](https://github.com/uryyakir/MacOsClipboardManager/tree/main/Scripts) with the folder's URL (https://github.com/uryyakir/MacOsClipboardManager/tree/main/Scripts)
+
+2. Go the parent folder containing the downloaded "Scripts" folder, and copy the `applescript workflow` file to your local 'Services' folder using the following Terminal command:    
   `cp -r Scripts/OpenClipboardManagerShortcut.workflow ~/Library/Services/OpenClipboardManagerShortcut.workflow`
-  </li>
-  <li>
-    Go to `System Preferences -> Keyboard -> Shortcuts`. Under General, you should see a service named `OpenClipboardManagerShortcut`. 
-    Add your custom keyboard shortcut to run the service.
-  </li>
-  <li>
-    Open `System Preferences -> Security & Privacy -> Privacy`. Choose `Accessibility` from the side-menu.<br>
-    Add `Automator` to the permitted app list.
-  </li>
-</ol>
+  
+3. Go to `System Preferences -> Keyboard -> Shortcuts -> Services`. Under General, you should see a service named `OpenClipboardManagerShortcut`. 
+Add your custom keyboard shortcut to run the service.
+  
+4. Open `System Preferences -> Security & Privacy -> Privacy`. Choose `Accessibility` from the side-menu.<br>
+Add `Automator.app` to the permitted app list.
 
 #### NOTE: when attempting to use your keyboard shortcut from some apps (e.g. Google Chrome), you might encounter a permissions error.
 #### The error should say something along the lines of:
