@@ -71,6 +71,7 @@ struct TableViewConstants {
     static var defaultMainFrameSize = NSSize(width: 370.0, height: 600.0)
     static var defaultCellExtendedPopoverFrameSize = NSSize(width: 450.0, height: 550.0)
     static var defaultAttributedStringFontSize = 12.0
+    static var defaultCellHeight = 50.0
 
     static let tableViewColumnName = "col"
     static let cellTrackingDataKey = "row"
