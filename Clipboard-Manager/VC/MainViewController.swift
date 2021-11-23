@@ -97,7 +97,7 @@ class MainViewController: NSViewController {
     private func constrainMinimizeButton() {
         self.applicationMinimizeButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
         self.applicationMinimizeButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-        self.applicationMinimizeButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        self.applicationMinimizeButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
     }
 
     func setupQuitButton() {

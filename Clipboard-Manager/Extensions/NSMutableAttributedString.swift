@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Cocoa
 
 extension NSMutableAttributedString {
     // get a smaller substring for the cell preview to make the table preview more efficient
@@ -20,5 +21,12 @@ extension NSMutableAttributedString {
         )
         if self.length > TableViewConstants.cellTextFieldMaxLength { attributedStringShortened.append(NSAttributedString(string: "...")) }
         return attributedStringShortened
+    }
+
+    func setFont(size: CGFloat) {
+        self.setAttributes(
+            [.font: NSFont.systemFont(ofSize: size)],
+            range: NSRange(location: 0, length: self.length)
+        )
     }
 }

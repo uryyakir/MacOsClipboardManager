@@ -23,7 +23,9 @@ class ApplicationExitButton: NSButton {
 
     func setupMinimizeButton() {
         self.backgroundColor = .red
-        self.title = "X"
+        let title = NSMutableAttributedString(string: "X ")
+        title.setFont(size: (TableViewConstants.defaultAttributedStringFontSize))
+        self.attributedTitle = title
         self.action = #selector(Constants.appDelegate.closePopover)
     }
 
@@ -31,6 +33,7 @@ class ApplicationExitButton: NSButton {
         self.backgroundColor = NSColor(deviceRed: 16/256, green: 16/256, blue: 40/256, alpha: 1)
         // setup title
         let title = NSMutableAttributedString(string: "Quit  ⌘Q")
+        title.setFont(size: (TableViewConstants.defaultAttributedStringFontSize))
         title.addAttribute(.foregroundColor, value: NSColor.white, range: NSRange(location: 0, length: 4))
         title.addAttribute(.foregroundColor, value: NSColor.systemGray, range: NSRange(location: 5, length: title.length - 5))
         self.attributedTitle = title

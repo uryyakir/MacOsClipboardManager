@@ -71,7 +71,7 @@ struct TableViewConstants {
     static var defaultMainFrameSize = NSSize(width: 370.0, height: 600.0)
     static var defaultCellExtendedPopoverFrameSize = NSSize(width: 450.0, height: 550.0)
     static var defaultAttributedStringFontSize = 12.0
-    static var defaultCellHeight = 50.0
+    static var defaultCellHeight = 45.0
 
     static let tableViewColumnName = "col"
     static let cellTrackingDataKey = "row"
@@ -79,7 +79,7 @@ struct TableViewConstants {
     static let cellHoverBackgroundColor = NSColor(deviceRed: 135/255, green: 206/255, blue: 250/255, alpha: 0.3)
     static let cellBorderColor = NSColor(deviceRed: 30/255, green: 144/255, blue: 255/255, alpha: 0.2).cgColor
     static let cellTextFieldClipboardObjectAttribute: String = "clipboardAttributedStringShortened"
-    static let cellTextFieldMaxLength = 150
+    static let cellTextFieldMaxLength = 200
     static let cellSelectionBorderAlternationInterval = 0.3
     static let cellSelectionBorderColorIterations = 3
     static let cellSelectionBorderColor = NSColor(deviceRed: 249/255, green: 240/255, blue: 24/255, alpha: 0.4).cgColor
@@ -93,7 +93,7 @@ struct TableViewConstants {
 struct Constants {
     // swiftlint:disable force_cast
     // setup process
-    static let applicationIcon = NSImage(named: NSImage.Name("clipboard-icon-white"))
+    static let applicationIcon = NSImage(named: NSImage.Name("clipboard-icon"))
     static let NSViewsBackgroundColor = NSColor.darkGray
     static let appDelegate = NSApplication.shared.delegate as! AppDelegate
     static let mainVC = MainViewController.newInstance()

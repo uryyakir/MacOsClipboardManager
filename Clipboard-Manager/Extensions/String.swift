@@ -43,10 +43,7 @@ extension String {
                     options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue],
                     documentAttributes: nil
                 )
-                attributedString.setAttributes(
-                    [.font: NSFont.systemFont(ofSize: TableViewConstants.defaultAttributedStringFontSize)],
-                    range: NSRange(location: 0, length: attributedString.length)
-                )
+                attributedString.setFont(size: TableViewConstants.defaultAttributedStringFontSize)
 
                 return attributedString
             }
