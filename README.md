@@ -25,7 +25,7 @@ To install the application:
 6. After the installation is complete, you should be able to launch the `Clipboard Manager` application by pressing ⌘+Space and searching for it.
 7. After you launch the application, don't expect a window to open. This is a menu-bar application :)<br>
 Instead, you should see the app's icon in your tool-bar at the top of your screen:
-<br>![app icon](Clipboard-Manager/Assets.xcassets/clipboard-icon.imageset/Webp.net-resizeimage%20(1).png)
+<br>![app icon](Clipboard-Manager/Assets.xcassets/clipboard-icon-white.imageset/Webp.net-resizeimage.png)
 8. To set a keyboard shortcut for opening / closing the application, please follow the instruction [here](https://github.com/uryyakir/MacOsClipboardManager/tree/main/Scripts).
 
 I'm working on getting the application on the Appstore, keep an eye out for that!
