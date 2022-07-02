@@ -52,11 +52,17 @@ extension ClipboardTableVC {
          Return an array of the selected ClipboardTableCell-s.
          This is useful for cell UI actions across all selected cells.
          */
-        return Array(indexSet).map { (index) -> ClipboardTableCell in
-            (self.tableView.rowView(
+        var tableCellArray: [ClipboardTableCell] = []
+        for index in Array(indexSet) {
+            guard let visibleRowView = self.tableView.rowView(
                 atRow: index, makeIfNecessary: false
-            )?.view(atColumn: 0) as? ClipboardTableCell)!
+            ) else {
+                // rowView will be `nill` if row is out-of-view
+                continue
+            }
+            tableCellArray.append((visibleRowView.view(atColumn: 0) as? ClipboardTableCell)!)
         }
+        return tableCellArray
     }
 
     private func extractRowsText(filterIndices: [Int] = []) -> [ClipboardObject] {
