@@ -14,7 +14,7 @@ This app uses *local & persistent storage* for your clipboard history. Your priv
 
 ## Installation
 
-The `.pkg` file is currently available in my [dropbox](https://www.dropbox.com/s/4vd4c5hdffvlq04/Clipboard-Manager.pkg?dl=0).
+The `.pkg` file is currently available in my [dropbox](https://www.dropbox.com/sh/dhs0t40ypk3sbnx/AACQfR1bdTintY6Gdk-fnIExa?dl=0).
 To install the application:
 
 1. Download the `.pkg` file from the provided link. By default it should be downloaded to your `Downloads` folder.
