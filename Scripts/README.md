@@ -1,20 +1,18 @@
 # HOWTO: Create a keyboard shortcut to open / close the Clipboard Manager
+
 ## simply follow the following steps:
 
-1. Download the Scripts folder from this repository to your device. I recommend using this [tool](https://github.com/uryyakir/MacOsClipboardManager/tree/main/Scripts) with the folder's URL (https://github.com/uryyakir/MacOsClipboardManager/tree/main/Scripts)
+  1. Clone the repo.
+  2. Copy the applescript file to your local `Scripts` folder, i.e.: `cp Scripts/openClipboardManagerAppleScript.scpt ~/Library/Scripts/`.
+  3. Download the open source shortcut manager [iCanHazShortcut](https://github.com/deseven/icanhazshortcut): `brew install icanhazshortcut`.
+  4. Open the *iCanHazshortcut* application.
+  5. Create a new shortcut:
+		* Set the short command to run the applescript: `osascript ~/Library/Scripts/openClipboardManagerAppleScript.scpt`.
+		* Set whatever keyboard shortcut that works for you.
+6. Profit???
 
-2. Go the parent folder containing the downloaded "Scripts" folder, and copy the `applescript workflow` file to your local 'Services' folder using the following Terminal command:    
-  `cp -r Scripts/OpenClipboardManagerShortcut.workflow ~/Library/Services/OpenClipboardManagerShortcut.workflow`
-  
-3. Go to `System Preferences -> Keyboard -> Shortcuts -> Services`. Under General, you should see a service named `OpenClipboardManagerShortcut`. 
-Add your custom keyboard shortcut to run the service.
-  
-4. Open `System Preferences -> Security & Privacy -> Privacy`. Choose `Accessibility` from the side-menu.<br>
-Add `Automator.app` to the permitted app list.
 
-#### NOTE: when attempting to use your keyboard shortcut from some apps (e.g. Google Chrome), you might encounter a permissions error.
-#### The error should say something along the lines of:
-`The action "Run AppleScript" encountered an error: ... is not allowed assistive access." `
-#### If you see that error, all you need to do is to add said application to the `Accessibility` list, similiar to what we've done for `Automator`.
+__NOTE__: when attempting to test your keyboard shortcut, you might encounter a permissions error.
+If you see that error, all you need to do is to permit the *iCanHazShortcut* to control your computer: System Preferences --> Security & Privacy --> Accessibility --> Mark the checkbox next to the *iCanHazShortcut* application.
 
 ## ENJOY!
